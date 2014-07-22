@@ -1,0 +1,11 @@
+{
+    "progs" : [
+        "First one",
+        "Second one",
+        "And so on"
+    ]
+
+    "settings" : [
+        "Todo"
+    ]
+}

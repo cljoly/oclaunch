@@ -36,14 +36,18 @@
 
 open Core.Std;;
 
-(* Some settins variales *)
-let rc_file = "test.json" (* TODO Dev value, change this *)
+(* Read settings and programs to launch from rc file *)
 
-(* Obtain data from rc file *)
-let rc_content = File_com.init ~rc:rc_file;;
+(* Get string from file *)
+let string_f_file file =
+	let tmp_buffer = In_channel.create file in
+	let content = In_channel.input_all tmp_buffer in
+	(* Now, close file and return value *)
+	In_channel.close tmp_buffer; content
+;;
 
-(* Execute some command and log it *)
-let execute cmd =
-	Core_extended.Shell.run_full cmd
-	|> print_endline
+(* Function to call from oclaunch module *)
+let init ~rc:rc_file =
+	string_f_file rc_file
+	|> Settings_j.rc_file_of_string
 ;;

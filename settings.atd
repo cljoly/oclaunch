@@ -33,3 +33,8 @@
 (*  pris connaissance de la licence CeCILL, et que vous en avez accepté les   *)
 (*  termes.                                                                   *)
 (******************************************************************************)
+
+type rc_file = {
+    progs: string list;
+    settings : string list;
+}
