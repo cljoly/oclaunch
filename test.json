@@ -1,9 +1,10 @@
 {
     "progs" : [
-        "First one",
-        "Second one",
-        "And so on"
-    ]
+        "echo test",
+        "task",
+        "task +rdv",
+        "vim"
+    ],
 
     "settings" : [
         "Todo"

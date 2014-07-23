@@ -43,7 +43,14 @@ let rc_file = "test.json" (* TODO Dev value, change this *)
 let rc_content = File_com.init ~rc:rc_file;;
 
 (* Execute some command and log it *)
-let execute cmd =
-	Core_extended.Shell.run_full cmd
-	|> print_endline
+let execute ?(display=false) cmd =
+	if display then
+		print_endline cmd;
+	(* Core_extended.Shell.sh ~echo:display cmd (* Echo value allow to print the command *) *)
+	Sys.command cmd (* TODO Use Core lib instead of Pervasive *)
+	|> print_int;
+	cmd
 ;;
+
+(* Execute each item in config file *)
+List.map ~f:execute rc_content.progs;;
