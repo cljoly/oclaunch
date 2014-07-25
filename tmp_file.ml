@@ -41,11 +41,6 @@ let create_tmp_file ~name =
   Out_channel.create name (* TODO create file in /tmp *)
 ;;
 
-(* Function to create the structure of the tmp file *)
-let create_struct ~tmp_file ~template =
-  "tmp"
-;;
-
 (* Function to open tmp file *)
 let rec init ~tmp =
   (* If file do not exists, create it *)
@@ -57,7 +52,7 @@ let rec init ~tmp =
           Core_extended.Shell.rm tmp;
           init ~tmp:tmp
         end
-      | `Yes -> Yojson.Basic.from_file tmp
+      | `Yes -> Yojson.Basic.pretty_to_channel (Out_channel.create tmp) Const.tmp_file_template
 ;;
 
 (* Verify that the value exist *)
