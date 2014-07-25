@@ -41,8 +41,17 @@ let rc_content = File_com.init_rc ~rc:Const.rc_file;;
 
 (* Obtain data from tmp file *)
 let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
+(* Generate structure of tmp file *)
+Tmp_file.create_struct ~tmp_file:tmp_content;;
 
 (*
-(* Execute each item in config file *)
+(* Function to determinate what is the next command to
+ * execute *)
+let what_next =
+
+
+(* Execute each item (one by one)in config file *)
+Exec_cmd.excute
+
 List.map ~f:Exec_cmd.execute rc_content.progs;;
 *)

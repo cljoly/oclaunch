@@ -5,4 +5,4 @@ atdgen-tmp:
 	atdgen -j settings.atd
 
 code:
-	corebuild -pkg yojson,atdgen oclaunch.byte
+	corebuild -pkg yojson,atdgen,core_extended oclaunch.byte

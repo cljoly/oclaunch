@@ -42,3 +42,5 @@ open Core.Std;;
 let rc_file = "rc_test.json";; (* TODO Dev value, change this *)
 (* Set tmp file, in witch stock launches *)
 let tmp_file = "tmp_test.json";; (* TODO Dev value, change this *)
+(* Template for the tmp file *)
+let (tmp_file_template:Yojson.Basic.json) = `Assoc [ ( "cmd", `List [] ) ];;

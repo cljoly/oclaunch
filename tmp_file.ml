@@ -41,12 +41,22 @@ let create_tmp_file ~name =
   Out_channel.create name (* TODO create file in /tmp *)
 ;;
 
+(* Function to create the structure of the tmp file *)
+let create_struct ~tmp_file ~template =
+  "tmp"
+;;
+
 (* Function to open tmp file *)
-let init ~tmp =
+let rec init ~tmp =
   (* If file do not exists, create it *)
   let file_exists = (Sys.file_exists tmp) in
     match file_exists with
-      | `No | `Unknown -> create_tmp_file ~name:tmp
+      | `No -> let file = create_tmp_file ~name:tmp in
+          init ~tmp:tmp
+      | `Unknown -> begin
+          Core_extended.Shell.rm tmp;
+          init ~tmp:tmp
+        end
       | `Yes -> Yojson.Basic.from_file tmp
 ;;
 
@@ -66,8 +76,8 @@ let stock_tmp ~key ~value ~target =
 ;;
 
 (* Return true if a program is in the rc file *)
-let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(liste_from_rc_file=rc_content.progs) *)
-    match liste_from_rc_file with
+let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(list_from_rc_file=rc_content.progs) *)
+    match list_from_rc_file with
     (* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
     | [] -> false
     | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
