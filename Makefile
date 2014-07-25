@@ -1,11 +1,13 @@
-all: atdgen code
+all: atdgen-set atdgen-tmp code
 
-atdgen:
+atdgen-set:
+	atdgen -t tmp_log.atd
+	atdgen -j tmp_log.atd
+	
+atdgen-tmp:
 	atdgen -t settings.atd
 	atdgen -j settings.atd
 
-mli:
-	corebuild -pkg yojson,atdgen file_com.inferred.mli
 
 code:
-	corebuild -pkg core_extended,yojson,atdgen oclaunch.byte
+	corebuild -pkg yojson,atdgen oclaunch.byte
