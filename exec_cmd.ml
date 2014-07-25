@@ -36,18 +36,12 @@
 
 open Core.Std;;
 
-(* Read settings and programs to launch from rc file *)
-
-(* Get string from file *)
-let string_f_file file =
-    let tmp_buffer = In_channel.create file in
-let content = In_channel.input_all tmp_buffer in
-(* Now, close file and return value *)
-In_channel.close tmp_buffer; content
+(* Execute some command and log it *)
+let execute ?(display=false) cmd =
+    (*Tmp_file.log cmd*)
+    if display then
+        print_endline cmd;
+    Sys.command cmd
+    |> print_int;
 ;;
 
-(* Function to read the rc file *)
-let init_rc ~rc:rc_file =
-    string_f_file rc_file
-    |> Settings_j.rc_file_of_string
-;;

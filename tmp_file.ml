@@ -36,18 +36,42 @@
 
 open Core.Std;;
 
-(* Read settings and programs to launch from rc file *)
+(* Function to open tmp file *)
+let init ~tmp =
+  Yojson.Basic.from_file tmp;;
 
-(* Get string from file *)
-let string_f_file file =
-    let tmp_buffer = In_channel.create file in
-let content = In_channel.input_all tmp_buffer in
-(* Now, close file and return value *)
-In_channel.close tmp_buffer; content
+(* Verify that the value exist *)
+let verify_key_exist ~key entry =
+    if entry = key then
+        true
+    else
+        false
 ;;
 
-(* Function to read the rc file *)
-let init_rc ~rc:rc_file =
-    string_f_file rc_file
-    |> Settings_j.rc_file_of_string
+(* Stock a value a file in /tmp
+   ~target is the target file *)
+let stock_tmp ~key ~value ~target =
+  let num_value = List.find target ~f:(verify_key_exist ~key:key) in
+    num_value
 ;;
+
+(* Return true if a program is in the rc file *)
+let rec is_prog_in_rc liste_from_rc_file program = (* TODO restaure ?(liste_from_rc_file=rc_content.progs) *)
+    match liste_from_rc_file with
+    (* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
+    | [] -> false
+    | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
+;;
+
+(*
+(* Log when a program has been launched *)
+let log program =
+    (* Verify the program exist in rc file *)
+    let prog_rc = (is_prog_in_rc program) in
+    match prog_rc with
+    | false -> (* failwith *) "Not in configuration file"
+    | true -> "Tmp value" (* TODO delete this *)
+    (* let open Tmp_log_t in
+    File_com.stock_tmp ~target:tmp_content.cmd ~key:program ~value:1 *)
+;;
+*)

@@ -36,43 +36,11 @@
 
 open Core.Std;;
 
-(* Some settins variales *)
-let rc_file = "test.json" (* TODO Dev value, change this *)
-let tmp_file = "test_tmp.json" (* TODO Dev value, change this *)
-
 (* Obtain data from rc file *)
-let rc_content = File_com.init_rc ~rc:rc_file;;
+let rc_content = File_com.init_rc ~rc:Const.rc_file;;
 
-(* Set tmp file, in witch stock launches *)
-let tmp_content = File_com.init_tmp ~tmp:tmp_file;;
-
-(* Return true if a program is in the rc file *)
-let rec is_prog_in_rc ?(liste_from_rc_file=rc_content.progs) program =
-	match liste_from_rc_file with
-	(* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
-	| [] -> false
-	| hd :: tl -> if hd = program then true else is_prog_in_rc program  ~liste_from_rc_file:tl
-;;
-
-(* Log when a program has been launch *)
-let log program =
-	(* Verify the program exist in rc file *)
-	let prog_rc = is_prog_in_rc program in
-	match prog_rc with
-	| false -> (* failwith *) "Not in configuration file"
-	| true -> "Tmp value" (* TODO delete this *)
-	(* let open Tmp_log_t in
-	File_com.stock_tmp ~target:tmp_content.cmd ~key:program ~value:1 *)
-;;
-
-(* Execute some command and log it *)
-let execute ?(display=false) cmd =
-	if display then
-		print_endline cmd;
-	Sys.command cmd
-	|> print_int;
-	log cmd
-;;
+(* Obtain data from tmp file *)
+let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
 
 (* Execute each item in config file *)
-List.map ~f:execute rc_content.progs;;
+List.map ~f:Exec_cmd.execute rc_content.progs;;
