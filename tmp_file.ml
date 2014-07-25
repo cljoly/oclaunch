@@ -36,9 +36,19 @@
 
 open Core.Std;;
 
+(* Function to create the tmp file *)
+let create_tmp_file ~name =
+  Out_channel.create name (* TODO create file in /tmp *)
+;;
+
 (* Function to open tmp file *)
 let init ~tmp =
-  Yojson.Basic.from_file tmp;;
+  (* If file do not exists, create it *)
+  let file_exists = (Sys.file_exists tmp) in
+    match file_exists with
+      | `No | `Unknown -> create_tmp_file ~name:tmp
+      | `Yes -> Yojson.Basic.from_file tmp
+;;
 
 (* Verify that the value exist *)
 let verify_key_exist ~key entry =

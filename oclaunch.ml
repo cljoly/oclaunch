@@ -42,5 +42,7 @@ let rc_content = File_com.init_rc ~rc:Const.rc_file;;
 (* Obtain data from tmp file *)
 let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
 
+(*
 (* Execute each item in config file *)
 List.map ~f:Exec_cmd.execute rc_content.progs;;
+*)
