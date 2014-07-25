@@ -66,7 +66,7 @@ let stock_tmp ~key ~value ~target =
 ;;
 
 (* Return true if a program is in the rc file *)
-let rec is_prog_in_rc liste_from_rc_file program = (* TODO restaure ?(liste_from_rc_file=rc_content.progs) *)
+let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(liste_from_rc_file=rc_content.progs) *)
     match liste_from_rc_file with
     (* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
     | [] -> false
