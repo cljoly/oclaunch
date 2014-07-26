@@ -41,17 +41,8 @@ let rc_content = File_com.init_rc ~rc:Const.rc_file;;
 
 (* Obtain data from tmp file *)
 let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
-(* Generate structure of tmp file *)
-Tmp_file.create_struct ~tmp_file:tmp_content;;
 
-(*
-(* Function to determinate what is the next command to
- * execute *)
-let what_next =
-
-
+(*List.iter rc_content.progs ~f:print_endline*)
 (* Execute each item (one by one)in config file *)
-Exec_cmd.excute
-
-List.map ~f:Exec_cmd.execute rc_content.progs;;
-*)
+let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
+Exec_cmd.execute ~tmp:tmp_content cmd_to_exec;; (* TODO Use display option in rc file *)

@@ -1,7 +1,7 @@
 {
     "progs" : [
-        "echo test",
         "task",
+        "echo test",
         "task +rdv",
         "vim"
     ],

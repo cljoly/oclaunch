@@ -52,7 +52,9 @@ let rec init ~tmp =
           Core_extended.Shell.rm tmp;
           init ~tmp:tmp
         end
-      | `Yes -> Yojson.Basic.pretty_to_channel (Out_channel.create tmp) Const.tmp_file_template
+      | `Yes -> Yojson.Basic.pretty_to_channel (Out_channel.create tmp)
+                  Const.tmp_file_template;
+                tmp
 ;;
 
 (* Verify that the value exist *)
@@ -63,13 +65,6 @@ let verify_key_exist ~key entry =
         false
 ;;
 
-(* Stock a value a file in /tmp
-   ~target is the target file *)
-let stock_tmp ~key ~value ~target =
-  let num_value = List.find target ~f:(verify_key_exist ~key:key) in
-    num_value
-;;
-
 (* Return true if a program is in the rc file *)
 let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(list_from_rc_file=rc_content.progs) *)
     match list_from_rc_file with
@@ -77,16 +72,3 @@ let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(list_from_r
     | [] -> false
     | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
 ;;
-
-(*
-(* Log when a program has been launched *)
-let log program =
-    (* Verify the program exist in rc file *)
-    let prog_rc = (is_prog_in_rc program) in
-    match prog_rc with
-    | false -> (* failwith *) "Not in configuration file"
-    | true -> "Tmp value" (* TODO delete this *)
-    (* let open Tmp_log_t in
-    File_com.stock_tmp ~target:tmp_content.cmd ~key:program ~value:1 *)
-;;
-*)

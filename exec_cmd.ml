@@ -36,12 +36,32 @@
 
 open Core.Std;;
 
-(* Execute some command and log it *)
-let execute ?(display=false) cmd =
-    (*Tmp_file.log cmd*)
-    if display then
-        print_endline cmd;
-    Sys.command cmd
-    |> print_int;
+(* Function to determinate what is the next command to
+ * execute *)
+let what_next ~tmp ~cmd_list =
+  let tmp_json = Yojson.Basic.from_file tmp in
+  let open Yojson.Basic.Util in
+  let num_next = tmp_json |> member "num" |> to_int in (* Number of the next cmd to run *)
+  let cmd_to_exec = List.nth cmd_list num_next in
+    match cmd_to_exec with
+      | None -> ""
+      | Some x -> x
 ;;
 
+(* Log when a program has been launched in a file in /tmp
+   ~func is the function applied to the value *)
+let log ?(func= (+) 1 ) ~file_name =
+  let file = Yojson.Basic.from_file file_name in
+  match file with
+    | `Assoc [( a, `List b ); ("num", `Int c)] -> let new_value = `Assoc [( a, `List b ); ("num", `Int (c |> func))] in Yojson.Basic.to_file file_name new_value
+    | _ -> failwith "Incorrect format"
+;;
+
+
+(* Execute some command and log it *)
+let execute ?(display=true) ~tmp cmd =
+    log ~func:((+) 1) ~file_name:tmp;
+    if display then
+        print_endline cmd;
+    Sys.command cmd;
+;;
