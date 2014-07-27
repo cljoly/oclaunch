@@ -57,7 +57,6 @@ let log ?(func= (+) 1 ) ~file_name =
     | _ -> failwith "Incorrect format"
 ;;
 
-
 (* Execute some command and log it *)
 let execute ?(display=true) ~tmp cmd =
     log ~func:((+) 1) ~file_name:tmp;

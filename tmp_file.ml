@@ -38,7 +38,7 @@ open Core.Std;;
 
 (* Function to create the tmp file *)
 let create_tmp_file ~name =
-  Out_channel.create name (* TODO create file in /tmp *)
+  Yojson.Basic.pretty_to_channel (Out_channel.create name) Const.tmp_file_template (* TODO create file in /tmp *)
 ;;
 
 (* Function to open tmp file *)
@@ -52,9 +52,7 @@ let rec init ~tmp =
           Core_extended.Shell.rm tmp;
           init ~tmp:tmp
         end
-      | `Yes -> Yojson.Basic.pretty_to_channel (Out_channel.create tmp)
-                  Const.tmp_file_template;
-                tmp
+      | `Yes -> tmp
 ;;
 
 (* Verify that the value exist *)
