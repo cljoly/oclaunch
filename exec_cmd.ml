@@ -36,18 +36,31 @@
 
 open Core.Std;;
 
-(* Read settings and programs to launch from rc file *)
-
-(* Get string from file *)
-let string_f_file file =
-    let tmp_buffer = In_channel.create file in
-let content = In_channel.input_all tmp_buffer in
-(* Now, close file and return value *)
-In_channel.close tmp_buffer; content
+(* Function to determinate what is the next command to
+ * execute *)
+let what_next ~tmp ~cmd_list =
+  let tmp_json = Yojson.Basic.from_file tmp in
+  let open Yojson.Basic.Util in
+  let num_next = tmp_json |> member "num" |> to_int in (* Number of the next cmd to run *)
+  let cmd_to_exec = List.nth cmd_list num_next in
+    match cmd_to_exec with
+      | None -> ""
+      | Some x -> x
 ;;
 
-(* Function to read the rc file *)
-let init_rc ~rc:rc_file =
-    string_f_file rc_file
-    |> Settings_j.rc_file_of_string
+(* Log when a program has been launched in a file in /tmp
+   ~func is the function applied to the value *)
+let log ?(func= (+) 1 ) ~file_name =
+  let file = Yojson.Basic.from_file file_name in
+  match file with
+    | `Assoc [( a, `List b ); ("num", `Int c)] -> let new_value = `Assoc [( a, `List b ); ("num", `Int (c |> func))] in Yojson.Basic.to_file file_name new_value
+    | _ -> failwith "Incorrect format"
+;;
+
+(* Execute some command and log it *)
+let execute ?(display=true) ~tmp cmd =
+    log ~func:((+) 1) ~file_name:tmp;
+    if display then
+        print_endline cmd;
+    Sys.command cmd;
 ;;

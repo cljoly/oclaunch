@@ -1,78 +1,48 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014                                             *)
+(* Copyright Â© Joly ClÃ©ment, 2014                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
-(*  Ce logiciel est un programme informatique servant à exécuter              *)
-(*  automatiquement des programmes à l'ouverture du terminal.                 *)
+(*  Ce logiciel est un programme informatique servant Ã  exÃ©cuter              *)
+(*  automatiquement des programmes Ã  l'ouverture du terminal.                 *)
 (*                                                                            *)
-(*  Ce logiciel est régi par la licence CeCILL soumise au droit français et   *)
+(*  Ce logiciel est rÃ©gi par la licence CeCILL soumise au droit franÃ§ais et   *)
 (*  respectant les principes de diffusion des logiciels libres. Vous pouvez   *)
 (*  utiliser, modifier et/ou redistribuer ce programme sous les conditions    *)
-(*  de la licence CeCILL telle que diffusée par le CEA, le CNRS et l'INRIA    *)
+(*  de la licence CeCILL telle que diffusÃ©e par le CEA, le CNRS et l'INRIA    *)
 (*  sur le site "http://www.cecill.info".                                     *)
 (*                                                                            *)
-(*  En contrepartie de l'accessibilité au code source et des droits de copie, *)
-(*  de modification et de redistribution accordés par cette licence, il n'est *)
-(*  offert aux utilisateurs qu'une garantie limitée.  Pour les mêmes raisons, *)
-(*  seule une responsabilité restreinte pèse sur l'auteur du programme,  le   *)
-(*  titulaire des droits patrimoniaux et les concédants successifs.           *)
+(*  En contrepartie de l'accessibilitÃ© au code source et des droits de copie, *)
+(*  de modification et de redistribution accordÃ©s par cette licence, il n'est *)
+(*  offert aux utilisateurs qu'une garantie limitÃ©e.  Pour les mÃªmes raisons, *)
+(*  seule une responsabilitÃ© restreinte pÃ¨se sur l'auteur du programme,  le   *)
+(*  titulaire des droits patrimoniaux et les concÃ©dants successifs.           *)
 (*                                                                            *)
-(*  A cet égard  l'attention de l'utilisateur est attirée sur les risques     *)
-(*  associés au chargement,  à l'utilisation,  à la modification et/ou au     *)
-(*  développement et à la reproduction du logiciel par l'utilisateur étant    *)
-(*  donné sa spécificité de logiciel libre, qui peut le rendre complexe à     *)
-(*  manipuler et qui le réserve donc à des développeurs et des professionnels *)
-(*  avertis possédant  des  connaissances  informatiques approfondies.  Les   *)
-(*  utilisateurs sont donc invités à charger  et  tester  l'adéquation  du    *)
-(*  logiciel à leurs besoins dans des conditions permettant d'assurer la      *)
-(*  sécurité de leurs systèmes et ou de leurs données et, plus généralement,  *)
-(*  à l'utiliser et l'exploiter dans les mêmes conditions de sécurité.        *)
+(*  A cet Ã©gard  l'attention de l'utilisateur est attirÃ©e sur les risques     *)
+(*  associÃ©s au chargement,  Ã  l'utilisation,  Ã  la modification et/ou au     *)
+(*  dÃ©veloppement et Ã  la reproduction du logiciel par l'utilisateur Ã©tant    *)
+(*  donnÃ© sa spÃ©cificitÃ© de logiciel libre, qui peut le rendre complexe Ã      *)
+(*  manipuler et qui le rÃ©serve donc Ã  des dÃ©veloppeurs et des professionnels *)
+(*  avertis possÃ©dant  des  connaissances  informatiques approfondies.  Les   *)
+(*  utilisateurs sont donc invitÃ©s Ã  charger  et  tester  l'adÃ©quation  du    *)
+(*  logiciel Ã  leurs besoins dans des conditions permettant d'assurer la      *)
+(*  sÃ©curitÃ© de leurs systÃ¨mes et ou de leurs donnÃ©es et, plus gÃ©nÃ©ralement,  *)
+(*  Ã  l'utiliser et l'exploiter dans les mÃªmes conditions de sÃ©curitÃ©.        *)
 (*                                                                            *)
-(*  Le fait que vous puissiez accéder à cet en-tête signifie que vous avez    *)
-(*  pris connaissance de la licence CeCILL, et que vous en avez accepté les   *)
+(*  Le fait que vous puissiez accÃ©der Ã  cet en-tÃªte signifie que vous avez    *)
+(*  pris connaissance de la licence CeCILL, et que vous en avez acceptÃ© les   *)
 (*  termes.                                                                   *)
 (******************************************************************************)
 
 open Core.Std;;
 
-(* Some settins variales *)
-let rc_file = "test.json" (* TODO Dev value, change this *)
-let tmp_file = "test_tmp.json" (* TODO Dev value, change this *)
-
 (* Obtain data from rc file *)
-let rc_content = File_com.init_rc ~rc:rc_file;;
+let rc_content = File_com.init_rc ~rc:Const.rc_file;;
 
-(* Set tmp file, in witch stock launches *)
-let tmp_content = File_com.init_tmp ~tmp:tmp_file;;
+(* Obtain data from tmp file *)
+let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
 
-(* Return true if a program is in the rc file *)
-let rec is_prog_in_rc ?(liste_from_rc_file=rc_content.progs) program =
-	match liste_from_rc_file with
-	(* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
-	| [] -> false
-	| hd :: tl -> if hd = program then true else is_prog_in_rc program  ~liste_from_rc_file:tl
-;;
-
-(* Log when a program has been launch *)
-let log program =
-	(* Verify the program exist in rc file *)
-	let prog_rc = is_prog_in_rc program in
-	match prog_rc with
-	| false -> (* failwith *) "Not in configuration file"
-	| true -> "Tmp value" (* TODO delete this *)
-	(* let open Tmp_log_t in
-	File_com.stock_tmp ~target:tmp_content.cmd ~key:program ~value:1 *)
-;;
-
-(* Execute some command and log it *)
-let execute ?(display=false) cmd =
-	if display then
-		print_endline cmd;
-	Sys.command cmd
-	|> print_int;
-	log cmd
-;;
-
-(* Execute each item in config file *)
-List.map ~f:execute rc_content.progs;;
+(*List.iter rc_content.progs ~f:print_endline*)
+(* Execute each item (one by one)in config file *)
+let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
+Exec_cmd.execute ~tmp:tmp_content cmd_to_exec;; (* TODO Use display option in rc file *)

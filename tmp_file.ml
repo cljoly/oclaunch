@@ -36,18 +36,37 @@
 
 open Core.Std;;
 
-(* Read settings and programs to launch from rc file *)
-
-(* Get string from file *)
-let string_f_file file =
-    let tmp_buffer = In_channel.create file in
-let content = In_channel.input_all tmp_buffer in
-(* Now, close file and return value *)
-In_channel.close tmp_buffer; content
+(* Function to create the tmp file *)
+let create_tmp_file ~name =
+  Yojson.Basic.pretty_to_channel (Out_channel.create name) Const.tmp_file_template (* TODO create file in /tmp *)
 ;;
 
-(* Function to read the rc file *)
-let init_rc ~rc:rc_file =
-    string_f_file rc_file
-    |> Settings_j.rc_file_of_string
+(* Function to open tmp file *)
+let rec init ~tmp =
+  (* If file do not exists, create it *)
+  let file_exists = (Sys.file_exists tmp) in
+    match file_exists with
+      | `No -> let file = create_tmp_file ~name:tmp in
+          init ~tmp:tmp
+      | `Unknown -> begin
+          Core_extended.Shell.rm tmp;
+          init ~tmp:tmp
+        end
+      | `Yes -> tmp
+;;
+
+(* Verify that the value exist *)
+let verify_key_exist ~key entry =
+    if entry = key then
+        true
+    else
+        false
+;;
+
+(* Return true if a program is in the rc file *)
+let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(list_from_rc_file=rc_content.progs) *)
+    match list_from_rc_file with
+    (* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
+    | [] -> false
+    | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
 ;;

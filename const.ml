@@ -34,20 +34,15 @@
 (*  termes.                                                                   *)
 (******************************************************************************)
 
+(* File to stock configuration variables *)
+
 open Core.Std;;
 
-(* Read settings and programs to launch from rc file *)
-
-(* Get string from file *)
-let string_f_file file =
-    let tmp_buffer = In_channel.create file in
-let content = In_channel.input_all tmp_buffer in
-(* Now, close file and return value *)
-In_channel.close tmp_buffer; content
-;;
-
-(* Function to read the rc file *)
-let init_rc ~rc:rc_file =
-    string_f_file rc_file
-    |> Settings_j.rc_file_of_string
-;;
+(* Some settings variales *)
+let rc_file = "rc_test.json";; (* TODO Dev value, change this *)
+(* Set tmp file, in witch stock launches *)
+let tmp_file = "tmp_test.json";; (* TODO Dev value, change this *)
+(* Template for the tmp file *)
+let (tmp_file_template:Yojson.Basic.json) = `Assoc
+                                              [ "cmd", `List [];
+                                              "num", `Int 0 ]
