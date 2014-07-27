@@ -41,7 +41,7 @@ open Core.Std;;
 (* Some settings variales *)
 let rc_file = "rc_test.json";; (* TODO Dev value, change this *)
 (* Set tmp file, in witch stock launches *)
-let tmp_file = "/tmp/tmp_test.json";; (* TODO Dev value, change this *)
+let tmp_file = "/tmp/oclaunch_trace.json";; (* File lanch are logged *)
 (* Template for the tmp file *)
 let (tmp_file_template:Yojson.Basic.json) = `Assoc
                                               [ "cmd", `List [];
