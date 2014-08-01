@@ -11,9 +11,11 @@
 
 ### Configuration value
  + Make displaying command before launching configurable
- + Allow to run infinitly or say when it is finish
+ + Allow to run infinitely or say when it is finish
  + Make tmp file emplacement configurable
+ + Use two modes, one for easy launch and another more
+   complete
 
 ### Misc
  + Documentation ;-)
- + Put json file in real emplacement
+ + Reuse atdgen for tmp file
