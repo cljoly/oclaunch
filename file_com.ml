@@ -46,8 +46,28 @@ let content = In_channel.input_all tmp_buffer in
 In_channel.close tmp_buffer; content
 ;;
 
+(* Return the configuration file template *)
+let rc_template () =
+  Settings_v.create_rc_file ~progs:[] ~settings:[]
+;;
+
+(* Function to create configuration file if it does not
+ * exists *)
+let create_rc_file ~name =
+  (* Notify that we initialise config file *)
+  printf "Initializing configuration file in %s\n" name;
+  let compact_rc_file = Settings_j.string_of_rc_file (rc_template () ()) in
+  let readable_rc_file = Yojson.Basic.prettify compact_rc_file in (* Create human readable string for rc file *)
+  let out_file = Out_channel.create name in
+    Out_channel.output_string out_file readable_rc_file;
+    Out_channel.close out_file
+;;
+
 (* Function to read the rc file *)
-let init_rc ~rc:rc_file =
-    string_f_file rc_file
-    |> Settings_j.rc_file_of_string
+let rec init_rc ~rc:rc_file =
+  (* Verify that file exist *)
+  match (Sys.file_exists rc_file) with
+    | `No -> create_rc_file ~name:rc_file; init_rc ~rc:rc_file;
+    | `Unknown -> failwith "Error reading configuration file";
+    | `Yes -> string_f_file rc_file |> Settings_j.rc_file_of_string
 ;;

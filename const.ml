@@ -38,11 +38,17 @@
 
 open Core.Std;;
 
+(* Get current home *)
+let home = match (Sys.getenv "HOME") with
+  | Some x -> x
+  | None -> failwith "Wrong value for home"
+;;
+
 (* Some settings variales *)
-let rc_file = "rc_test.json";; (* TODO Dev value, change this *)
+let rc_file = home ^ "/" ^ ".oclaunch_rc.json";;
 (* Set tmp file, in witch stock launches *)
 let tmp_file = "/tmp/tmp_test.json";; (* TODO Dev value, change this *)
 (* Template for the tmp file *)
 let (tmp_file_template:Yojson.Basic.json) = `Assoc
                                               [ "cmd", `List [];
-                                              "num", `Int 0 ]
+                                              "num", `Int 0 ];;
