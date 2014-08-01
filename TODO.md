@@ -5,10 +5,15 @@
 
 ## Short term
 
+### Commands
+ + Add command to modify configuration file
  + Allow to reinitialise tmp file from command line
- + Make tmp file emplacement configurable
+
+### Configuration value
  + Make displaying command before launching configurable
  + Allow to run infinitly or say when it is finish
- + Put json file in real emplacement
- + Add command to modify configuration file
+ + Make tmp file emplacement configurable
+
+### Misc
  + Documentation ;-)
+ + Put json file in real emplacement
