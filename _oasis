@@ -2,10 +2,16 @@ OASISFormat: 0.4
 Name:        OcLaunch
 Version:     0.1
 Synopsis:    Launch commands automatically
-Authors:     Clément Joly
+Authors:     Joly Clément <leowzukw@vmail.me>
+Maintainers: Joly Clément <leowzukw@vmail.me>
 License:     CeCILL
+LicenseFile: LICENSE
+Copyrights: (C) 2014 Joly Clément
+Homepage: https://gitlab.com/WzukW/oclaunch"
 BuildTools: ocamlbuild, camlp4o
 Plugins: META (0.4), DevFiles (0.4)
+Description: This program is designed to launch automatically commands when executed.
+PreBuildCommand: atdgen -t ./src/settings.atd; atdgen -j ./src/settings.atd; atdgen -v ./src/settings.atd
 
 Executable oclaunch
   Path:       src
