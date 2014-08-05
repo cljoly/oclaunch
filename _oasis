@@ -1,0 +1,14 @@
+OASISFormat: 0.4
+Name:        OcLaunch
+Version:     0.1
+Synopsis:    Launch commands automatically
+Authors:     Clément Joly
+License:     CeCILL
+BuildTools: ocamlbuild, camlp4o
+Plugins: META (0.4), DevFiles (0.4)
+
+Executable oclaunch
+  Path:       src
+  BuildTools: ocamlbuild
+  MainIs:     oclaunch.ml
+  BuildDepends: core, yojson, atdgen, threads, core_extended
