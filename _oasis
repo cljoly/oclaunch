@@ -11,7 +11,10 @@ Homepage: https://gitlab.com/WzukW/oclaunch"
 BuildTools: ocamlbuild, camlp4o
 Plugins: META (0.4), DevFiles (0.4)
 Description: This program is designed to launch automatically commands when executed.
-PreBuildCommand: atdgen -t ./src/settings.atd; atdgen -j ./src/settings.atd; atdgen -v ./src/settings.atd
+
+PreBuildCommand: atdgen -t ./src/settings.atd
+PreBuildCommand: atdgen -j ./src/settings.atd
+PreBuildCommand: atdgen -v ./src/settings.atd
 
 Executable oclaunch
   Path:       src
