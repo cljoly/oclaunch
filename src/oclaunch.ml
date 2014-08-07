@@ -36,13 +36,24 @@
 
 open Core.Std;;
 
+(* Variable to store version number *)
+(* TODO Get value from file *)
+let version_number = "0.1.2";;
+
+(* Variable store building information *)
+(* XXX This is fake value, it corresponds to the running
+ * information *)
+let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
+
 (* Define commands *)
 let commands =
   Command.basic
-    ~summary:"TODO"
+    ~summary:"OcLaunch program is published under CeCILL licence. See https://gitlab.com/WzukW/oclaunch for details"
+    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help")
     Command.Spec.empty
     Default.run
 ;;
 
 let () =
-  Command.run ~version:"0.1" ~build_info:"TEST" commands
+  Command.run ~version:version_number ~build_info:build_info commands
+;;
