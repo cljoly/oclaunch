@@ -1,4 +1,3 @@
-_build
 oclaunch.byte
 session.vim
 settings_j.ml
@@ -6,6 +5,13 @@ settings_j.mli
 settings_t.ml
 settings_t.mli
 /bin/sh: g : commande introuvable
+# Oasis
+_build
+*.native
+*.byte
+*.docdir
+setup.data
+setup.log
 .paths
 .project
 .settings/
