@@ -1,10 +1,9 @@
 oclaunch.byte
-session.vim
+# Atdgen
 settings_j.ml
 settings_j.mli
 settings_t.ml
 settings_t.mli
-/bin/sh: g : commande introuvable
 # Oasis
 _build
 *.native
@@ -12,6 +11,8 @@ _build
 *.docdir
 setup.data
 setup.log
+# Misc
 .paths
 .project
+*.vim
 .settings/
