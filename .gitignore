@@ -1,0 +1,18 @@
+oclaunch.byte
+# Atdgen
+settings_j.ml
+settings_j.mli
+settings_t.ml
+settings_t.mli
+# Oasis
+_build
+*.native
+*.byte
+*.docdir
+setup.data
+setup.log
+# Misc
+.paths
+.project
+*.vim
+.settings/
