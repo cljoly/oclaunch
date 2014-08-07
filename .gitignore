@@ -1,14 +1,18 @@
 oclaunch.byte
 # Atdgen
-settings_j.ml
-settings_j.mli
-settings_t.ml
-settings_t.mli
+settings_j.ml*
+settings_t.ml*
+settings_v.ml*
 # Oasis
 _build
+_tags
 *.native
 *.byte
 *.docdir
+setup.ml
+Makefile
+configure
+myocamlbuild.ml
 setup.data
 setup.log
 # Misc
