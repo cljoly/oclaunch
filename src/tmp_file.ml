@@ -46,7 +46,7 @@ let rec init ~tmp =
   (* If file do not exists, create it *)
   let file_exists = (Sys.file_exists tmp) in
     match file_exists with
-      | `No -> let file = create_tmp_file ~name:tmp in
+      | `No -> create_tmp_file ~name:tmp;
           init ~tmp:tmp
       | `Unknown -> begin
           Core_extended.Shell.rm tmp;
