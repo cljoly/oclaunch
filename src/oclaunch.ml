@@ -36,7 +36,8 @@
 
 open Core.Std;;
 
-let commands = (* Define commands *)
+(* Define commands *)
+let commands =
   Command.basic
     ~summary:"TODO"
     Command.Spec.empty
