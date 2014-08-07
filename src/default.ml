@@ -36,12 +36,23 @@
 
 open Core.Std;;
 
-let commands = (* Define commands *)
-  Command.basic
-    ~summary:"TODO"
-    Command.Spec.empty
-    Default.run
-;;
+(* The module containing the step runned when the program is
+ * used without argument *)
 
-let () =
-  Command.run ~version:"0.1" ~build_info:"TEST" commands
+let run () =
+
+  (* Obtain data from rc file *)
+  let rc_content = File_com.init_rc ~rc:Const.rc_file in
+
+  (* Obtain data from tmp file *)
+  let tmp_content = Tmp_file.init ~tmp:Const.tmp_file in
+
+  (*List.iter rc_content.progs ~f:print_endline*)
+  (* Execute each item (one by one)in config file *)
+  let open Settings_t in (* This prevent warning 40 for ~cmd_list:rc_content.progs *)
+  let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
+    Exec_cmd.execute ~tmp:tmp_content cmd_to_exec; (* TODO Use display option in rc file *)
+
+    (* Return nothing, because launched from oclaunch.ml *)
+    ()
+;;
