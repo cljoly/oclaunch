@@ -1,6 +1,6 @@
 # Things to do
 
-## Contributors
+## Users ides
     Feel free to add things here
 
 ## Short term

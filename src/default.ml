@@ -47,7 +47,6 @@ let run () =
   (* Obtain data from tmp file *)
   let tmp_content = Tmp_file.init ~tmp:Const.tmp_file in
 
-  (*List.iter rc_content.progs ~f:print_endline*)
   (* Execute each item (one by one)in config file *)
   let open Settings_t in (* This prevent warning 40 for ~cmd_list:rc_content.progs *)
   let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
