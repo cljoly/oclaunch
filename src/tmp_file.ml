@@ -38,7 +38,7 @@ open Core.Std;;
 
 (* Function to create the tmp file *)
 let create_tmp_file ~name =
-  Yojson.Basic.pretty_to_channel (Out_channel.create name) Const.tmp_file_template (* TODO create file in /tmp *)
+  Yojson.Basic.pretty_to_channel (Out_channel.create name) Const.tmp_file_template
 ;;
 
 (* Function to open tmp file *)
@@ -64,7 +64,7 @@ let verify_key_exist ~key entry =
 ;;
 
 (* Return true if a program is in the rc file *)
-let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(list_from_rc_file=rc_content.progs) *)
+let rec is_prog_in_rc list_from_rc_file program =
     match list_from_rc_file with
     (* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
     | [] -> false
