@@ -38,14 +38,6 @@ open Core.Std;;
 
 (* Read settings and programs to launch from rc file *)
 
-(* Get string from file *)
-let string_f_file file =
-    let tmp_buffer = In_channel.create file in
-let content = In_channel.input_all tmp_buffer in
-(* Now, close file and return value *)
-In_channel.close tmp_buffer; content
-;;
-
 (* Return the configuration file template *)
 let rc_template () =
   Settings_v.create_rc_file ~progs:[] ~settings:[]
@@ -69,5 +61,5 @@ let rec init_rc ~rc:rc_file =
   match (Sys.file_exists rc_file) with
     | `No -> create_rc_file ~name:rc_file; init_rc ~rc:rc_file;
     | `Unknown -> failwith "Error reading configuration file";
-    | `Yes -> string_f_file rc_file |> Settings_j.rc_file_of_string
+    | `Yes -> In_channel.read_all rc_file |> Settings_j.rc_file_of_string
 ;;
