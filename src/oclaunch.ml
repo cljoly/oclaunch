@@ -45,13 +45,21 @@ let version_number = "0.1.2";;
  * information *)
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
+(* Obtain data from rc file *)
+let rc_content = File_com.init_rc ~rc:Const.rc_file;;
+
+(* Obtain data from tmp file *)
+let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
+
+
 (* Define commands *)
 let commands =
   Command.basic
     ~summary:"OcLaunch program is published under CeCILL licence. See https://gitlab.com/WzukW/oclaunch for details"
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help")
-    Command.Spec.empty
-    Default.run
+    (* TODO if number is out of the mist, return error message *)
+    Command.Spec.(empty +> anon (maybe ("Command number" %: int)))
+    (Default.run ~rc:rc_content ~tmp:tmp_content)
 ;;
 
 let () =

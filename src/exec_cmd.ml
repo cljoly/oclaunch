@@ -36,24 +36,29 @@
 
 open Core.Std;;
 
+(* Function to return the corresponding command to a number *)
+let num_cmd_to_cmd ~cmd_list number =
+  (*Verify that the number is not out of the list *)
+  if (List.length cmd_list) < number
+  then
+    ""
+  else
+    begin
+      let cmd_to_exec = List.nth cmd_list number in
+        match cmd_to_exec with
+            | None -> ""
+            | Some x -> x
+    end
+;;
+
 (* Function to determinate what is the next command to
  * execute *)
 let what_next ~tmp ~cmd_list =
   let tmp_json = Yojson.Basic.from_file tmp in
   let open Yojson.Basic.Util in
   let num_next = tmp_json |> member "num" |> to_int in (* Number of the next cmd to run *)
-    (*Verify that the number is not out of the list *)
-    if (List.length cmd_list) < num_next
-    then
-      ""
-        else
-          begin
-            let cmd_to_exec = List.nth cmd_list num_next in
-              match cmd_to_exec with
-                | None -> ""
-                | Some x -> x
-          end
-;;
+    num_cmd_to_cmd ~cmd_list:cmd_list num_next
+  ;;
 
 (* Log when a program has been launched in a file in /tmp
    ~func is the function applied to the value *)

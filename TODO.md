@@ -6,7 +6,6 @@
 ## Short term
 
 ### Commands
- + By default, pass a number and launch the corresponding command
  + Add command to modify configuration file
  + Allow to reinitialise tmp file from command line
 
@@ -20,4 +19,3 @@
 ### Misc
  + Documentation ;-)
  + Reuse atdgen for tmp file
- + Use In_channel.read_all
