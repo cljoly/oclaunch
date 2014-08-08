@@ -39,7 +39,7 @@ open Core.Std;;
 (* The module containing the step runned when the program is
  * used without argument *)
 
-let run ~rc:rc_content ~tmp:tmp_content cmd_number () =
+let run ~rc:rc_content ~tmp:tmp_content cmd_number =
   (* cmd_number is the number of the command the user wants
    * to execute *)
   match cmd_number with

@@ -70,3 +70,8 @@ let rec is_prog_in_rc list_from_rc_file program = (* TODO restaure ?(list_from_r
     | [] -> false
     | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
 ;;
+
+(* Delete tmp file, to reinitialise program *)
+let reset ~tmp =
+  Sys.remove tmp
+;;

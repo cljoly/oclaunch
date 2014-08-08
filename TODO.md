@@ -7,7 +7,6 @@
 
 ### Commands
  + Add command to modify configuration file
- + Allow to reinitialise tmp file from command line
 
 ### Configuration value
  + Make displaying command before launching configurable

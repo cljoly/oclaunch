@@ -58,8 +58,14 @@ let commands =
     ~summary:"OcLaunch program is published under CeCILL licence. See https://gitlab.com/WzukW/oclaunch for details"
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help")
     (* TODO if number is out of the mist, return error message *)
-    Command.Spec.(empty +> anon (maybe ("Command number" %: int)))
-    (Default.run ~rc:rc_content ~tmp:tmp_content)
+    Command.Spec.(empty
+    +> flag "--reset-tmp" no_arg ~doc:"Reinitialises launches by deleting temporal file."
+    +> anon (maybe ("Command number" %: int)))
+    (fun reset_tmp num_cmd () ->
+       match reset_tmp with
+         | true -> Tmp_file.reset ~tmp:tmp_content
+         | false -> Default.run ~rc:rc_content ~tmp:tmp_content num_cmd
+    )
 ;;
 
 let () =
