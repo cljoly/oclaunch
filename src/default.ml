@@ -50,8 +50,6 @@ let run () =
   (* Execute each item (one by one)in config file *)
   let open Settings_t in (* This prevent warning 40 for ~cmd_list:rc_content.progs *)
   let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
-    Exec_cmd.execute ~tmp:tmp_content cmd_to_exec; (* TODO Use display option in rc file *)
-
-    (* Return nothing, because launched from oclaunch.ml *)
-    ()
+    Exec_cmd.execute ~tmp:tmp_content cmd_to_exec (* TODO Use display option in rc file *)
+    |> (fun a -> ()) (* Return nothing, because launched from oclaunch.ml *)
 ;;
