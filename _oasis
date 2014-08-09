@@ -21,3 +21,4 @@ Executable oclaunch
   BuildTools: ocamlbuild
   MainIs:     oclaunch.ml
   BuildDepends: core, yojson, atdgen, threads, core_extended
+  CompiledObject: best
