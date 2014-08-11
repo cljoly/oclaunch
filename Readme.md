@@ -1,7 +1,7 @@
 # Licence
 
 This software is governed by the CeCILL license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 "http://www.cecill.info".
@@ -16,25 +16,15 @@ not.
 
 # Installation
 
-## Usage
-
-## Getting started
-
-# Build from this repository
-
-The project has the following dependencies :
-```oasis, atdgen, yojson, core, core_extended```
-
-You can use the following command :
-
-```sh
-oasis setup
-./configure
-make
-```
+See the file [INSTALL.txt](INSTALL.txt) for building and installation
+instructions.
 
 You can launch OcLaunch from both ./oclaunch.byte and
 ./oclaunch.native
+
+## Usage
+
+## Getting started
 
 ### Ideas of program to use with
 
