@@ -10,7 +10,7 @@ Copyrights: (C) 2014 Joly Clément
 Homepage: https://gitlab.com/WzukW/oclaunch"
 BuildTools: ocamlbuild, camlp4o
 Plugins: META (0.4), DevFiles (0.4)
-Description: This program is designed to launch automatically commands when executed.
+Description: OcLaunch is a command-line tool to launch successively (each time the program is called) commands. It is designed to be used with any program, interactive or not.
 
 PreBuildCommand: atdgen -t ./src/settings.atd
 PreBuildCommand: atdgen -j ./src/settings.atd
