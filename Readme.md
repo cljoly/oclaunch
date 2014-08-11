@@ -8,7 +8,7 @@ license as circulated by CEA, CNRS and INRIA at the following URL
 
 # Descrition
 
-OcLaunch is a command-line tool to launch successively (each
+**OcLaunch** is a command-line tool to launch successively (each
 time the program is called) commands.    
 It is designed to be used with any program, interactive or
 not.
@@ -24,7 +24,9 @@ You can launch OcLaunch from both ./oclaunch.byte and
 
 ## Usage
 
-## Getting started
+Place each command to launch in the `progs` entry of your rc
+file, which is created in your $HOME at the first launch of
+the program.
 
 ### Ideas of program to use with
 
