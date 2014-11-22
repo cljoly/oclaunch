@@ -1,7 +1,7 @@
 # Things to do
 
-## Users ides
-    Feel free to add things here
+## Users idees
+    Feel free to add things here (and make a pull request)
 
 ## Short term
 
@@ -18,3 +18,4 @@
 ### Misc
  + Documentation ;-)
  + Reuse atdgen for tmp file
+ + Use biniou in tmp file
