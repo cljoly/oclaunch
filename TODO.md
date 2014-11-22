@@ -14,6 +14,7 @@
  + Make tmp file emplacement configurable
  + Use two modes, one for easy launch and another more
    complete
+ + Allow to list all available commands
 
 ### Misc
  + Documentation ;-)
