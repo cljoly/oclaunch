@@ -61,7 +61,7 @@ let commands =
     (* TODO if number is out of the mist, return error message *)
     Command.Spec.(empty
     +> flag ~aliases:["-reset-tmp" ; "-r"] "--reset-tmp" no_arg
-                    ~doc:"Reinitialises launches by deleting temporal file."
+                    ~doc:" Reinitialises launches by deleting temporal file."
     +> anon (maybe ("Command number" %: int)))
     (fun reset_tmp num_cmd () ->
        match reset_tmp with

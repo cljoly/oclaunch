@@ -39,12 +39,12 @@ open Core.Std;;
 (* The module containing the step runned when the program is
  * used without argument *)
 
+(* cmd_number is the number of the command the user wants
+ * to execute *)
 let run ~rc:rc_content ~tmp:tmp_content cmd_number =
-  (* cmd_number is the number of the command the user wants
-   * to execute *)
   match cmd_number with
     | None -> begin
-        (* Execute each item (one by one)in config file *)
+        (* Execute each item (one by one) in config file *)
         let open Settings_t in (* This prevent warning 40 for ~cmd_list:rc_content.progs *)
           let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
             (* TODO Use display option in rc file *)
