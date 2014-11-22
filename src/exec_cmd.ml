@@ -41,7 +41,11 @@ let num_cmd_to_cmd ~cmd_list number =
   (* Verify that the number is not out of the list *)
   if (List.length cmd_list) < number
   then
-    ""
+      begin
+          (* TODO Make this printing configurable *)
+          printf "Out of range. Do not do anything.";
+          ""
+      end
   else
     begin
       let cmd_to_exec = List.nth cmd_list number in
