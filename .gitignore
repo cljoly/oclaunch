@@ -9,10 +9,6 @@ _tags
 *.native
 *.byte
 *.docdir
-setup.ml
-Makefile
-configure
-myocamlbuild.ml
 setup.data
 setup.log
 # Misc
