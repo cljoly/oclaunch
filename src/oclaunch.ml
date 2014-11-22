@@ -55,8 +55,9 @@ let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
 (* Define commands *)
 let commands =
   Command.basic
-    ~summary:"OcLaunch program is published under CeCILL licence. See https://gitlab.com/WzukW/oclaunch for details"
-    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help")
+    ~summary:"OcLaunch program is published under CeCILL licence. See
+    https://gitlab.com/WzukW/oclaunch for details."
+    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
     (* TODO if number is out of the mist, return error message *)
     Command.Spec.(empty
     +> flag ~aliases:["-reset-tmp" ; "-r"] "--reset-tmp" no_arg
