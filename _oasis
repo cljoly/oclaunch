@@ -10,7 +10,7 @@ Copyrights: (C) 2014 Joly Clément
 Homepage: https://gitlab.com/WzukW/oclaunch"
 BuildTools: ocamlbuild, camlp4o
 Plugins: StdFiles (0.4), DevFiles (0.4)
-XStdFilesREADME: true
+XStdFilesREADME: false
 XStdFilesINSTALL: true
 XStdFilesAUTHORS: true
 Description: OcLaunch is a command-line tool to launch successively (each time the program is called) commands. It is designed to be used with any program, interactive or not.
@@ -21,7 +21,6 @@ PreBuildCommand: atdgen -v ./src/settings.atd
 
 Executable oclaunch
   Path:       src
-  BuildTools: ocamlbuild
   MainIs:     oclaunch.ml
   BuildDepends: core, yojson, atdgen, threads, core_extended
   CompiledObject: best
