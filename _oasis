@@ -1,0 +1,27 @@
+OASISFormat: 0.4
+Name:        OcLaunch
+Version:     0.1.2
+Synopsis:    Launch commands automatically
+Authors:     Joly Clément <leowzukw@vmail.me>
+Maintainers: Joly Clément <leowzukw@vmail.me>
+License:     CeCILL
+LicenseFile: LICENSE
+Copyrights: (C) 2014 Joly Clément
+Homepage: http://www.oclaunch.tuxfamily.org
+BuildTools: ocamlbuild, camlp4o
+Plugins: StdFiles (0.4), DevFiles (0.4)
+XStdFilesREADME: true
+XStdFilesINSTALL: true
+XStdFilesAUTHORS: true
+AlphaFeatures: stdfiles_markdown, compiled_setup_ml
+Description: OcLaunch is a command-line tool to launch successively (each time the program is called) commands. It is designed to be used with any program, interactive or not. This a early version. Feedback is welcomed at leowzukw@vmail.me.
+
+PreBuildCommand: atdgen -t ./src/settings.atd
+PreBuildCommand: atdgen -j ./src/settings.atd
+PreBuildCommand: atdgen -v ./src/settings.atd
+
+Executable oclaunch
+  Path:       src
+  MainIs:     oclaunch.ml
+  BuildDepends: core, yojson, atdgen, threads, core_extended
+  CompiledObject: byte
