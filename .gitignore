@@ -11,6 +11,8 @@ _tags
 *.docdir
 setup.data
 setup.log
+# # pkg.sh
+dist
 # Misc
 .paths
 .project
