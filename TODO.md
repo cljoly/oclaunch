@@ -7,6 +7,7 @@
 
 ### Commands
  + Add command to modify configuration file
+ + Allow to list all available commands
 
 ### Configuration value
  + Make displaying command before launching configurable
@@ -14,7 +15,14 @@
  + Make tmp file emplacement configurable
  + Use two modes, one for easy launch and another more
    complete
- + Allow to list all available commands
+    + alway runnig : be sure that there entry are always running
+    + easy : one entry on each call
+    + confirm : ask before launching each entry
+    + proportionate : launch by percent.
+ + Relaunch the terminal detached after (possibole ?)
+ + Allow to tag entry and do things according to tags
+ + Display text before and after, maybe in color (For example
+   "================================================")
 
 ### Misc
  + Documentation ;-)
