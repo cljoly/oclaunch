@@ -1,8 +1,11 @@
 # Things to do
 
 ## Users idees
-    Feel free to add things here (and make a pull request). Or send an email to
-    the author !
+    **Feel free to add things here (and make a pull request).
+    Or send an email to the author !**
+
+    + @RomFouq: Add message on reset
+
 
 ## Short term
 
