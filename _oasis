@@ -24,4 +24,4 @@ Executable oclaunch
   Path:       src
   MainIs:     oclaunch.ml
   BuildDepends: core, yojson, atdgen, threads, core_extended
-  CompiledObject: byte
+  CompiledObject: best
