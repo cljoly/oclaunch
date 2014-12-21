@@ -8,7 +8,7 @@ modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 "http://www.cecill.info".
 
-## Descrition
+## Description
 
 OcLaunch is a command-line tool to launch successively (each
 time the program is called) commands.    
