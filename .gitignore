@@ -11,6 +11,7 @@ _tags
 *.docdir
 setup.data
 setup.log
+setup.exe
 # # pkg.sh
 dist
 # Misc
