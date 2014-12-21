@@ -21,7 +21,7 @@ not.
 
 ### Usage
 
-### Ideas of program to use with
+### Ideas of programs to use with
 
  + [Taskwarrior](http://taskwarrior.org/ “Taskwarrior”)
  + [Irssi](http://irssi.org/ “Irssi”)
