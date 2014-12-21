@@ -39,7 +39,7 @@ open Core.Std;;
 (* Function to return the corresponding command to a number *)
 let num_cmd_to_cmd ~cmd_list number =
   (* Verify that the number is not out of the list *)
-  if (List.length cmd_list) < number
+  if (List.length cmd_list) <= number
   then
       begin
           (* TODO Make this printing configurable *)
