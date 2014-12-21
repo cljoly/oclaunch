@@ -1,7 +1,8 @@
 # Things to do
 
 ## Users idees
-    Feel free to add things here (and make a pull request)
+    Feel free to add things here (and make a pull request). Or send an email to
+    the author !
 
 ## Short term
 
