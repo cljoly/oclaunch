@@ -47,7 +47,7 @@ let home = match (Sys.getenv "HOME") with
 (* Some settings variales *)
 let rc_file = home ^ "/" ^ ".oclaunch_rc.json";;
 (* Set tmp file, in witch stock launches *)
-let tmp_file = "/tmp/oclaunch_trace.json";; (* File lanch are logged *)
+let tmp_file = "/tmp/oclaunch_trace.json";; (* File where launch are logged *)
 (* Template for the tmp file *)
 let (tmp_file_template:Yojson.Basic.json) = `Assoc
                                               [ "cmd", `List [];
