@@ -49,9 +49,9 @@ let run ~rc:rc_content ~tmp:tmp_content cmd_number =
           let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
             (* TODO Use display option in rc file *)
             Exec_cmd.execute ~tmp:tmp_content cmd_to_exec;
-            () (* Return nothing, because launched from oclaunch.ml *)
       end
     | Some num -> begin
+        let open Settings_t in
         let cmd_to_exec = Exec_cmd.num_cmd_to_cmd ~cmd_list:rc_content.progs num in
           Exec_cmd.execute ~tmp:tmp_content cmd_to_exec;
       end
