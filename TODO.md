@@ -23,7 +23,7 @@
     + easy : one entry on each call
     + confirm : ask before launching each entry
     + proportionate : launch by percent.
- + Relaunch the terminal detached after (possibole ?)
+ + Relaunch the terminal detached after (possible ?)
  + Allow to tag entry and do things according to tags
  + Display text before and after, maybe in color (For example
    "================================================")
@@ -32,3 +32,6 @@
  + Documentation ;-)
  + Reuse atdgen for tmp file
  + Use biniou in tmp file
+
+## Long term
+ + Translate displayed messages
