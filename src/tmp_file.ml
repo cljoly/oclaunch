@@ -71,7 +71,26 @@ let rec is_prog_in_rc list_from_rc_file program =
     | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
 ;;
 
-(* Delete tmp file, to reinitialise program *)
-let reset ~tmp =
-  Sys.remove tmp
+(* Log when a program has been launched in a file in /tmp
+   ~func is the function applied to the value *)
+let log ?(func= (+) 1 ) ~file_name =
+  let file = Yojson.Basic.from_file file_name in
+  match file with
+    | `Assoc [( a, `List b ); ("num", `Int c)] -> let new_value = `Assoc [( a, `List b ); ("num", `Int (c |> func))] in Yojson.Basic.to_file file_name new_value
+    | _ -> failwith "Incorrect format"
+;;
+
+(* Reset command number in two ways :
+    * if cmd_num is 0, delete tmp file, to reinitialise program
+    * if cmd_num is 0>, set to this value
+    * else display an error message *)
+let reset ~tmp cmd_num=
+    match cmd_num with
+    | 0 -> Sys.remove tmp
+    | n when n > 0 ->
+            (* Make sure that file exists, otherwise strange things appears *)
+            let file_name = init ~tmp in
+            (* Set the number *)
+            log ~func:((fun a b -> a) n) ~file_name
+    | _ -> printf "Invalid number" (* TODO Make it settable *)
 ;;

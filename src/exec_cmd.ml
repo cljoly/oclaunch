@@ -64,15 +64,6 @@ let what_next ~tmp ~cmd_list =
     num_cmd_to_cmd ~cmd_list:cmd_list num_next
   ;;
 
-(* Log when a program has been launched in a file in /tmp
-   ~func is the function applied to the value *)
-let log ?(func= (+) 1 ) ~file_name =
-  let file = Yojson.Basic.from_file file_name in
-  match file with
-    | `Assoc [( a, `List b ); ("num", `Int c)] -> let new_value = `Assoc [( a, `List b ); ("num", `Int (c |> func))] in Yojson.Basic.to_file file_name new_value
-    | _ -> failwith "Incorrect format"
-;;
-
 (* Display an error message if command can't run
  * if 0 status, do nothing
  * else display status number *)
@@ -86,7 +77,7 @@ let display_result command status =
 
 (* Execute some command and log it *)
 let execute ?(display=true) ~tmp cmd =
-    log ~func:((+) 1) ~file_name:tmp;
+    Tmp_file.log ~func:((+) 1) ~file_name:tmp;
     if display then
         print_endline cmd;
     Sys.command cmd

@@ -60,12 +60,15 @@ let commands =
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
     (* TODO if number is out of the mist, return error message *)
     Command.Spec.(empty
-    +> flag ~aliases:["-reset-tmp" ; "--reset-tmp"] "-r" no_arg
-                    ~doc:" Reinitialises launches by deleting temporal file."
+    +> flag "-r" no_arg
+        ~aliases:["-reset-tmp" ; "--reset-tmp"]
+        ~doc:"Reinitialises launches by setting a new number in temporal file.
+        If nothing is given, reinitialises to 0 and delete tmp file."
     +> anon (maybe ("Command number" %: int)))
     (fun reset_tmp num_cmd () ->
        match reset_tmp with
-         | true -> Tmp_file.reset ~tmp:tmp_content
+         | true -> Tmp_file.reset ~tmp:tmp_content (Option.value ~default:0
+         num_cmd) (* Reset temp file, if nothing is given, put 0 value *)
          | false -> Default.run ~rc:rc_content ~tmp:tmp_content num_cmd
     )
 ;;
