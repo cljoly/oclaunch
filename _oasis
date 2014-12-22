@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        OcLaunch
-Version:     0.1.3
+Version:     0.1.4-dev
 Synopsis:    Launch commands automatically
 Authors:     Joly Clément <leowzukw@vmail.me>
 Maintainers: Joly Clément <leowzukw@vmail.me>
