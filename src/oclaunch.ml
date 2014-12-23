@@ -38,7 +38,7 @@ open Core.Std;;
 
 (* Variable to store version number *)
 (* TODO Get value from file *)
-let version_number = "0.1.2";;
+let version_number = "0.1.3";;
 
 (* Variable store building information *)
 (* XXX This is fake value, it corresponds to the running
@@ -60,7 +60,7 @@ let commands =
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
     (* TODO if number is out of the mist, return error message *)
     Command.Spec.(empty
-    +> flag ~aliases:["-reset-tmp" ; "-r"] "--reset-tmp" no_arg
+    +> flag ~aliases:["-reset-tmp" ; "--reset-tmp"] "-r" no_arg
                     ~doc:" Reinitialises launches by deleting temporal file."
     +> anon (maybe ("Command number" %: int)))
     (fun reset_tmp num_cmd () ->

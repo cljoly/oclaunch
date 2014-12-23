@@ -39,7 +39,7 @@ open Core.Std;;
 (* Function to return the corresponding command to a number *)
 let num_cmd_to_cmd ~cmd_list number =
   (* Verify that the number is not out of the list *)
-  if (List.length cmd_list) < number
+  if (List.length cmd_list) <= number
   then
       begin
           (* TODO Make this printing configurable *)
@@ -73,10 +73,22 @@ let log ?(func= (+) 1 ) ~file_name =
     | _ -> failwith "Incorrect format"
 ;;
 
+(* Display an error message if command can't run
+ * if 0 status, do nothing
+ * else display status number *)
+let display_result command status =
+    match status with
+    | 0 -> (* No problem, do nothing *) ()
+    | _ -> (* Problem occur,  display it *)
+            printf "Problem while running: '%s'\nExited with code: %i\n"
+            command status
+;;
+
 (* Execute some command and log it *)
 let execute ?(display=true) ~tmp cmd =
     log ~func:((+) 1) ~file_name:tmp;
     if display then
         print_endline cmd;
-    Sys.command cmd;
+    Sys.command cmd
+    |> display_result cmd (* Make it settable in rc file *)
 ;;
