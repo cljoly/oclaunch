@@ -19,4 +19,4 @@ mv oclaunch $name
 tree
 
 # Create archive
-tar -cvjf $name.tar.bz2 $name
+tar -cvaf $name.tar.lzma $name
