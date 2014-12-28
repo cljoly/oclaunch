@@ -43,7 +43,7 @@ let num_cmd_to_cmd ~cmd_list number =
   then
       begin
           (* TODO Make this printing configurable *)
-          printf "Out of range. Do not do anything.";
+          printf "Out of range. All has been launched!";
           ""
       end
   else
