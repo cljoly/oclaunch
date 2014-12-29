@@ -57,11 +57,11 @@ let num_cmd_to_cmd ~cmd_list number =
 
 (* Function to determinate what is the next command to
  * execute *)
-let what_next ~tmp ~cmd_list =
-  let tmp_json = Yojson.Basic.from_file tmp in
+let what_next ~cmd_list =
+  let tmp_file = Tmp_file.read () in
   let open Yojson.Basic.Util in
-  let num_next = tmp_json |> member "num" |> to_int in (* Number of the next cmd to run *)
-    num_cmd_to_cmd ~cmd_list:cmd_list num_next
+    let num_next = Tmp_file.read () in (* Number of the next cmd to run *)
+    num_cmd_to_cmd ~cmd_list:cmd_list num_next.number
   ;;
 
 (* Display an error message if command can't run
@@ -76,8 +76,8 @@ let display_result command status =
 ;;
 
 (* Execute some command and log it *)
-let execute ?(display=true) ~tmp cmd =
-    Tmp_file.log ~func:((+) 1) ~file_name:tmp;
+let execute ?(display=true) cmd =
+    Tmp_file.log ~func:((+) 1) ();
     if display then
         print_endline cmd;
     Sys.command cmd

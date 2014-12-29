@@ -48,10 +48,6 @@ let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ 
 (* Obtain data from rc file *)
 let rc_content = File_com.init_rc ~rc:Const.rc_file;;
 
-(* Obtain data from tmp file *)
-let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
-
-
 (* Define commands *)
 let commands =
   Command.basic
@@ -67,9 +63,9 @@ let commands =
     +> anon (maybe ("Command number" %: int)))
     (fun reset_tmp num_cmd () ->
        match reset_tmp with
-         | true -> Tmp_file.reset ~tmp:tmp_content (Option.value ~default:0
-         num_cmd) (* Reset temp file, if nothing is given, put 0 value *)
-         | false -> Default.run ~rc:rc_content ~tmp:tmp_content num_cmd
+         | true -> (* Reset temp file, if nothing is given, put 0 value *)
+                 Tmp_file.reset (Option.value ~default:0 num_cmd)
+         | false -> Default.run ~rc:rc_content num_cmd
     )
 ;;
 

@@ -38,7 +38,9 @@ open Core.Std;;
 
 (* XXX Using and keyword because each function can call each other *)
 (* Function to read the tmp file *)
-let rec read ~name =
+let rec read () =
+    (* Short name *)
+    let name = Const.tmp_file in
     (* Get the string corresponding to the file *)
     let file_content = In_channel.read_all name in
     try
@@ -46,37 +48,42 @@ let rec read ~name =
     (* In previous version, the JSON format was used, otherwise the file can
      * have a bad format. In this case, the Ag_ob_run.Error("Read error (1)")
      * exeption is throw. We catch it here *)
-    with Ag_ob_run.Error("Read error (1)") ->
+    with Ag_ob_run.Error("Read error (1)") | Bi_inbuf.End_of_input ->
         (* If file is not in the right format, delete it and create a new one.
          * Then, read it *)
+        printf "Reinitialises tmp file\n"; (* TODO Make it settable *)
         Sys.remove name;
-        create_tmp_file ~name;
-        read ~name
+        create_tmp_file ();
+        read ()
 
 (* Function to write the tmp file *)
-and write ~name (tmp_file:Tmp_biniou_t.tmp_file) =
+and write (tmp_file:Tmp_biniou_t.tmp_file) =
+    (* Short name *)
+    let name = Const.tmp_file in
     let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in
     Out_channel.write_all name ~data:biniou_tmp
 
 (* Function to create the tmp file *)
-and create_tmp_file ~name =
+and create_tmp_file () =
+    (* Short name *)
+    let name = Const.tmp_file in
     Tmp_biniou_v.create_tmp_file ~command:[] ~number:0 ()
     (* Convert it to biniou *)
-    |> write ~name
+    |> write
 ;;
 
 (* Function to open tmp file *)
-let rec init ~tmp =
+let rec init () =
   (* If file do not exists, create it *)
-  let file_exists = (Sys.file_exists tmp) in
+  let file_exists = (Sys.file_exists Const.tmp_file) in
     match file_exists with
-      | `No -> create_tmp_file ~name:tmp;
-          init ~tmp:tmp
+      | `No -> create_tmp_file ();
+          init ()
       | `Unknown -> begin
-          Core_extended.Shell.rm tmp;
-          init ~tmp:tmp
+          (*Core_extended.Shell.rm tmp;*)
+          init ()
         end
-      | `Yes -> tmp
+      | `Yes -> read ()
 ;;
 
 (* Verify that the value exist *)
@@ -97,25 +104,24 @@ let rec is_prog_in_rc list_from_rc_file program =
 
 (* Log when a program has been launched in a file in /tmp
    ~func is the function applied to the value *)
-let log ?(func= (+) 1 ) ~file_name =
+let log ?(func= (+) 1 ) () =
   (* We will use tmp_file type *)
   let open Tmp_biniou_t in
-  let file = read ~name:file_name in
+  (* Make sure that file exists, otherwise strange things appears *)
+  let file = init () in
   (* Write the file with the new value *)
-  write ~name:file_name { file with number = (func file.number)}
+  write { file with number = (func file.number)}
 ;;
 
 (* Reset command number in two ways :
     * if cmd_num is 0, delete tmp file, to reinitialise program
     * if cmd_num is 0>, set to this value
     * else display an error message *)
-let reset ~tmp cmd_num=
+let reset cmd_num=
     match cmd_num with
-    | 0 -> Sys.remove tmp
+    | 0 -> Sys.remove Const.tmp_file
     | n when n > 0 ->
-            (* Make sure that file exists, otherwise strange things appears *)
-            let file_name = init ~tmp in
             (* Set the number *)
-            log ~func:((fun a b -> a) n) ~file_name
+            log ~func:((fun a b -> a) n) ()
     | _ -> printf "Invalid number" (* TODO Make it settable *)
 ;;
