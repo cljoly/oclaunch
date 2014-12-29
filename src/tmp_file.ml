@@ -75,12 +75,12 @@ and create_tmp_file () =
 (* Function to open tmp file *)
 let rec init () =
   (* If file do not exists, create it *)
-  let file_exists = (Sys.file_exists Const.tmp_file) in
+  let file_exists = Sys.file_exists Const.tmp_file in
     match file_exists with
       | `No -> create_tmp_file ();
           init ()
       | `Unknown -> begin
-          (*Core_extended.Shell.rm tmp;*)
+          Sys.remove Const.tmp_file;
           init ()
         end
       | `Yes -> read ()

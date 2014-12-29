@@ -28,5 +28,5 @@ PreBuildCommand: echo "Atdgen executed"
 Executable oclaunch
   Path:       src
   MainIs:     oclaunch.ml
-  BuildDepends: core, atdgen, threads, core_extended
+  BuildDepends: core, atdgen, threads
   CompiledObject: best
