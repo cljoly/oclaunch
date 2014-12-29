@@ -44,7 +44,7 @@ let rc_template () =
 ;;
 
 (* Function to create configuration file if it does not
- * exists *)
+ * exist *)
 let create_rc_file ~name =
   (* Notify that we initialise config file *)
   printf "Initializing configuration file in %s\n" name;
