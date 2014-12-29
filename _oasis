@@ -19,6 +19,11 @@ Description: OcLaunch is a command-line tool to launch successively (each time t
 PreBuildCommand: atdgen -t ./src/settings.atd
 PreBuildCommand: atdgen -j ./src/settings.atd
 PreBuildCommand: atdgen -v ./src/settings.atd
+PreBuildCommand: atdgen -b ./src/tmp_biniou.atd
+PreBuildCommand: atdgen -t ./src/tmp_biniou.atd
+PreBuildCommand: atdgen -v ./src/tmp_biniou.atd
+# Test, to be shure that atgen commands above run
+PreBuildCommand: echo "Atdgen executed"
 
 Executable oclaunch
   Path:       src

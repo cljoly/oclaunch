@@ -34,88 +34,12 @@
 (*  termes.                                                                   *)
 (******************************************************************************)
 
-open Core.Std;;
+(* Tmp file is where launch are logged in.
+ * This atd file allow to use biniou easier in tmp file. The purpuse is to save
+ * place, get faster parsing and make harder manual, unwanted modification. A special command line is
+ * available to change current number *)
 
-(* XXX Using and keyword because each function can call each other *)
-(* Function to read the tmp file *)
-let rec read ~name =
-    (* Get the string corresponding to the file *)
-    let file_content = In_channel.read_all name in
-    try
-        Tmp_biniou_b.tmp_file_of_string file_content
-    (* In previous version, the JSON format was used, otherwise the file can
-     * have a bad format. In this case, the Ag_ob_run.Error("Read error (1)")
-     * exeption is throw. We catch it here *)
-    with Ag_ob_run.Error("Read error (1)") ->
-        (* If file is not in the right format, delete it and create a new one.
-         * Then, read it *)
-        Sys.remove name;
-        create_tmp_file ~name;
-        read ~name
-
-(* Function to write the tmp file *)
-and write ~name (tmp_file:Tmp_biniou_t.tmp_file) =
-    let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in
-    Out_channel.write_all name ~data:biniou_tmp
-
-(* Function to create the tmp file *)
-and create_tmp_file ~name =
-    Tmp_biniou_v.create_tmp_file ~command:[] ~number:0 ()
-    (* Convert it to biniou *)
-    |> write ~name
-;;
-
-(* Function to open tmp file *)
-let rec init ~tmp =
-  (* If file do not exists, create it *)
-  let file_exists = (Sys.file_exists tmp) in
-    match file_exists with
-      | `No -> create_tmp_file ~name:tmp;
-          init ~tmp:tmp
-      | `Unknown -> begin
-          Core_extended.Shell.rm tmp;
-          init ~tmp:tmp
-        end
-      | `Yes -> tmp
-;;
-
-(* Verify that the value exist *)
-let verify_key_exist ~key entry =
-    if entry = key then
-        true
-    else
-        false
-;;
-
-(* Return true if a program is in the rc file *)
-let rec is_prog_in_rc list_from_rc_file program =
-    match list_from_rc_file with
-    (* | None -> is_prog_in_rc program ~liste_from_rc_file:rc_content.progs *)
-    | [] -> false
-    | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
-;;
-
-(* Log when a program has been launched in a file in /tmp
-   ~func is the function applied to the value *)
-let log ?(func= (+) 1 ) ~file_name =
-  (* We will use tmp_file type *)
-  let open Tmp_biniou_t in
-  let file = read ~name:file_name in
-  (* Write the file with the new value *)
-  write ~name:file_name { file with number = (func file.number)}
-;;
-
-(* Reset command number in two ways :
-    * if cmd_num is 0, delete tmp file, to reinitialise program
-    * if cmd_num is 0>, set to this value
-    * else display an error message *)
-let reset ~tmp cmd_num=
-    match cmd_num with
-    | 0 -> Sys.remove tmp
-    | n when n > 0 ->
-            (* Make sure that file exists, otherwise strange things appears *)
-            let file_name = init ~tmp in
-            (* Set the number *)
-            log ~func:((fun a b -> a) n) ~file_name
-    | _ -> printf "Invalid number" (* TODO Make it settable *)
-;;
+type tmp_file = {
+    command: string list; (* A list of command, for future use *)
+    number: int; (* The current number/state of the launches *)
+}
