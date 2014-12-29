@@ -31,7 +31,7 @@
 ### Misc
  + Documentation ;-)
  + Reuse atdgen for tmp file
- + Use biniou in tmp file
+ + Handle errors in reading rc file
 
 ## Long term
  + Translate displayed messages
