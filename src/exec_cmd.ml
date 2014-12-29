@@ -56,12 +56,10 @@ let num_cmd_to_cmd ~cmd_list number =
 ;;
 
 (* Function to determinate what is the next command to
- * execute *)
+ * execute. It take the current number from tmp file. *)
 let what_next ~cmd_list =
   let tmp_file = Tmp_file.read () in
-  let open Yojson.Basic.Util in
-    let num_next = Tmp_file.read () in (* Number of the next cmd to run *)
-    num_cmd_to_cmd ~cmd_list:cmd_list num_next.number
+  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.number
   ;;
 
 (* Display an error message if command can't run
