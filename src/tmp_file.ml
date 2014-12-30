@@ -119,9 +119,10 @@ let log ?(func= (+) 1 ) () =
     * else display an error message *)
 let reset cmd_num=
     match cmd_num with
-    | 0 -> Sys.remove Const.tmp_file
+    | 0 -> Sys.remove Const.tmp_file; printf "Tmp file removed\n"
     | n when n > 0 ->
             (* Set the number *)
-            log ~func:((fun a b -> a) n) ()
+            log ~func:((fun a b -> a) n) ();
+            printf "Tmp file reseted to %i\n" n
     | _ -> printf "Invalid number\n" (* TODO Make it settable *)
 ;;
