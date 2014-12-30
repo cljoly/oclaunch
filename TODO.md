@@ -6,8 +6,7 @@
 
     + @RomFouq: Add message on reset
 
-## Master issue
- + Correct biniou extension in tmp file
+## Major issue
 
 ## Short term
 

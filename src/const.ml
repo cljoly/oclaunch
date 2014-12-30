@@ -47,4 +47,4 @@ let home = match (Sys.getenv "HOME") with
 (* Some settings variales *)
 let rc_file = home ^ "/" ^ ".oclaunch_rc.json";;
 (* Set tmp file, in witch stock launches, in biniou format *)
-let tmp_file = "/tmp/oclaunch_trace.bi";; (* File where launch are logged *)
+let tmp_file = "/tmp/.oclaunch_trace.dat";; (* File where launch are logged *)
