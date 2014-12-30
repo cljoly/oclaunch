@@ -7,7 +7,7 @@
  + New tmp file
    + Biniou format instead of JSON
    + Now cached
-   + New default name : /tmp/.oclaunch_trace.dat
+   + New default name : `/tmp/.oclaunch_trace.dat`
  + Add logo.
  + Clean up some code.
 
