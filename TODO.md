@@ -6,6 +6,8 @@
 
     + @RomFouq: Add message on reset
 
+## Master issue
+ + Correct biniou extension in tmp file
 
 ## Short term
 
@@ -34,4 +36,5 @@
  + Handle errors in reading rc file
 
 ## Long term
- + Translate displayed messages
+ + Translate displayed messages.
+ + Better command line interface by grouping commands.
