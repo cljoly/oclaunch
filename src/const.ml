@@ -41,7 +41,7 @@ open Core.Std;;
 (* Get current home *)
 let home = match (Sys.getenv "HOME") with
   | Some x -> x
-  | None -> failwith "Wrong value for home"
+  | None -> failwith "Wrong value for home\n"
 ;;
 
 (* Some settings variales *)

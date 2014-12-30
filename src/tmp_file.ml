@@ -123,5 +123,5 @@ let reset cmd_num=
     | n when n > 0 ->
             (* Set the number *)
             log ~func:((fun a b -> a) n) ()
-    | _ -> printf "Invalid number" (* TODO Make it settable *)
+    | _ -> printf "Invalid number\n" (* TODO Make it settable *)
 ;;

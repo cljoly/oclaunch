@@ -43,7 +43,7 @@ let num_cmd_to_cmd ~cmd_list number =
   then
       begin
           (* TODO Make this printing configurable *)
-          printf "Out of range. All has been launched!";
+          printf "Out of range. All has been launched!\n";
           ""
       end
   else
@@ -60,7 +60,7 @@ let num_cmd_to_cmd ~cmd_list number =
 let what_next ~cmd_list =
   let tmp_file = Tmp_file.read () in
   num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.number
-  ;;
+;;
 
 (* Display an error message if command can't run
  * if 0 status, do nothing
