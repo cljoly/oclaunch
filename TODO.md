@@ -7,6 +7,7 @@
     + @RomFouq: Add message on reset
 
 ## Major issue
+ + Remove warnings
 
 ## Short term
 
