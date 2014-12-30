@@ -33,6 +33,7 @@
  + Documentation ;-)
  + Reuse atdgen for tmp file
  + Handle errors in reading rc file
+ + Add build info in binary for 0install
 
 ## Long term
  + Translate displayed messages.
