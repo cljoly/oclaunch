@@ -36,6 +36,9 @@
 
 open Core.Std;;
 
+(* Type of the values *)
+type t = Tmp_biniou_t.tmp_file;;
+
 (* XXX Using and keyword because each function can call each other *)
 (* Function to read the tmp file *)
 let rec read () =
@@ -57,7 +60,7 @@ let rec read () =
         read ()
 
 (* Function to write the tmp file *)
-and write (tmp_file:Tmp_biniou_t.tmp_file) =
+and write (tmp_file:t) =
     (* Short name *)
     let name = Const.tmp_file in
     let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in

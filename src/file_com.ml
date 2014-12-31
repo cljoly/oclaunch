@@ -38,6 +38,9 @@ open Core.Std;;
 
 (* Read settings and programs to launch from rc file *)
 
+(* Type of the values *)
+type t = Settings_v.rc_file;;
+
 (* Return the configuration file template *)
 let rc_template () =
   Settings_v.create_rc_file ~progs:[] ~settings:[]
