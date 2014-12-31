@@ -5,6 +5,7 @@
    + “-r” can now take a number to start from.
    + “-l” list commands of the configuration file with its number.
  + Improve some messages.
+ + Display run commands in title bar of the windows terminal.
  + New tmp file
    + Biniou format instead of JSON
    + Now cached
