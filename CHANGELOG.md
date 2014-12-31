@@ -3,6 +3,7 @@
 ## v0.2.0
  + Add new command line option.
    + “-r” can now take a number to start from.
+   + “-l” list commands of the configuration file with its number.
  + Improve some messages.
  + New tmp file
    + Biniou format instead of JSON

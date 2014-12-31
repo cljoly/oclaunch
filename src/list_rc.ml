@@ -36,47 +36,15 @@
 
 open Core.Std;;
 
-(* Variable to store version number *)
-(* TODO Get value from file *)
-let version_number = "0.2.0-dev";;
+(* This modules contains function to list the content of the rc file *)
 
-(* Variable store building information *)
-(* XXX This is fake value, it corresponds to the running
- * information *)
-let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
-
-(* Obtain data from rc file *)
-let rc_content = File_com.init_rc ~rc:Const.rc_file;;
-
-(* Define commands *)
-let commands =
-  Command.basic
-    ~summary:"OcLaunch program is published under CeCILL licence. See
-    https://gitlab.com/WzukW/oclaunch for details."
-    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
-    (* TODO if number is out of the mist, return error message *)
-    Command.Spec.(empty
-    (* Flag to reset tmp file *)
-    +> flag "-r" no_arg
-        ~aliases:["-reset-tmp" ; "--reset-tmp"]
-        ~doc:"Reinitialises launches by setting a new number in temporal file.
-        If nothing is given, reinitialises to 0 and delete tmp file."
-    (* Flag to list each commands with its number *)
-    +> flag "-l" no_arg
-    ~aliases:["-list" ; "--list"]
-    ~doc:"Print a list of all command with its number. Useful to launch with number"
-    +> anon (maybe ("Command number" %: int)))
-    (fun reset_tmp list_commands num_cmd () ->
-       (* First try to list *)
-       if list_commands then List_rc.run ~rc:rc_content
-       else
-       match reset_tmp with
-         | true -> (* Reset temp file, if nothing is given, put 0 value *)
-                 Tmp_file.reset (Option.value ~default:0 num_cmd)
-         | false -> Default.run ~rc:rc_content num_cmd
-    )
+(* Display the command with its number *)
+let disp_cmd_num number command =
+    printf "%i: %s\n" number command
 ;;
 
-let () =
-  Command.run ~version:version_number ~build_info:build_info commands
+(* Function which list *)
+let run ~(rc:File_com.t) =
+    let open File_com in
+    List.iteri rc.progs ~f:disp_cmd_num
 ;;

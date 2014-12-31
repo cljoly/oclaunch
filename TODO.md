@@ -11,7 +11,6 @@
 
 ### Commands
  + Add command to modify configuration file
- + Allow to list all available commands
 
 ### Configuration value
  + Make displaying command before launching configurable
@@ -23,14 +22,14 @@
     + easy : one entry on each call
     + confirm : ask before launching each entry
     + proportionate : launch by percent.
- + Relaunch the terminal detached after (possible ?)
+ + Relaunch the terminal detached after (possible -> use $TERM &; it resists to
+   program exit)
  + Allow to tag entry and do things according to tags
  + Display text before and after, maybe in color (For example
    "================================================")
 
 ### Misc
  + Documentation ;-)
- + Reuse atdgen for tmp file
  + Handle errors in reading rc file
  + Add build info in binary for 0install
 
