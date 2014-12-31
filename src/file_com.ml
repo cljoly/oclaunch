@@ -46,7 +46,8 @@ let write (tmp_file:t) =
         (* Short name *)
         let name = Const.rc_file in
         (* Create string to be written *)
-        let data = Settings_j.string_of_rc_file tmp_file in
+        let data = (Settings_j.string_of_rc_file tmp_file
+        |> Yojson.Basic.prettify ~std:true) in
         Out_channel.write_all name ~data
 ;;
 
