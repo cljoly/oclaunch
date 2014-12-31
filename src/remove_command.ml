@@ -36,58 +36,22 @@
 
 open Core.Std;;
 
-(* Variable to store version number *)
-(* TODO Get value from file *)
-let version_number = "0.2.0-dev";;
+(* Module to remove commands without editing the rc file directly *)
 
-(* Variable store building information *)
-(* XXX This is fake value, it corresponds to the running
- * information *)
-let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
-
-(* Obtain data from rc file *)
-let rc_content = File_com.init_rc ();;
-
-(* Define commands *)
-let commands =
-  Command.basic
-    ~summary:"OcLaunch program is published under CeCILL licence. See
-    https://gitlab.com/WzukW/oclaunch for details."
-    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
-    (* TODO if number is out of the mist, return error message *)
-    Command.Spec.(empty
-    (* Flag to reset tmp file *)
-    +> flag "-r" no_arg
-        ~aliases:["-reset-tmp" ; "--reset-tmp"]
-        ~doc:"Reinitialises launches by setting a new number in temporal file.
-        If nothing is given, reinitialises to 0 and delete tmp file."
-    (* Flag to list each commands with its number *)
-    +> flag "-l" no_arg
-    ~aliases:["-list" ; "--list"]
-    ~doc:"Print a list of all command with its number. Useful to launch with number"
-    (* Flag to add a command to rc file, from stdin or directly *)
-    +> flag "-a" no_arg
-    ~aliases:["-add" ; "--add"]
-    ~doc:"Add the command given on stdin to configuration file at a given position. If nothing is given, append it."
-    (* Flag to add a command to rc file, from stdin or directly *)
-    +> flag "-d" no_arg
-    ~aliases:["-delete" ; "--delete"]
-    ~doc:"-d n remove the nth command from configuration file. If n is absent, remove last one"
-
-    +> anon (maybe ("Command number" %: int)))
-    (fun reset_tmp list_commands add delete num_cmd () ->
-       (* First try to list or add *)
-       if list_commands then List_rc.run ~rc:rc_content
-       else if add then Add_command.run ~rc:rc_content num_cmd
-       else if delete then Remove_command.run ~rc:rc_content num_cmd
-       else
-       match reset_tmp with
-         | true -> (* Reset temp file, if nothing is given, put 0 value *)
-                 Tmp_file.reset (Option.value ~default:0 num_cmd)
-         | false -> Default.run ~rc:rc_content num_cmd
-    )
-;;
-
-let () =
-  Command.run ~version:version_number ~build_info:build_info commands
+(* Function which add the commands (one per line) ridden on stdin to the rc
+ * file, and then display th new configuration *)
+let run ~(rc:File_com.t) n_to_remove =
+    (* Get actual list of commands *)
+    let actual_list = rc.progs in
+    (* Get nth *)
+    let nth = Option.value n_to_remove
+        ~default:((List.length actual_list) - 1) in
+    (* Remove the nth command *)
+    let new_list = List.filteri actual_list ~f:(fun i _ -> i <> nth) in
+    (* Write new list to rc file *)
+    let updated_rc = { rc with progs = new_list } in
+    File_com.write updated_rc;
+    (* Display the result *)
+    let reread_rc = File_com.init_rc () in
+    List_rc.run ~rc:reread_rc
 ;;
