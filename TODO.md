@@ -9,9 +9,6 @@
 
 ## Short term
 
-### Commands
- + Add command to modify configuration file
-
 ### Configuration value
  + Make displaying command before launching configurable
  + Allow to run infinitely or say when it is finish
