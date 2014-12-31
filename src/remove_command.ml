@@ -46,8 +46,19 @@ let run ~(rc:File_com.t) n_to_remove =
     (* Get nth *)
     let nth = Option.value n_to_remove
         ~default:((List.length actual_list) - 1) in
-    (* Remove the nth command *)
-    let new_list = List.filteri actual_list ~f:(fun i _ -> i <> nth) in
+    (* Remove the nth command, after display it *)
+    let new_list = List.filteri actual_list ~f:(fun i _ ->
+        if i <> nth then
+            (* If it is not nth, return true *)
+            true
+        else
+            begin
+                (* If it is nth, ie the command to be removed, print if and return
+                 * false *)
+                printf "Removing: %s\n\n" (List.nth_exn actual_list i);
+                false
+            end
+    ) in
     (* Write new list to rc file *)
     let updated_rc = { rc with progs = new_list } in
     File_com.write updated_rc;

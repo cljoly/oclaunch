@@ -11,6 +11,7 @@
 
 ### Commands
  + Add command to modify configuration file
+ + Pretty print rc file before writing it
 
 ### Configuration value
  + Make displaying command before launching configurable
