@@ -45,6 +45,7 @@ let write (tmp_file:t) =
     let name = Const.tmp_file in
     let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in
     Out_channel.write_all name ~data:biniou_tmp
+;;
 
 (* XXX Using and keyword because each function can call each other *)
 (* Function to read the tmp file *)

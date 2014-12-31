@@ -32,6 +32,7 @@
  + Documentation ;-)
  + Handle errors in reading rc file
  + Add build info in binary for 0install
+ + Use color in messages
 
 ## Long term
  + Translate displayed messages.

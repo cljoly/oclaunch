@@ -36,42 +36,33 @@
 
 open Core.Std;;
 
-(* Read settings and programs to launch from rc file *)
+(* Module to add command without editing the rc file directly *)
 
-(* Type of the values *)
-type t = Settings_v.rc_file;;
-
-(* Function to write the rc file *)
-let write (tmp_file:t) =
-        (* Short name *)
-        let name = Const.rc_file in
-        (* Create string to be written *)
-        let data = Settings_j.string_of_rc_file tmp_file in
-        Out_channel.write_all name ~data
+(* Function to create a new list augmented by some commands *)
+let new_list current_list position new_items =
+    match position with
+    | None -> List.append current_list new_items
+    | Some n -> (* If a number is given, add commands after position n by
+    splitting the list and concatenating all. List.split_n works like this :
+        * #let l1 = [1;2;3;4;5;6] in
+        * # List.split_n l1 2;;
+        * - : int list * int list = ([1; 2], [3; 4; 5; 6]) *)
+    let l_begin,l_end = List.split_n current_list n in
+    List.concat [ l_begin ; new_items ; l_end ]
 ;;
 
-(* Return the configuration file template *)
-let rc_template () =
-  Settings_v.create_rc_file ~progs:[] ~settings:[]
+
+
+(* Function which add the commands (one per line) ridden on stdin to the rc
+ * file, and then display th new configuration *)
+let run ~(rc:File_com.t) position =
+    (* Read command from stdin, as a list. fix_win_eol removes \r\n *)
+    let cmd_list = In_channel.input_lines ~fix_win_eol:true In_channel.stdin in
+    (* Create an updated rc file *)
+    let updated_rc = { rc with progs = (new_list rc.progs position cmd_list)} in
+    File_com.write updated_rc;
+    (* Display the result *)
+    let reread_rc = File_com.init_rc () in
+    List_rc.run ~rc:reread_rc
 ;;
 
-(* Function to create configuration file if it does not
- * exist *)
-let create_rc_file ~name =
-  (* Notify that we initialise config file *)
-  printf "Initializing configuration file in %s\n" name;
-  let compact_rc_file = Settings_j.string_of_rc_file (rc_template () ()) in
-  let readable_rc_file = Yojson.Basic.prettify compact_rc_file in (* Create human readable string for rc file *)
-  let out_file = Out_channel.create name in
-    Out_channel.output_string out_file readable_rc_file;
-    Out_channel.close out_file
-;;
-
-(* Function to read the rc file *)
-let rec init_rc ?(rc=Const.rc_file) () =
-  (* Verify that file exist *)
-  match (Sys.file_exists rc) with
-    | `No -> create_rc_file ~name:rc; init_rc ~rc ();
-    | `Unknown -> failwith "Error reading configuration file";
-    | `Yes -> In_channel.read_all rc |> Settings_j.rc_file_of_string
-;;

@@ -46,7 +46,7 @@ let version_number = "0.2.0-dev";;
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
 (* Obtain data from rc file *)
-let rc_content = File_com.init_rc ~rc:Const.rc_file;;
+let rc_content = File_com.init_rc ();;
 
 (* Define commands *)
 let commands =
@@ -65,10 +65,15 @@ let commands =
     +> flag "-l" no_arg
     ~aliases:["-list" ; "--list"]
     ~doc:"Print a list of all command with its number. Useful to launch with number"
+    (* Flag to add a command to rc file, from stdin or directly *)
+    +> flag "-a" no_arg
+    ~aliases:["-add" ; "--add"]
+    ~doc:"Add the command given on stdin to configuration file at a given position. If nothing is given, append it."
     +> anon (maybe ("Command number" %: int)))
-    (fun reset_tmp list_commands num_cmd () ->
-       (* First try to list *)
+    (fun reset_tmp list_commands add num_cmd () ->
+       (* First try to list or add *)
        if list_commands then List_rc.run ~rc:rc_content
+       else if add then Add_command.run ~rc:rc_content num_cmd
        else
        match reset_tmp with
          | true -> (* Reset temp file, if nothing is given, put 0 value *)
