@@ -39,6 +39,13 @@ open Core.Std;;
 (* Type of the values *)
 type t = Tmp_biniou_t.tmp_file;;
 
+(* Function to write the tmp file *)
+let write (tmp_file:t) =
+    (* Short name *)
+    let name = Const.tmp_file in
+    let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in
+    Out_channel.write_all name ~data:biniou_tmp
+
 (* XXX Using and keyword because each function can call each other *)
 (* Function to read the tmp file *)
 let rec read () =
@@ -51,7 +58,7 @@ let rec read () =
     (* In previous version, the JSON format was used, otherwise the file can
      * have a bad format. In this case, the Ag_ob_run.Error("Read error (1)")
      * exeption is throw. We catch it here *)
-    with Ag_ob_run.Error("Read error (1)") | Bi_inbuf.End_of_input ->
+    with _ ->
         (* If file is not in the right format, delete it and create a new one.
          * Then, read it *)
         printf "Reinitialises tmp file\n"; (* TODO Make it settable *)
@@ -59,17 +66,8 @@ let rec read () =
         create_tmp_file ();
         read ()
 
-(* Function to write the tmp file *)
-and write (tmp_file:t) =
-    (* Short name *)
-    let name = Const.tmp_file in
-    let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in
-    Out_channel.write_all name ~data:biniou_tmp
-
 (* Function to create the tmp file *)
 and create_tmp_file () =
-    (* Short name *)
-    let name = Const.tmp_file in
     Tmp_biniou_v.create_tmp_file ~command:[] ~number:0 ()
     (* Convert it to biniou *)
     |> write
@@ -120,7 +118,7 @@ let log ?(func= (+) 1 ) () =
     * if cmd_num is 0, delete tmp file, to reinitialise program
     * if cmd_num is 0>, set to this value
     * else display an error message *)
-let reset cmd_num=
+let reset cmd_num =
     match cmd_num with
     | 0 -> Sys.remove Const.tmp_file; printf "Tmp file removed\n"
     | n when n > 0 ->
