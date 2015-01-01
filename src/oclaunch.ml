@@ -59,37 +59,39 @@ let commands =
     (* Flag to reset tmp file *)
     +> flag "-r" no_arg
         ~aliases:["-reset-tmp" ; "--reset-tmp"]
-        ~doc:"Reinitialises launches by setting a new number in temporal file.
+        ~doc:"[n] Reinitialises launches by setting a new number in temporal file.
         If nothing is given, reinitialises to 0 and delete tmp file."
     (* Flag to list each commands with its number *)
     +> flag "-l" no_arg
     ~aliases:["-list" ; "--list"]
-    ~doc:"Print a list of all command with its number. Useful to launch with number"
+    ~doc:" Print a list of all command with its number. Useful to launch with number"
     (* Flag to add a command to rc file, from stdin or directly *)
     +> flag "-a" no_arg
     ~aliases:["-add" ; "--add"]
-    ~doc:"Add the command given on stdin to configuration file at a given position. If nothing is given, append it."
+    ~doc:"[n] Add the command given on stdin to configuration file at a given position. If nothing is given, append it."
     (* Flag to add a command to rc file, from stdin or directly *)
     +> flag "-d" no_arg
     ~aliases:["-delete" ; "--delete"]
-    ~doc:"-d n remove the nth command from configuration file. If n is absent, remove last one"
+    ~doc:"[n] remove the nth command from configuration file. If n is absent, remove last one"
     (* Flag to display current number *)
     +> flag "-n" no_arg
     ~aliases:["-number" ; "--number"]
-    ~doc:"Display current state of the program"
+    ~doc:" Display current state of the program"
 
     +> anon (maybe ("Command number" %: int)))
     (fun reset_tmp list_commands add delete number num_cmd () ->
-       (* First try to list or add *)
+       (* First try to list *)
        if list_commands then List_rc.run ~rc:rc_content
+       (* To add command to rc file *)
        else if add then Add_command.run ~rc:rc_content num_cmd
+       (* To delete command from rc file *)
        else if delete then Remove_command.run ~rc:rc_content num_cmd
+       (* To print current state *)
        else if number then State.current ()
-       else
-       match reset_tmp with
-         | true -> (* Reset temp file, if nothing is given, put 0 value *)
-                 Tmp_file.reset (Option.value ~default:0 num_cmd)
-         | false -> Default.run ~rc:rc_content num_cmd
+       (* Reset to a value *)
+       else if reset_tmp then Tmp_file.reset (Option.value ~default:0 num_cmd)
+       (* Else: Run the nth command *)
+       else Default.run ~rc:rc_content num_cmd
     )
 ;;
 

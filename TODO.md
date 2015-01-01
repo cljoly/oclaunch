@@ -6,7 +6,6 @@
 
 ## Major issue
  + Remove warnings
- + Badd display of --help
 
 ## Short term
 
