@@ -54,7 +54,6 @@ let commands =
     ~summary:"OcLaunch program is published under CeCILL licence. See
     https://gitlab.com/WzukW/oclaunch for details."
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
-    (* TODO if number is out of the mist, return error message *)
     Command.Spec.(empty
     (* Flag to reset tmp file *)
     +> flag "-r" no_arg
