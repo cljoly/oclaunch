@@ -45,55 +45,6 @@ let version_number = "0.2.0-dev";;
  * information *)
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
-(* Obtain data from rc file *)
-let rc_content = File_com.init_rc ();;
-
-(* Define commands *)
-let commands =
-  Command.basic
-    ~summary:"OcLaunch program is published under CeCILL licence. See
-    https://gitlab.com/WzukW/oclaunch for details."
-    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
-    Command.Spec.(empty
-    (* Flag to reset tmp file *)
-    +> flag "-r" no_arg
-        ~aliases:["-reset-tmp" ; "--reset-tmp"]
-        ~doc:"[n] Reinitialises launches by setting a new number in temporal file.
-        If nothing is given, reinitialises to 0 and delete tmp file."
-    (* Flag to list each commands with its number *)
-    +> flag "-l" no_arg
-    ~aliases:["-list" ; "--list"]
-    ~doc:" Print a list of all command with its number. Useful to launch with number"
-    (* Flag to add a command to rc file, from stdin or directly *)
-    +> flag "-a" no_arg
-    ~aliases:["-add" ; "--add"]
-    ~doc:"[n] Add the command given on stdin to configuration file at a given position. If nothing is given, append it."
-    (* Flag to add a command to rc file, from stdin or directly *)
-    +> flag "-d" no_arg
-    ~aliases:["-delete" ; "--delete"]
-    ~doc:"[n] remove the nth command from configuration file. If n is absent, remove last one"
-    (* Flag to display current number *)
-    +> flag "-n" no_arg
-    ~aliases:["-number" ; "--number"]
-    ~doc:" Display current state of the program"
-
-    +> anon (maybe ("Command number" %: int)))
-    (fun reset_tmp list_commands add delete number num_cmd () ->
-       (* First try to list *)
-       if list_commands then List_rc.run ~rc:rc_content
-       (* To add command to rc file *)
-       else if add then Add_command.run ~rc:rc_content num_cmd
-       (* To delete command from rc file *)
-       else if delete then Remove_command.run ~rc:rc_content num_cmd
-       (* To print current state *)
-       else if number then State.current ()
-       (* Reset to a value *)
-       else if reset_tmp then Tmp_file.reset (Option.value ~default:0 num_cmd)
-       (* Else: Run the nth command *)
-       else Default.run ~rc:rc_content num_cmd
-    )
-;;
-
 let () =
-  Command.run ~version:version_number ~build_info:build_info commands
+  Command.run ~version:version_number ~build_info:build_info Command_def.commands
 ;;
