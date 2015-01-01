@@ -1,12 +1,12 @@
 OASISFormat: 0.4
 Name:        OcLaunch
-Version:     0.2.0-rc1
+Version:     0.2.0-dev
 Synopsis:    Launch commands automatically
 Authors:     Joly Clément <leowzukw@vmail.me>
 Maintainers: Joly Clément <leowzukw@vmail.me>
 License:     CeCILL
 LicenseFile: LICENSE
-Copyrights: (C) 2014 Joly Clément
+Copyrights: (C) 2014-2015 Joly Clément
 Homepage: http://www.oclaunch.tuxfamily.org
 BuildTools: ocamlbuild, camlp4o
 Plugins: StdFiles (0.4), DevFiles (0.4)

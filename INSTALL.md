@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: fba7555748594e7f5678a87998cc5e01) --->
+<!--- DO NOT EDIT (digest: 788c36d836a82ea33e30031012ae594a) --->
 
 This is the INSTALL file for the OcLaunch distribution.
 
@@ -15,7 +15,6 @@ In order to compile this package, you will need:
 * findlib
 * core
 * atdgen
-* core_extended
 
 Installing
 ==========

@@ -6,6 +6,7 @@
    + “-l” list commands of the configuration file with its number.
    + “-a” add the command given on stdin to configuration file.
    + “-d n” remove the nth command from rc file.
+   + “-n” display the current state.
  + Improve some messages.
  + Display run commands in title bar of the windows terminal.
  + New tmp file

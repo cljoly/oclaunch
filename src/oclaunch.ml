@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014                                             *)
+(* Copyright © Joly Clément, 2014-2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -38,7 +38,7 @@ open Core.Std;;
 
 (* Variable to store version number *)
 (* TODO Get value from file *)
-let version_number = "0.2.0-rc1";;
+let version_number = "0.2.0-dev";;
 
 (* Variable store building information *)
 (* XXX This is fake value, it corresponds to the running
@@ -73,13 +73,18 @@ let commands =
     +> flag "-d" no_arg
     ~aliases:["-delete" ; "--delete"]
     ~doc:"-d n remove the nth command from configuration file. If n is absent, remove last one"
+    (* Flag to display current number *)
+    +> flag "-n" no_arg
+    ~aliases:["-number" ; "--number"]
+    ~doc:"Display current state of the program"
 
     +> anon (maybe ("Command number" %: int)))
-    (fun reset_tmp list_commands add delete num_cmd () ->
+    (fun reset_tmp list_commands add delete number num_cmd () ->
        (* First try to list or add *)
        if list_commands then List_rc.run ~rc:rc_content
        else if add then Add_command.run ~rc:rc_content num_cmd
        else if delete then Remove_command.run ~rc:rc_content num_cmd
+       else if number then State.current ()
        else
        match reset_tmp with
          | true -> (* Reset temp file, if nothing is given, put 0 value *)

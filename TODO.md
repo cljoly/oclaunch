@@ -28,6 +28,7 @@
 ### Misc
  + Documentation ;-)
  + Handle errors in reading rc file
+ + Return error code when necessary
  + Add build info in binary for 0install
  + Use color in messages
 
