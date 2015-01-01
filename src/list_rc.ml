@@ -45,6 +45,7 @@ let disp_cmd_num number command =
 
 (* Function which list *)
 let run ~(rc:File_com.t) =
-    let open File_com in
+    (* We will use type rc_file *)
+    let open Settings_t in
     List.iteri rc.progs ~f:disp_cmd_num
 ;;

@@ -40,6 +40,8 @@ open Core.Std;;
 
 (* Display current number *)
 let current () =
+    (* We will use type tmp_file *)
+    let open Tmp_biniou_t in
     (* Read tmp file *)
     let tmp_file = Tmp_file.init () in
     (* Display the number *)

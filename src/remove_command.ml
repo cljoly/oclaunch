@@ -41,6 +41,8 @@ open Core.Std;;
 (* Function which add the commands (one per line) ridden on stdin to the rc
  * file, and then display th new configuration *)
 let run ~(rc:File_com.t) n_to_remove =
+    (* We will use type rc_file *)
+    let open Settings_t in
     (* Get actual list of commands *)
     let actual_list = rc.progs in
     (* Get nth *)

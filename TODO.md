@@ -5,7 +5,6 @@
     Or send an email to the author !**
 
 ## Major issue
- + Remove warnings
 
 ## Short term
 
