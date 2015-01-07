@@ -15,6 +15,7 @@
    + New default name : `/tmp/.oclaunch_trace.dat`
  + Add logo.
  + Clean up some code.
+ + improve utility set given with the repository (developer)
 
 ## v0.1.x
 
