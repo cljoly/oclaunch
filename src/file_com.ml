@@ -74,5 +74,10 @@ let rec init_rc ?(rc=(!Const.rc_file)) () =
   match (Sys.file_exists rc) with
     | `No -> create_rc_file ~name:rc; init_rc ~rc ();
     | `Unknown -> failwith "Error reading configuration file";
-    | `Yes -> In_channel.read_all rc |> Settings_j.rc_file_of_string
+    | `Yes -> (* Try to read, if there is an error, reset file *)
+            try
+                In_channel.read_all rc |> Settings_j.rc_file_of_string
+            with
+            | Yojson.Json_error _ -> (* Invalid file, delete, so that it will be reseted
+            on next call *) Sys.remove rc; init_rc ~rc ()
 ;;
