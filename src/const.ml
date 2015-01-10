@@ -44,7 +44,7 @@ let home = match (Sys.getenv "HOME") with
   | None -> failwith "Wrong value for home\n"
 ;;
 
-(* Some settings variales *)
+(* Some settings variables *)
 let rc_file = home ^ "/" ^ ".oclaunch_rc.json";;
 (* Set tmp file, in witch stock launches, in biniou format *)
 let tmp_file = "/tmp/.oclaunch_trace.dat";; (* File where launch are logged *)
