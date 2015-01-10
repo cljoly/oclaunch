@@ -44,7 +44,7 @@ type t = Settings_v.rc_file;;
 (* Function to write the rc file *)
 let write (tmp_file:t) =
         (* Short name *)
-        let name = Const.rc_file in
+        let name = !Const.rc_file in
         (* Create string to be written *)
         let data = (Settings_j.string_of_rc_file tmp_file
         |> Yojson.Basic.prettify ~std:true) in
@@ -69,7 +69,7 @@ let create_rc_file ~name =
 ;;
 
 (* Function to read the rc file *)
-let rec init_rc ?(rc=Const.rc_file) () =
+let rec init_rc ?(rc=(!Const.rc_file)) () =
   (* Verify that file exist *)
   match (Sys.file_exists rc) with
     | `No -> create_rc_file ~name:rc; init_rc ~rc ();

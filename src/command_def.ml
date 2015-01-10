@@ -38,13 +38,14 @@ open Core.Std;;
 
 (* Module containing the definition of the interface of OcLaunch *)
 
-(* Obtain data from rc_file *)
-let rc_content = File_com.init_rc ();;
-
 (* Arguments *)
 let args =
     let open Command.Spec in
     (empty
+    (* Flag to use different rc file *)
+    +> flag "-c" (optional_with_default !Const.rc_file file)
+    ~aliases:["--rc" ; "-rc"]
+    ~doc:"file Read configuration from the given file and continue parsing."
     (* Flag to reset tmp file *)
     +> flag "-r" no_arg
         ~aliases:["-reset-tmp" ; "--reset-tmp"]
@@ -78,7 +79,11 @@ let commands =
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
     args
 
-    (fun reset_tmp list_commands add delete number num_cmd () ->
+    (fun rc_file_name reset_tmp list_commands add delete number num_cmd () ->
+       (* Use given rc file, should run the nth argument if present *)
+       Const.rc_file := rc_file_name;
+       (* Obtain data from rc_file *)
+       let rc_content = File_com.init_rc () in
        (* First try to list *)
        if list_commands then List_rc.run ~rc:rc_content
        (* To add command to rc file *)
