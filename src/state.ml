@@ -38,12 +38,18 @@ open Core.Std;;
 
 (* Module to display the current state of the program *)
 
-(* Display current number *)
-let current () =
+(* Return current number *)
+let get_current () =
     (* We will use type tmp_file *)
     let open Tmp_biniou_t in
     (* Read tmp file *)
     let tmp_file = Tmp_file.init () in
+    (* Return the number *)
+    tmp_file.number;
+;;
+
+(* Display current number *)
+let print_current () =
     (* Display the number *)
-    printf "Current state: %i\n" tmp_file.number;
+    printf "Current state: %i\n" (get_current ())
 ;;

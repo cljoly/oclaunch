@@ -3,6 +3,7 @@
 ## v0.2.1
  + Add new command line option:
    + “-c file” allow to read configuration from custom file.
+ + Improve “-l”: now display a “\*” next to current state.
 
 ## v0.2.0
  + Add new command line option.

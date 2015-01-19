@@ -38,14 +38,17 @@ open Core.Std;;
 
 (* This modules contains function to list the content of the rc file *)
 
-(* Display the command with its number *)
-let disp_cmd_num number command =
-    printf "%i: %s\n" number command
+(* Display the command with its number, with a '*' if it is the current one *)
+let disp_cmd_num current_number number command =
+    (* If number is the global current one print a '*' *)
+    let prepend = (if current_number = number then "* " else "  ") in
+    printf "%s%i: %s\n" prepend number command
 ;;
 
 (* Function which list *)
 let run ~(rc:File_com.t) =
     (* We will use type rc_file *)
     let open Settings_t in
-    List.iteri rc.progs ~f:disp_cmd_num
+    List.iteri rc.progs ~f:(fun i item ->
+        disp_cmd_num (State.get_current ()) i item)
 ;;
