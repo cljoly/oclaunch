@@ -59,7 +59,7 @@ let args =
     +> flag "-a" no_arg
     ~aliases:["-add" ; "--add"]
     ~doc:"[n] Add the command given on stdin to configuration file at a given position. If nothing is given, append it."
-    (* Flag to add a command to rc file, from stdin or directly *)
+    (* Flag to remove a command from rc file *)
     +> flag "-d" no_arg
     ~aliases:["-delete" ; "--delete"]
     ~doc:"[n] remove the nth command from configuration file. If n is absent, remove last one"

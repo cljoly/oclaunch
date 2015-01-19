@@ -44,6 +44,12 @@ let home = match (Sys.getenv "HOME") with
   | None -> failwith "Wrong value for home\n"
 ;;
 
+(* Get default editor *)
+let editor = match (Sys.getenv "EDITOR") with
+  | Some x -> x
+  | None -> failwith "Wrong value for $EDITOR\n"
+;;
+
 (* Default place to read settings *)
 let rc_file_default = home ^ "/" ^ ".oclaunch_rc.json";;
 (* Current place to read settings, maybe modified from command line argument *)
