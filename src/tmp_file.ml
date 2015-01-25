@@ -107,12 +107,10 @@ let rec is_prog_in_rc list_from_rc_file program =
 (* Log when a program has been launched in a file in /tmp
    ~func is the function applied to the value *)
 let log ?(func= (+) 1 ) () =
-  (* We will use tmp_file type *)
-  let open Tmp_biniou_t in
   (* Make sure that file exists, otherwise strange things appears *)
   let file = init () in
   (* Write the file with the new value *)
-  write { file with number = (func file.number)}
+  write { file with Tmp_biniou_t.number = (func file.Tmp_biniou_t.number)}
 ;;
 
 (* Reset command number in two ways :

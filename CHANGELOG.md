@@ -4,6 +4,7 @@
  + Add new command line option:
    + “-c file” allow to read configuration from custom file.
  + Improve “-l”: now display a “\*” next to current state.
+ + Code clean up (Types in records)
 
 ## v0.2.0
  + Add new command line option.

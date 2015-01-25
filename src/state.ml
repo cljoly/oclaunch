@@ -40,12 +40,10 @@ open Core.Std;;
 
 (* Return current number *)
 let get_current () =
-    (* We will use type tmp_file *)
-    let open Tmp_biniou_t in
     (* Read tmp file *)
     let tmp_file = Tmp_file.init () in
     (* Return the number *)
-    tmp_file.number;
+    tmp_file.Tmp_biniou_t.number;
 ;;
 
 (* Display current number *)

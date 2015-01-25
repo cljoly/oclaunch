@@ -34,3 +34,4 @@
 ## Long term
  + Translate displayed messages.
  + Better command line interface by grouping commands.
+ + Use Batteries instead of Core to improve apps size?

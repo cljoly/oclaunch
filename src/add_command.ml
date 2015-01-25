@@ -56,12 +56,10 @@ let new_list current_list position new_items =
 (* Function which add the commands (one per line) ridden on stdin to the rc
  * file, and then display th new configuration *)
 let run ~(rc:File_com.t) position =
-    (* We will use type rc_file *)
-    let open Settings_t in
     (* Read command from stdin, as a list. fix_win_eol removes \r\n *)
     let cmd_list = In_channel.input_lines ~fix_win_eol:true In_channel.stdin in
     (* Create an updated rc file *)
-    let updated_rc = { rc with progs = (new_list rc.progs position cmd_list)} in
+    let updated_rc = { rc with Settings_t.progs = (new_list rc.Settings_t.progs position cmd_list)} in
     File_com.write updated_rc;
     (* Display the result *)
     let reread_rc = File_com.init_rc () in

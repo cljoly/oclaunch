@@ -60,10 +60,8 @@ let num_cmd_to_cmd ~cmd_list number =
 (* Function to determinate what is the next command to
  * execute. It take the current number from tmp file. *)
 let what_next ~cmd_list =
-  (* We will use type tmp_file *)
-  let open Tmp_biniou_t in
   let tmp_file = Tmp_file.init () in
-  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.number
+  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.Tmp_biniou_t.number
 ;;
 
 (* Display an error message if command can't run
