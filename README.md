@@ -1,13 +1,13 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 0ca605b95a7a33ed1adef17372475264) --->
+<!--- DO NOT EDIT (digest: f75668d8c51e2897d85573696c9f54a7) --->
 
 OcLaunch - Launch commands automatically
 ========================================
 
 OcLaunch is a command-line tool to launch successively (each time the program
 is called) commands. It is designed to be used with any program, interactive
-or not. Feedback is welcomed at leowzukw@vmail.me. Help at
-https://gitlab.com/WzukW/oclaunch/wikis/home.
+or not. Feedback is welcome at leowzukw@vmail.me. Help at
+https://gitlab.com/WzukW/oclaunch/wikis/home. Try it, it works automatically!
 
 See the file [INSTALL.md](INSTALL.md) for building and installation
 instructions.
