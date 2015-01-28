@@ -36,51 +36,17 @@
 
 open Core.Std;;
 
-(* Function allowing to set the title of the current terminal windows
- * XXX Maybe better in some lib *)
-(* TODO Allow to set it in configuration file *)
-let set_title new_title =
-    (* Use echo command *)
-    Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-    |> function | 0 -> () | _ -> printf "Error while setting terminal title"
+(* This modules contains function to list the content of the rc file *)
+
+(* Display the command with its number, with a '*' if it is the current one *)
+let disp_cmd_num current_number number command =
+    (* If number is the global current one print a '*' *)
+    let prepend = (if current_number = number then "* " else "  ") in
+    printf "%s%i: %s\n" prepend number command
 ;;
 
-(* Function to return the corresponding command to a number *)
-let num_cmd_to_cmd ~cmd_list number =
-  (* List.nth return None if out of the list *)
-  List.nth cmd_list number
-  |> function
-      (* If in range of the list, return the corresponding command else return
-       * an empty string after displaying error. *)
-      | Some x -> set_title x; x
-      (* TODO Make this printing configurable *)
-      | None -> printf "All has been launched!\n\
-      You can reset with '-r'\n"; ""
-;;
-
-(* Function to determinate what is the next command to
- * execute. It take the current number from tmp file. *)
-let what_next ~cmd_list =
-  let tmp_file = Tmp_file.init () in
-  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.Tmp_biniou_t.number
-;;
-
-(* Display an error message if command can't run
- * if 0 status, do nothing
- * else display status number *)
-let display_result command status =
-    match status with
-    | 0 -> (* No problem, do nothing *) ()
-    | _ -> (* Problem occur,  display it *)
-            printf "Problem while running: '%s'\nExited with code: %i\n"
-            command status
-;;
-
-(* Execute some command and log it *)
-let execute ?(display=true) cmd =
-    Tmp_file.log ~func:((+) 1) ();
-    if display then
-        print_endline cmd;
-    Sys.command cmd
-    |> display_result cmd (* Make it settable in rc file *)
+(* Function which list *)
+let run ~(rc:File_com.t) =
+    List.iteri rc.Settings_t.progs ~f:(fun i item ->
+        disp_cmd_num (State.get_current ()) i item)
 ;;

@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014                                             *)
+(* Copyright © Joly Clément, 2014-2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -38,13 +38,26 @@ open Core.Std;;
 
 (* Read settings and programs to launch from rc file *)
 
+(* Type of the values *)
+type t = Settings_v.rc_file;;
+
+(* Function to write the rc file *)
+let write (tmp_file:t) =
+        (* Short name *)
+        let name = !Const.rc_file in
+        (* Create string to be written *)
+        let data = (Settings_j.string_of_rc_file tmp_file
+        |> Yojson.Basic.prettify ~std:true) in
+        Out_channel.write_all name ~data
+;;
+
 (* Return the configuration file template *)
 let rc_template () =
   Settings_v.create_rc_file ~progs:[] ~settings:[]
 ;;
 
 (* Function to create configuration file if it does not
- * exists *)
+ * exist *)
 let create_rc_file ~name =
   (* Notify that we initialise config file *)
   printf "Initializing configuration file in %s\n" name;
@@ -56,10 +69,15 @@ let create_rc_file ~name =
 ;;
 
 (* Function to read the rc file *)
-let rec init_rc ~rc:rc_file =
+let rec init_rc ?(rc=(!Const.rc_file)) () =
   (* Verify that file exist *)
-  match (Sys.file_exists rc_file) with
-    | `No -> create_rc_file ~name:rc_file; init_rc ~rc:rc_file;
+  match (Sys.file_exists rc) with
+    | `No -> create_rc_file ~name:rc; init_rc ~rc ();
     | `Unknown -> failwith "Error reading configuration file";
-    | `Yes -> In_channel.read_all rc_file |> Settings_j.rc_file_of_string
+    | `Yes -> (* Try to read, if there is an error, reset file *)
+            try
+                In_channel.read_all rc |> Settings_j.rc_file_of_string
+            with
+            | Yojson.Json_error _ -> (* Invalid file, delete, so that it will be reseted
+            on next call *) Sys.remove rc; init_rc ~rc ()
 ;;

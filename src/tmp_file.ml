@@ -36,23 +36,56 @@
 
 open Core.Std;;
 
+(* Type of the values *)
+type t = Tmp_biniou_t.tmp_file;;
+
+(* Function to write the tmp file *)
+let write (tmp_file:t) =
+    (* Short name *)
+    let name = Const.tmp_file in
+    let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in
+    Out_channel.write_all name ~data:biniou_tmp
+;;
+
+(* XXX Using and keyword because each function can call each other *)
+(* Function to read the tmp file *)
+let rec read () =
+    (* Short name *)
+    let name = Const.tmp_file in
+    (* Get the string corresponding to the file *)
+    let file_content = In_channel.read_all name in
+    try
+        Tmp_biniou_b.tmp_file_of_string file_content
+    (* In previous version, the JSON format was used, otherwise the file can
+     * have a bad format. In this case, the Ag_ob_run.Error("Read error (1)")
+     * exeption is throw. We catch it here *)
+    with _ ->
+        (* If file is not in the right format, delete it and create a new one.
+         * Then, read it *)
+        printf "Reinitialises tmp file\n"; (* TODO Make it settable *)
+        Sys.remove name;
+        create_tmp_file ();
+        read ()
+
 (* Function to create the tmp file *)
-let create_tmp_file ~name =
-  Yojson.Basic.pretty_to_channel (Out_channel.create name) Const.tmp_file_template
+and create_tmp_file () =
+    Tmp_biniou_v.create_tmp_file ~command:[] ~number:0 ()
+    (* Convert it to biniou *)
+    |> write
 ;;
 
 (* Function to open tmp file *)
-let rec init ~tmp =
+let rec init () =
   (* If file do not exists, create it *)
-  let file_exists = (Sys.file_exists tmp) in
+  let file_exists = Sys.file_exists Const.tmp_file in
     match file_exists with
-      | `No -> create_tmp_file ~name:tmp;
-          init ~tmp:tmp
+      | `No -> create_tmp_file ();
+          init ()
       | `Unknown -> begin
-          Core_extended.Shell.rm tmp;
-          init ~tmp:tmp
+          Sys.remove Const.tmp_file;
+          init ()
         end
-      | `Yes -> tmp
+      | `Yes -> read ()
 ;;
 
 (* Verify that the value exist *)
@@ -71,7 +104,25 @@ let rec is_prog_in_rc list_from_rc_file program =
     | hd :: tl -> if hd = program then true else is_prog_in_rc tl program
 ;;
 
-(* Delete tmp file, to reinitialise program *)
-let reset ~tmp =
-  Sys.remove tmp
+(* Log when a program has been launched in a file in /tmp
+   ~func is the function applied to the value *)
+let log ?(func= (+) 1 ) () =
+  (* Make sure that file exists, otherwise strange things appears *)
+  let file = init () in
+  (* Write the file with the new value *)
+  write { file with Tmp_biniou_t.number = (func file.Tmp_biniou_t.number)}
+;;
+
+(* Reset command number in two ways :
+    * if cmd_num is 0, delete tmp file, to reinitialise program
+    * if cmd_num is 0>, set to this value
+    * else display an error message *)
+let reset cmd_num =
+    match cmd_num with
+    | 0 -> Sys.remove Const.tmp_file; printf "Tmp file removed\n"
+    | n when n > 0 ->
+            (* Set the number *)
+            log ~func:((fun a b -> a) n) ();
+            printf "Tmp file reseted to %i\n" n
+    | _ -> printf "Invalid number\n" (* TODO Make it settable *)
 ;;

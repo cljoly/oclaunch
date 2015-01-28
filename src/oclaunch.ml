@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014                                             *)
+(* Copyright © Joly Clément, 2014-2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -38,38 +38,13 @@ open Core.Std;;
 
 (* Variable to store version number *)
 (* TODO Get value from file *)
-let version_number = "0.1.3";;
+let version_number = "0.2.1-rc1";;
 
 (* Variable store building information *)
 (* XXX This is fake value, it corresponds to the running
  * information *)
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
-(* Obtain data from rc file *)
-let rc_content = File_com.init_rc ~rc:Const.rc_file;;
-
-(* Obtain data from tmp file *)
-let tmp_content = Tmp_file.init ~tmp:Const.tmp_file;;
-
-
-(* Define commands *)
-let commands =
-  Command.basic
-    ~summary:"OcLaunch program is published under CeCILL licence. See
-    https://gitlab.com/WzukW/oclaunch for details."
-    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
-    (* TODO if number is out of the mist, return error message *)
-    Command.Spec.(empty
-    +> flag ~aliases:["-reset-tmp" ; "--reset-tmp"] "-r" no_arg
-                    ~doc:" Reinitialises launches by deleting temporal file."
-    +> anon (maybe ("Command number" %: int)))
-    (fun reset_tmp num_cmd () ->
-       match reset_tmp with
-         | true -> Tmp_file.reset ~tmp:tmp_content
-         | false -> Default.run ~rc:rc_content ~tmp:tmp_content num_cmd
-    )
-;;
-
 let () =
-  Command.run ~version:version_number ~build_info:build_info commands
+  Command.run ~version:version_number ~build_info:build_info Command_def.commands
 ;;

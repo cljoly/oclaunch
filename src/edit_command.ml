@@ -36,51 +36,60 @@
 
 open Core.Std;;
 
-(* Function allowing to set the title of the current terminal windows
- * XXX Maybe better in some lib *)
-(* TODO Allow to set it in configuration file *)
-let set_title new_title =
-    (* Use echo command *)
-    Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-    |> function | 0 -> () | _ -> printf "Error while setting terminal title"
+(* Module to edit command without editing the rc file directly *)
+
+(* Function to create a new list augmented by some commands *)
+(* TODO Factorise this *)
+let new_list current_list position new_items =
+    (* If a number is given, add commands after position n by
+    splitting the list and concatenating all. List.split_n works like this :
+        * #let l1 = [1;2;3;4;5;6] in
+        * # List.split_n l1 2;;
+        * - : int list * int list = ([1; 2], [3; 4; 5; 6]) *)
+    let l_begin,l_end = List.split_n current_list position in
+    List.concat [ l_begin ; new_items ; l_end ]
 ;;
 
-(* Function to return the corresponding command to a number *)
-let num_cmd_to_cmd ~cmd_list number =
-  (* List.nth return None if out of the list *)
-  List.nth cmd_list number
-  |> function
-      (* If in range of the list, return the corresponding command else return
-       * an empty string after displaying error. *)
-      | Some x -> set_title x; x
-      (* TODO Make this printing configurable *)
-      | None -> printf "All has been launched!\n\
-      You can reset with '-r'\n"; ""
-;;
 
-(* Function to determinate what is the next command to
- * execute. It take the current number from tmp file. *)
-let what_next ~cmd_list =
-  let tmp_file = Tmp_file.init () in
-  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.Tmp_biniou_t.number
-;;
 
-(* Display an error message if command can't run
- * if 0 status, do nothing
- * else display status number *)
-let display_result command status =
-    match status with
-    | 0 -> (* No problem, do nothing *) ()
-    | _ -> (* Problem occur,  display it *)
-            printf "Problem while running: '%s'\nExited with code: %i\n"
-            command status
-;;
+(* Function which get the nth element, put it in afile, let the user edit it,
+ * and then remplace with the new result *)
+let run ~(rc:File_com.t) position =
+    (* Current list of commands *)
+    let current_list = rc.Settings_t.progs in
 
-(* Execute some command and log it *)
-let execute ?(display=true) cmd =
-    Tmp_file.log ~func:((+) 1) ();
-    if display then
-        print_endline cmd;
-    Sys.command cmd
-    |> display_result cmd (* Make it settable in rc file *)
+    (* Creating tmp file *)
+    let tmp_filename = [
+        "/tmp/oc_edit_" ;
+        (Int.to_string (Random.int 10000)) ;
+        ".txt" ;
+    ] in
+    let tmp_edit = String.concat tmp_filename in
+    (* Remove item to be edited *)
+    let original_command,shorter_list = Remove_command.remove current_list
+    position in
+    Out_channel.write_all tmp_edit original_command;
+
+
+    (* Edit file *)
+    let edit = String.concat [ Const.editor ; " " ; tmp_edit ] in
+    Sys.command edit
+    |> (function
+        0 -> ()
+        | n -> printf "Error while running %s: error code %i" edit n);
+
+    (* Reading and applying the result *)
+    let new_commands = In_channel.read_lines tmp_edit in
+    let cmd_list = new_list shorter_list position new_commands in
+    let updated_rc = { rc with Settings_t.progs = cmd_list} in
+    File_com.write updated_rc;
+    (* Display the result *)
+    printf "'%s' -> '%s'\n\n" original_command
+        (List.fold
+            ~f:(fun accum item -> String.concat [ accum ; item ; "\n" ])
+            ~init:""
+            new_commands);
+    let reread_rc = File_com.init_rc () in
+    (* Display new rc file *)
+    List_rc.run ~rc:reread_rc
 ;;

@@ -36,51 +36,33 @@
 
 open Core.Std;;
 
-(* Function allowing to set the title of the current terminal windows
- * XXX Maybe better in some lib *)
-(* TODO Allow to set it in configuration file *)
-let set_title new_title =
-    (* Use echo command *)
-    Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-    |> function | 0 -> () | _ -> printf "Error while setting terminal title"
+(* Module to add command without editing the rc file directly *)
+
+(* Function to create a new list augmented by some commands *)
+let new_list current_list position new_items =
+    match position with
+    | None -> List.append current_list new_items
+    | Some n -> (* If a number is given, add commands after position n by
+    splitting the list and concatenating all. List.split_n works like this :
+        * #let l1 = [1;2;3;4;5;6] in
+        * # List.split_n l1 2;;
+        * - : int list * int list = ([1; 2], [3; 4; 5; 6]) *)
+    let l_begin,l_end = List.split_n current_list n in
+    List.concat [ l_begin ; new_items ; l_end ]
 ;;
 
-(* Function to return the corresponding command to a number *)
-let num_cmd_to_cmd ~cmd_list number =
-  (* List.nth return None if out of the list *)
-  List.nth cmd_list number
-  |> function
-      (* If in range of the list, return the corresponding command else return
-       * an empty string after displaying error. *)
-      | Some x -> set_title x; x
-      (* TODO Make this printing configurable *)
-      | None -> printf "All has been launched!\n\
-      You can reset with '-r'\n"; ""
+
+
+(* Function which add the commands (one per line) ridden on stdin to the rc
+ * file, and then display th new configuration *)
+let run ~(rc:File_com.t) position =
+    (* Read command from stdin, as a list. fix_win_eol removes \r\n *)
+    let cmd_list = In_channel.input_lines ~fix_win_eol:true In_channel.stdin in
+    (* Create an updated rc file *)
+    let updated_rc = { rc with Settings_t.progs = (new_list rc.Settings_t.progs position cmd_list)} in
+    File_com.write updated_rc;
+    (* Display the result *)
+    let reread_rc = File_com.init_rc () in
+    List_rc.run ~rc:reread_rc
 ;;
 
-(* Function to determinate what is the next command to
- * execute. It take the current number from tmp file. *)
-let what_next ~cmd_list =
-  let tmp_file = Tmp_file.init () in
-  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.Tmp_biniou_t.number
-;;
-
-(* Display an error message if command can't run
- * if 0 status, do nothing
- * else display status number *)
-let display_result command status =
-    match status with
-    | 0 -> (* No problem, do nothing *) ()
-    | _ -> (* Problem occur,  display it *)
-            printf "Problem while running: '%s'\nExited with code: %i\n"
-            command status
-;;
-
-(* Execute some command and log it *)
-let execute ?(display=true) cmd =
-    Tmp_file.log ~func:((+) 1) ();
-    if display then
-        print_endline cmd;
-    Sys.command cmd
-    |> display_result cmd (* Make it settable in rc file *)
-;;

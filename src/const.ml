@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014                                             *)
+(* Copyright © Joly Clément, 2014-2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -41,14 +41,18 @@ open Core.Std;;
 (* Get current home *)
 let home = match (Sys.getenv "HOME") with
   | Some x -> x
-  | None -> failwith "Wrong value for home"
+  | None -> failwith "Wrong value for home\n"
 ;;
 
-(* Some settings variales *)
-let rc_file = home ^ "/" ^ ".oclaunch_rc.json";;
-(* Set tmp file, in witch stock launches *)
-let tmp_file = "/tmp/oclaunch_trace.json";; (* File where launch are logged *)
-(* Template for the tmp file *)
-let (tmp_file_template:Yojson.Basic.json) = `Assoc
-                                              [ "cmd", `List [];
-                                              "num", `Int 0 ];;
+(* Get default editor *)
+let editor = match (Sys.getenv "EDITOR") with
+  | Some x -> x
+  | None -> failwith "Wrong value for $EDITOR\n"
+;;
+
+(* Default place to read settings *)
+let rc_file_default = home ^ "/" ^ ".oclaunch_rc.json";;
+(* Current place to read settings, maybe modified from command line argument *)
+let rc_file = ref rc_file_default;;
+(* Set tmp file, in witch stock launches, in biniou format *)
+let tmp_file = "/tmp/.oclaunch_trace.dat";; (* File where launch are logged *)

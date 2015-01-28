@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014                                             *)
+(* Copyright © Joly Clément, 2014-2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -41,18 +41,16 @@ open Core.Std;;
 
 (* cmd_number is the number of the command the user wants
  * to execute *)
-let run ~rc:rc_content ~tmp:tmp_content cmd_number =
+let run ~rc:rc_content cmd_number =
   match cmd_number with
     | None -> begin
         (* Execute each item (one by one) in config file *)
-        let open Settings_t in (* This prevent warning 40 for ~cmd_list:rc_content.progs *)
-          let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.progs ~tmp:tmp_content in
+          let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.Settings_t.progs in
             (* TODO Use display option in rc file *)
-            Exec_cmd.execute ~tmp:tmp_content cmd_to_exec;
-            () (* Return nothing, because launched from oclaunch.ml *)
+            Exec_cmd.execute cmd_to_exec;
       end
     | Some num -> begin
-        let cmd_to_exec = Exec_cmd.num_cmd_to_cmd ~cmd_list:rc_content.progs num in
-          Exec_cmd.execute ~tmp:tmp_content cmd_to_exec;
+        let cmd_to_exec = Exec_cmd.num_cmd_to_cmd ~cmd_list:rc_content.Settings_t.progs num in
+          Exec_cmd.execute cmd_to_exec;
       end
 ;;
