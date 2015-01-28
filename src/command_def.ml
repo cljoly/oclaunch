@@ -70,7 +70,7 @@ let args =
     (* Flag to edit the nth command *)
     +> flag "-m" no_arg
     ~aliases:["-modify" ; "--modify"]
-    ~doc:"[n] Edit the nth command of the rc file."
+    ~doc:"[n] Edit the nth command of the rc file. [Not working properly]"
 
     +> anon (maybe ("Command number" %: int)))
 ;;
