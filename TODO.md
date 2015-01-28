@@ -5,7 +5,6 @@
  + Add confirmation on delete.
  + Add undo command ?
  + Show help in context
-        + When all has been launched, explain how to reset.
 
     **Feel free to add things here (and make a pull request).
     Or send an email to the author !**

@@ -54,7 +54,8 @@ let num_cmd_to_cmd ~cmd_list number =
        * an empty string after displaying error. *)
       | Some x -> set_title x; x
       (* TODO Make this printing configurable *)
-      | None -> printf "All has been launched!\n"; ""
+      | None -> printf "All has been launched!\n\
+      You can reset with '-r'\n"; ""
 ;;
 
 (* Function to determinate what is the next command to
