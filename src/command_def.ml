@@ -54,11 +54,11 @@ let args =
     (* Flag to list each commands with its number *)
     +> flag "-l" no_arg
     ~aliases:["-list" ; "--list"]
-    ~doc:" Print a list of all command with its number. Useful to launch with number. Displays a star next to next command to launch."
+    ~doc:" Print a list of all commands with their number. Useful to launch with number. Displays a star next to next command to launch."
     (* Flag to add a command to rc file, from stdin or directly *)
     +> flag "-a" no_arg
     ~aliases:["-add" ; "--add"]
-    ~doc:"[n] Add the command given on stdin to configuration file at a given position. If nothing is given, append it."
+    ~doc:"[n] Add the command given on stdin to the configuration file at a given position. If nothing is given, append it."
     (* Flag to remove a command from rc file *)
     +> flag "-d" no_arg
     ~aliases:["-delete" ; "--delete"]
