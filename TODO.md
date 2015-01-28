@@ -2,18 +2,20 @@
 
 ## Users idees
 
-    + Use commands with “--” insthead of “-”.
-    + Add confirmation on delete.
-    + Add undo command ?
-    + Show help in context
+ + Add confirmation on delete.
+ + Add undo command ?
+ + Show help in context
         + When all has been launched, explain how to reset.
 
     **Feel free to add things here (and make a pull request).
     Or send an email to the author !**
 
 ## Major issue
+ + Make multiple tmp file really working by using checksum for rc file.
 
 ## Short term
+ + Use a dedicated module, for user messages. Allow to print in color and to set
+   verbsity level (maybe also script output, in JSON format)
 
 ### Configuration value
  + Make displaying command before launching configurable

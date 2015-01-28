@@ -3,8 +3,9 @@
 ## v0.2.1
  + Add new command line option:
    + “-c file” allow to read configuration from custom file.
+   + “-m n” allow to edit and add (simultaneously) items to launch in rc file.
  + Improve “-l”: now display a “\*” next to current state.
- + Code clean up (Types in records)
+ + Code clean up (Types in records) and code factoring.
 
 ## v0.2.0
  + Add new command line option.

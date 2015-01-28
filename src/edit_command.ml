@@ -36,43 +36,60 @@
 
 open Core.Std;;
 
-(* Module to remove commands without editing the rc file directly *)
+(* Module to edit command without editing the rc file directly *)
 
-(* Function remove nth command in the rc_file, returning the removed one and the
- * new list *)
-let remove current_list n =
-    let removed = ref "" in
-    (* The list without the nth item *)
-    let new_list = List.filteri current_list ~f:(fun i _ ->
-        if i <> n then
-            (* If it is not nth, return true *)
-            true
-        else
-            begin
-                (* If it is nth, ie the command to be removed, store it and return
-                 * false, to remove the corresponding item *)
-                removed := List.nth_exn current_list i;
-                false
-            end
-    ) in
-    ( !removed, new_list )
+(* Function to create a new list augmented by some commands *)
+(* TODO Factorise this *)
+let new_list current_list position new_items =
+    (* If a number is given, add commands after position n by
+    splitting the list and concatenating all. List.split_n works like this :
+        * #let l1 = [1;2;3;4;5;6] in
+        * # List.split_n l1 2;;
+        * - : int list * int list = ([1; 2], [3; 4; 5; 6]) *)
+    let l_begin,l_end = List.split_n current_list position in
+    List.concat [ l_begin ; new_items ; l_end ]
 ;;
 
-(* Function which add the commands (one per line) ridden on stdin to the rc
- * file, and then display th new configuration *)
-let run ~(rc:File_com.t) n_to_remove =
-    (* Get actual list of commands *)
-    let actual_list = rc.Settings_t.progs in
-    (* Get nth *)
-    let nth = Option.value n_to_remove
-        ~default:((List.length actual_list) - 1) in
-    (* Remove the nth command, after display it *)
-    let removed,new_list = remove actual_list nth in
-    printf "Removing: %s\n\n" removed;
-    (* Write new list to rc file *)
-    let updated_rc = { rc with Settings_t.progs = new_list } in
+
+
+(* Function which get the nth element, put it in afile, let the user edit it,
+ * and then remplace with the new result *)
+let run ~(rc:File_com.t) position =
+    (* Current list of commands *)
+    let current_list = rc.Settings_t.progs in
+
+    (* Creating tmp file *)
+    let tmp_filename = [
+        "/tmp/oc_edit_" ;
+        (Int.to_string (Random.int 10000)) ;
+        ".txt" ;
+    ] in
+    let tmp_edit = String.concat tmp_filename in
+    (* Remove item to be edited *)
+    let original_command,shorter_list = Remove_command.remove current_list
+    position in
+    Out_channel.write_all tmp_edit original_command;
+
+
+    (* Edit file *)
+    let edit = String.concat [ Const.editor ; " " ; tmp_edit ] in
+    Sys.command edit
+    |> (function
+        0 -> ()
+        | n -> printf "Error while running %s: error code %i" edit n);
+
+    (* Reading and applying the result *)
+    let new_commands = In_channel.read_lines tmp_edit in
+    let cmd_list = new_list shorter_list position new_commands in
+    let updated_rc = { rc with Settings_t.progs = cmd_list} in
     File_com.write updated_rc;
     (* Display the result *)
+    printf "'%s' -> '%s'\n\n" original_command
+        (List.fold
+            ~f:(fun accum item -> String.concat [ accum ; item ; "\n" ])
+            ~init:""
+            new_commands);
     let reread_rc = File_com.init_rc () in
+    (* Display new rc file *)
     List_rc.run ~rc:reread_rc
 ;;

@@ -67,6 +67,10 @@ let args =
     +> flag "-n" no_arg
     ~aliases:["-number" ; "--number"]
     ~doc:" Display current state of the program"
+    (* Flag to edit the nth command *)
+    +> flag "-m" no_arg
+    ~aliases:["-modify" ; "--modify"]
+    ~doc:"[n] Edit the nth command of the rc file."
 
     +> anon (maybe ("Command number" %: int)))
 ;;
@@ -79,11 +83,13 @@ let commands =
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
     args
 
-    (fun rc_file_name reset_tmp list_commands add delete number num_cmd () ->
+    (fun rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
        (* Use given rc file, should run the nth argument if present *)
        Const.rc_file := rc_file_name;
        (* Obtain data from rc_file *)
        let rc_content = File_com.init_rc () in
+       (* A default number, corresponding to first item *)
+       let default_n = (Option.value ~default:0 num_cmd) in
        (* First try to list *)
        if list_commands then List_rc.run ~rc:rc_content
        (* To add command to rc file *)
@@ -93,7 +99,9 @@ let commands =
        (* To print current state *)
        else if number then State.print_current ()
        (* Reset to a value *)
-       else if reset_tmp then Tmp_file.reset (Option.value ~default:0 num_cmd)
+       else if reset_tmp then Tmp_file.reset default_n
+       (* Edit the nth command *)
+       else if modify then Edit_command.run ~rc:rc_content default_n
        (* Else: Run the nth command *)
        else Default.run ~rc:rc_content num_cmd
     )
