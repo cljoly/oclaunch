@@ -7,6 +7,7 @@
  + Improve “-l”: now display a “\*” next to current state.
  + Code clean up (Types in records) and code factoring.
  + When all has been launched, the program explain how to reset.
+ + Better messages on initialisation.
 
 ## v0.2.0
  + Add new command line option.
