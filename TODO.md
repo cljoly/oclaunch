@@ -22,7 +22,7 @@
  + Make tmp file emplacement configurable
  + Use two modes, one for easy launch and another more
    complete
-    + alway runnig : be sure that there entry are always running
+    + alway running : be sure that there entry are always running
     + easy : one entry on each call
     + confirm : ask before launching each entry
     + proportionate : launch by percent.
