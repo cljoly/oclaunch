@@ -1,7 +1,7 @@
 OASISFormat: 0.4
 Name:        OcLaunch
 Version:     0.2.2-dev
-Synopsis:    Launch commands automatically
+Synopsis:    Launch commands automagically
 Authors:     Joly Clément <leowzukw@vmail.me>
 Maintainers: Joly Clément <leowzukw@vmail.me>
 License:     CeCILL
@@ -14,7 +14,7 @@ XStdFilesREADME: true
 XStdFilesINSTALL: true
 XStdFilesAUTHORS: true
 AlphaFeatures: stdfiles_markdown, compiled_setup_ml
-Description: OcLaunch is a command-line tool to launch successively (each time the program is called) commands. It is designed to be used with any program, interactive or not. Feedback is welcome at leowzukw@vmail.me. Help at https://gitlab.com/WzukW/oclaunch/wikis/home. Try it, it works automatically!
+Description: OcLaunch is a command-line tool to launch successively (each time the program is called) commands. It is designed to be used with any program, interactive or not. Feedback is welcome at leowzukw@vmail.me. Help at https://gitlab.com/WzukW/oclaunch/wikis/home. Try it, it works automagically!
 
 PreBuildCommand: atdgen -t ./src/settings.atd
 PreBuildCommand: atdgen -j ./src/settings.atd
