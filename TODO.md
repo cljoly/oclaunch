@@ -11,10 +11,11 @@
 
 ## Major issue
  + Make multiple tmp file really working by using checksum for rc file.
+ + Test locking of tmp file
 
 ## Short term
  + Use a dedicated module, for user messages. Allow to print in color and to set
-   verbsity level (maybe also script output, in JSON format)
+   verbosity level (maybe also script output, in JSON format)
 
 ### Configuration value
  + Make displaying command before launching configurable

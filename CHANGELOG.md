@@ -8,6 +8,8 @@
  + Code clean up (Types in records) and code factoring.
  + When all has been launched, the program explain how to reset.
  + Better messages on initialisation.
+ + Locking tmp file to prevent launching two times the same item (**not tested
+   enough**)
 
 ## v0.2.0
  + Add new command line option.

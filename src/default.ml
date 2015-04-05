@@ -42,6 +42,9 @@ open Core.Std;;
 (* cmd_number is the number of the command the user wants
  * to execute *)
 let run ~rc:rc_content cmd_number =
+  (* Wait for another oclaunch instance which could launch the same program at
+   * the same time *)
+  Lock.wait ();
   match cmd_number with
     | None -> begin
         (* Execute each item (one by one) in config file *)

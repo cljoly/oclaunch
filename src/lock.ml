@@ -36,53 +36,27 @@
 
 open Core.Std;;
 
-(* Function allowing to set the title of the current terminal windows
- * XXX Maybe better in some lib *)
-(* TODO Allow to set it in configuration file *)
-let set_title new_title =
-    (* Use echo command *)
-    Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-    |> function | 0 -> () | _ -> printf "Error while setting terminal title"
+(* Module to mange locking, when another instance of OcLaunch is running *)
+
+(* Name of the lock file *)
+(* TODO Put it in Const *)
+let lock_name = "/tmp/.ocl.lock";;
+
+(* Create lock file *)
+let lock () =
+    (* XXX Verify if file exists ? *)
+    Out_channel.write_all lock_name ~data:"OcLaunch is running and did not finish."
 ;;
 
-(* Function to return the corresponding command to a number *)
-let num_cmd_to_cmd ~cmd_list number =
-  (* List.nth return None if out of the list *)
-  List.nth cmd_list number
-  |> function
-      (* If in range of the list, return the corresponding command else return
-       * an empty string after displaying error. *)
-      | Some x -> set_title x; x
-      (* TODO Make this printing configurable *)
-      | None -> printf "All has been launched!\n\
-      You can reset with '-r'\n"; ""
+(* Pause the program until lock file is removed, until argument is in second *)
+let rec wait ?(until=10) ?(delay=1) () =
+    match Sys.file_exists lock_name with
+     `Yes -> Unix.sleep delay; wait ()
+    | `No -> lock ()
+    | `Unknown -> failwith "Problem with lock file"
 ;;
 
-(* Function to determinate what is the next command to
- * execute. It take the current number from tmp file. *)
-let what_next ~cmd_list =
-  let tmp_file = Tmp_file.init () in
-  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.Tmp_biniou_t.number
-;;
-
-(* Display an error message if command can't run
- * if 0 status, do nothing
- * else display status number *)
-let display_result command status =
-    match status with
-    | 0 -> (* No problem, do nothing *) ()
-    | _ -> (* Problem occur,  display it *)
-            printf "Problem while running: '%s'\nExited with code: %i\n"
-            command status
-;;
-
-(* Execute some command and log it *)
-let execute ?(display=true) cmd =
-    Tmp_file.log ~func:((+) 1) ();
-    if display then
-        print_endline cmd;
-    (* We can remove lock file since number in tmp_file has been incremented *)
-    Lock.remove ();
-    Sys.command cmd
-    |> display_result cmd (* Make it settable in rc file *)
+(* Remove the lock file *)
+let remove () =
+    Sys.remove lock_name
 ;;
