@@ -1,6 +1,12 @@
 # Changelog of OcLaunch
 
-## v0.2.1
+## 0.2.x
+
+### v0.2.2
+ + Locking tmp file to prevent launching two times the same item (**not tested
+   enough**)
+
+### v0.2.1
  + Add new command line option:
    + “-c file” allow to read configuration from custom file.
    + “-m n” allow to edit and add (simultaneously) items to launch in rc file.
@@ -8,10 +14,8 @@
  + Code clean up (Types in records) and code factoring.
  + When all has been launched, the program explain how to reset.
  + Better messages on initialisation.
- + Locking tmp file to prevent launching two times the same item (**not tested
-   enough**)
 
-## v0.2.0
+### v0.2.0
  + Add new command line option.
    + “-r” can now take a number to start from.
    + “-l” list commands of the configuration file with its number.
