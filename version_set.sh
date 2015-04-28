@@ -18,6 +18,9 @@ echo $new_version > VERSION
 sed -i -e "s/Version:     .*/Version:     $new_version/" _oasis
 sed -i -e "s/\\(let version_number = \"\\).*\\(\";;\\)/\\1$new_version\\2/" src/oclaunch.ml
 
+# Update oasis
+oasis setup
+
 # Display the result
 echo "Result"
 git diff
