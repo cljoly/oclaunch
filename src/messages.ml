@@ -62,23 +62,21 @@ type style =
 (* General function to print things *)
 let print ~color ~style message =
     let open Core_extended in
-    (* This module create proper escapement to display text with bold/color... *)
-    (* Define style and then color, color only works *)
-    style |>
+    (* This code create proper escapement to display text with bold/color... *)
+    color |>
     (function
-        | Bold -> Color_print.bold message
-        | Underline -> Color_print.underline message
-        | Normal -> Color_print.normal message
-    ) |>
-    (fun styled_message ->
-        match color with
         | Green -> Color_print.color ~color:`Green message
         | Red -> Color_print.color ~color:`Red message
         | Yellow -> Color_print.color ~color:`Yellow message
         | White -> Color_print.color ~color:`White message
         | Plum -> Color_print.color ~color:`Plum message
     ) |> (* Finaly print escaped string *)
-    printf "%s"
+    (fun colored_msg ->
+        match style with
+        | Bold -> Color_print.boldprintf "%s" colored_msg
+        | Underline -> Color_print.underlineprintf "%s" colored_msg
+        | Normal -> printf "%s" colored_msg
+    )
 ;;
 
 (* Print debugging, information, important... messages *)
