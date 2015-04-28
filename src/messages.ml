@@ -76,14 +76,13 @@ let print ~color ~style message =
         | Yellow -> Color_print.color ~color:`Yellow message
         | White -> Color_print.color ~color:`White message
     ) |> (* Finaly print escaped string *)
-    (* XXX End-line automatically inserted, maybe not the best option *)
-    printf "%s\n"
+    printf "%s"
 ;;
 
 (* Print debugging, information, important... messages *)
 (* XXX Partial applications *)
 let debug message =
-    let mess = (Time.now()|> Time.to_string) ^ " " ^ message in
+    let mess = (Time.now()|> Time.to_string) ^ " " ^ message ^ "\n" in
     print ~color:White ~style:Bold mess
 ;;
 
