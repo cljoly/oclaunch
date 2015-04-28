@@ -80,24 +80,27 @@ let print ~color ~style message =
 ;;
 
 (* Print debugging, information, important... messages *)
-(* XXX Partial applications *)
 let debug message =
     let mess = (Time.now()|> Time.to_string) ^ " " ^ message ^ "\n" in
     print ~color:White ~style:Bold mess
 ;;
 
-let info =
-    print ~color:White ~style:Normal
+let info message =
+    let mess = message ^ "\n" in
+    print ~color:White ~style:Normal mess
 ;;
 
-let warning =
-    print ~color:Red ~style:Bold
+let warning message =
+    let mess = message ^ "\n" in
+    print ~color:Red ~style:Bold mess
 ;;
 
-let ok =
-    print ~color:Green ~style:Bold
+let ok message =
+    let mess = message ^ "\n" in
+    print ~color:Green ~style:Bold mess
 ;;
 
-let tips =
-    print ~color:Yellow ~style:Normal
+let tips message =
+    let mess = message ^ "\n" in
+    print ~color:Yellow ~style:Normal mess
 ;;

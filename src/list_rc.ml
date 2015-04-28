@@ -42,7 +42,7 @@ open Core.Std;;
 let disp_cmd_num current_number number command =
     (* If number is the global current one print a '*' *)
     let prepend = (if current_number = number then "* " else "  ") in
-    sprintf "%s%i: %s\n" prepend number command
+    sprintf "%s%i: %s" prepend number command
     |> (fun concatenated_msg ->
             match prepend with
             | "* " -> Messages.ok concatenated_msg

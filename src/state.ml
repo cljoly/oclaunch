@@ -49,6 +49,6 @@ let get_current () =
 (* Display current number *)
 let print_current () =
     (* Display the number *)
-    sprintf "Current state: %i\n" (get_current ())
+    sprintf "Current state: %i" (get_current ())
     |> Messages.ok
 ;;
