@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 788c36d836a82ea33e30031012ae594a) --->
+<!--- DO NOT EDIT (digest: 9e32abada3d7ab0ee6974517a830cab5) --->
 
 This is the INSTALL file for the OcLaunch distribution.
 
@@ -14,6 +14,7 @@ In order to compile this package, you will need:
 * ocaml
 * findlib
 * core
+* core_extended
 * atdgen
 
 Installing

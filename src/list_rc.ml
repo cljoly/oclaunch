@@ -38,11 +38,16 @@ open Core.Std;;
 
 (* This modules contains function to list the content of the rc file *)
 
-(* Display the command with its number, with a '*' if it is the current one *)
+(* Display the command with its number, with a '*' and different color if it is the current one *)
 let disp_cmd_num current_number number command =
     (* If number is the global current one print a '*' *)
     let prepend = (if current_number = number then "* " else "  ") in
-    printf "%s%i: %s\n" prepend number command
+    sprintf "%s%i: %s\n" prepend number command
+    |> (fun concatenated_msg ->
+            match prepend with
+            | "* " -> Messages.ok concatenated_msg
+            | "  " -> Messages.info concatenated_msg
+            | _ -> assert false)
 ;;
 
 (* Function which list *)

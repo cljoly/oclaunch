@@ -38,7 +38,7 @@ open Core.Std;;
 
 (* Variable to store version number *)
 (* TODO Get value from file *)
-let version_number = "0.2.2-rc1";;
+let version_number = "0.2.2";;
 
 (* Variable store building information *)
 (* XXX This is fake value, it corresponds to the running
@@ -46,5 +46,6 @@ let version_number = "0.2.2-rc1";;
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
 let () =
+  Messages.debug "Started";
   Command.run ~version:version_number ~build_info:build_info Command_def.commands
 ;;

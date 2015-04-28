@@ -36,19 +36,69 @@
 
 open Core.Std;;
 
-(* Module to display the current state of the program *)
+(* Modules to manage output messages, with color *)
 
-(* Return current number *)
-let get_current () =
-    (* Read tmp file *)
-    let tmp_file = Tmp_file.init () in
-    (* Return the number *)
-    tmp_file.Tmp_biniou_t.number;
+(* TODO
+    * allow to set verbosity
+    * allow to toggle colors
+    * allow to display bold & underlined messages *)
+
+(* Types corresponding to some colors & style of the Core_extended.Color_print
+ * library *)
+type color =
+    | Green
+    | Red
+    | Yellow
+    | White
 ;;
 
-(* Display current number *)
-let print_current () =
-    (* Display the number *)
-    sprintf "Current state: %i\n" (get_current ())
-    |> Messages.ok
+type style =
+    | Bold
+    | Underline
+    | Normal
+;;
+
+(* General function to print things *)
+let print ~color ~style message =
+    let open Core_extended in
+    (* This module create proper escapement to display text with bold/color... *)
+    (* Define style and then color, color only works *)
+    style |>
+    (function
+        | Bold -> Color_print.bold message
+        | Underline -> Color_print.underline message
+        | Normal -> Color_print.normal message
+    ) |>
+    (fun styled_message ->
+        match color with
+        | Green -> Color_print.color ~color:`Green message
+        | Red -> Color_print.color ~color:`Red message
+        | Yellow -> Color_print.color ~color:`Yellow message
+        | White -> Color_print.color ~color:`White message
+    ) |> (* Finaly print escaped string *)
+    (* XXX End-line automatically inserted, maybe not the best option *)
+    printf "%s\n"
+;;
+
+(* Print debugging, information, important... messages *)
+(* XXX Partial applications *)
+let debug message =
+    let mess = (Time.now()|> Time.to_string) ^ " " ^ message in
+    print ~color:White ~style:Bold mess
+;;
+
+let info =
+    print ~color:White ~style:Normal
+;;
+
+let warning =
+    print ~color:Red ~style:Bold
+;;
+
+let ok =
+    print ~color:Green ~style:Bold
+;;
+
+let tips =
+    print ~color:Yellow ~style:Normal
 ;;

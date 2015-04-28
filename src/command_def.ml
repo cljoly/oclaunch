@@ -84,6 +84,7 @@ let commands =
     args
 
     (fun rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
+        Messages.info "Parsed command line arguments";
        (* Use given rc file, should run the nth argument if present *)
        Const.rc_file := rc_file_name;
        (* Obtain data from rc_file *)
