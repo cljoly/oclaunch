@@ -46,7 +46,7 @@ let disp_cmd_num current_number number command =
     |> (fun concatenated_msg ->
             match prepend with
             | "* " -> Messages.ok concatenated_msg
-            | "  " -> Messages.info concatenated_msg
+            | "  " -> Messages.tips concatenated_msg
             | _ -> assert false)
 ;;
 
