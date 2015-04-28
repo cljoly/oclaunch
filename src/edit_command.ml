@@ -76,7 +76,8 @@ let run ~(rc:File_com.t) position =
     Sys.command edit
     |> (function
         0 -> ()
-        | n -> printf "Error while running %s: error code %i" edit n);
+        | n -> sprintf "Error while running %s: error code %i" edit n
+        |> Messages.warning);
 
     (* Reading and applying the result *)
     let new_commands = In_channel.read_lines tmp_edit in
@@ -84,11 +85,12 @@ let run ~(rc:File_com.t) position =
     let updated_rc = { rc with Settings_t.progs = cmd_list} in
     File_com.write updated_rc;
     (* Display the result *)
-    printf "'%s' -> '%s'\n\n" original_command
+    sprintf "'%s' -> '%s'\n\n" original_command
         (List.fold
             ~f:(fun accum item -> String.concat [ accum ; item ; "\n" ])
             ~init:""
-            new_commands);
+            new_commands)
+        |> Messages.ok;
     let reread_rc = File_com.init_rc () in
     (* Display new rc file *)
     List_rc.run ~rc:reread_rc

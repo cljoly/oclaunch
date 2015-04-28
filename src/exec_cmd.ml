@@ -40,9 +40,10 @@ open Core.Std;;
  * XXX Maybe better in some lib *)
 (* TODO Allow to set it in configuration file *)
 let set_title new_title =
-    (* Use echo command *)
+    (* Use echo command to set term  title *)
     Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-    |> function | 0 -> () | _ -> printf "Error while setting terminal title"
+    |> function | 0 -> () | _ -> sprintf "Error while setting terminal title"
+    |> Messages.warning
 ;;
 
 (* Function to return the corresponding command to a number *)
@@ -54,8 +55,11 @@ let num_cmd_to_cmd ~cmd_list number =
        * an empty string after displaying error. *)
       | Some x -> set_title x; x
       (* TODO Make this printing configurable *)
-      | None -> printf "All has been launched!\n\
-      You can reset with '-r'\n"; ""
+      | None ->
+          Messages.ok "All has been launched!\n";
+          Messages.tips "You can reset with '-r'";
+          (* Return empty string *)
+          ""
 ;;
 
 (* Function to determinate what is the next command to
@@ -72,15 +76,16 @@ let display_result command status =
     match status with
     | 0 -> (* No problem, do nothing *) ()
     | _ -> (* Problem occur,  display it *)
-            printf "Problem while running: '%s'\nExited with code: %i\n"
+            sprintf "Problem while running: '%s'\nExited with code: %i\n"
             command status
+    |> Messages.warning
 ;;
 
 (* Execute some command and log it *)
 let execute ?(display=true) cmd =
     Tmp_file.log ~func:((+) 1) ();
     if display then
-        print_endline cmd;
+        Messages.ok cmd;
     (* We can remove lock file since number in tmp_file has been incremented *)
     Lock.remove ();
     Sys.command cmd

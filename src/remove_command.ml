@@ -68,7 +68,8 @@ let run ~(rc:File_com.t) n_to_remove =
         ~default:((List.length actual_list) - 1) in
     (* Remove the nth command, after display it *)
     let removed,new_list = remove actual_list nth in
-    printf "Removing: %s\n\n" removed;
+    sprintf "Removing: %s\n" removed
+    |> Messages.warning;
     (* Write new list to rc file *)
     let updated_rc = { rc with Settings_t.progs = new_list } in
     File_com.write updated_rc;

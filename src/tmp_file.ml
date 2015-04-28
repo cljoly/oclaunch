@@ -62,7 +62,7 @@ let rec read () =
     with _ ->
         (* If file is not in the right format, delete it and create a new one.
          * Then, read it *)
-        printf "Reinitialises tmp file\n"; (* TODO Make it settable *)
+        Messages.ok "Reinitialises tmp file\n"; (* TODO Make it settable *)
         Sys.remove name;
         create_tmp_file ();
         read ()
@@ -119,10 +119,10 @@ let log ?(func= (+) 1 ) () =
     * else display an error message *)
 let reset cmd_num =
     match cmd_num with
-    | 0 -> Sys.remove Const.tmp_file; printf "Tmp file removed\n"
+    | 0 -> Sys.remove Const.tmp_file; Messages.ok "Tmp file removed"
     | n when n > 0 ->
             (* Set the number *)
             log ~func:((fun a b -> a) n) ();
-            printf "Tmp file reseted to %i\n" n
-    | _ -> printf "Invalid number\n" (* TODO Make it settable *)
+            sprintf "Tmp file reseted to %i" n |> Messages.ok
+    | _ -> Messages.warning "Invalid number" (* TODO Make it settable *)
 ;;
