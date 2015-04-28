@@ -1,4 +1,4 @@
-PKG core yojson atdgen
+PKG core yojson atdgen core_extended
 
 S *
 
