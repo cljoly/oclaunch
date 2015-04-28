@@ -52,6 +52,8 @@ let editor = match (Sys.getenv "EDITOR") with
 
 (* Level of verbosity, used by Messages module *)
 let verbosity = ref 4;;
+(* Use do not use colors *)
+let no_color = ref false;;
 
 (* Default place to read settings *)
 let rc_file_default = home ^ "/" ^ ".oclaunch_rc.json";;

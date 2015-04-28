@@ -47,6 +47,10 @@ let args =
         ~aliases:["--verbose" ; "-verbose"]
         ~doc:"[n] Set verbosity level.\
         The higher n is, the most verbose the program is."
+    (* Flag to set colors *)
+    +> flag "--no-color" no_arg
+        ~aliases:["-no-color"]
+        ~doc:"Use this flag to disable color usage."
     (* Flag to use different rc file *)
     +> flag "-c" (optional_with_default !Const.rc_file file)
     ~aliases:["--rc" ; "-rc"]
@@ -88,10 +92,13 @@ let commands =
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
     args
 
-    (fun verbosity rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
+    (fun verbosity no_color rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
        (* Level of verbosity *)
        Const.verbosity := verbosity;
+       (* Do not use color *)
+       Const.no_color := no_color;
        Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
+       Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
        (* Use given rc file, should run the nth argument if present *)
        Const.rc_file := rc_file_name;
        Messages.debug (sprintf "Configuration file is %s" !Const.rc_file);

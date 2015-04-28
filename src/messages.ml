@@ -39,7 +39,6 @@ open Core.Std;;
 (* Modules to manage output messages, with color *)
 
 (* TODO
-    * allow to toggle colors on or off
     * allow to display bold & underlined messages *)
 
 (* Types corresponding to some colors & style of the Core_extended.Color_print
@@ -61,21 +60,25 @@ type style =
 (* General function to print things *)
 let print ~color ~style message =
     let open Core_extended in
-    (* This code create proper escapement to display text with bold/color... *)
-    color |>
-    (function
-        | Green -> Color_print.color ~color:`Green message
-        | Red -> Color_print.color ~color:`Red message
-        | Yellow -> Color_print.color ~color:`Yellow message
-        | White -> Color_print.color ~color:`White message
-        | Plum -> Color_print.color ~color:`Plum message
-    ) |> (* Finaly print escaped string *)
-    (fun colored_msg ->
-        match style with
-        | Bold -> Color_print.boldprintf "%s" colored_msg
-        | Underline -> Color_print.underlineprintf "%s" colored_msg
-        | Normal -> printf "%s" colored_msg
-    )
+    match !Const.no_color with
+    | true -> printf "%s" message
+    | false -> begin (* Use colors *)
+        (* This code create proper escapement to display text with bold/color... *)
+        color |>
+        (function
+            | Green -> Color_print.color ~color:`Green message
+            | Red -> Color_print.color ~color:`Red message
+            | Yellow -> Color_print.color ~color:`Yellow message
+            | White -> Color_print.color ~color:`White message
+            | Plum -> Color_print.color ~color:`Plum message
+        ) |> (* Finaly print escaped string *)
+        (fun colored_msg ->
+            match style with
+            | Bold -> Color_print.boldprintf "%s" colored_msg
+            | Underline -> Color_print.underlineprintf "%s" colored_msg
+            | Normal -> printf "%s" colored_msg
+        )
+    end
 ;;
 
 (* Behave in a conform way to verbosity
