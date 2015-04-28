@@ -82,7 +82,7 @@ let print ~color ~style message =
 (* Print debugging, information, important... messages *)
 let debug message =
     let mess = (Time.now()|> Time.to_string) ^ " " ^ message ^ "\n" in
-    print ~color:Plum ~style:Bold mess
+    print ~color:Plum ~style:Underline mess
 ;;
 
 let info message =
