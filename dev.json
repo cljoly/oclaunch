@@ -1,0 +1,4 @@
+{
+  "progs": [ "task", "task +next", "task +rdv", "echo \"Finish\"" ],
+  "settings": []
+}

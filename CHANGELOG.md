@@ -5,6 +5,7 @@
 ### v0.2.2
  + Locking tmp file to prevent launching two times the same item (**not tested
    enough**)
+ + Messages displayed with bold, underline and colors.
 
 ### v0.2.1
  + Add new command line option:

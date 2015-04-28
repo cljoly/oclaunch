@@ -36,16 +36,70 @@
 
 open Core.Std;;
 
-(* Variable to store version number *)
-(* TODO Get value from file *)
-let version_number = "0.2.2";;
+(* Modules to manage output messages, with color *)
 
-(* Variable store building information *)
-(* XXX This is fake value, it corresponds to the running
- * information *)
-let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
+(* TODO
+    * allow to set verbosity
+    * allow to toggle colors
+    * allow to display bold & underlined messages *)
 
-let () =
-  Messages.debug "Started";
-  Command.run ~version:version_number ~build_info:build_info Command_def.commands
+(* Types corresponding to some colors & style of the Core_extended.Color_print
+ * library *)
+type color =
+    | Green
+    | Red
+    | Yellow
+    | White
+;;
+
+type style =
+    | Bold
+    | Underline
+    | Normal
+;;
+
+(* General function to print things *)
+let print ~color ~style message =
+    let open Core_extended in
+    (* This module create proper escapement to display text with bold/color... *)
+    (* Define color and then style *)
+    color |>
+    (function
+        | Green -> Color_print.color ~color:`Green message
+        | Red -> Color_print.color ~color:`Red message
+        | Yellow -> Color_print.color ~color:`Yellow message
+        | White -> Color_print.color ~color:`White message)
+    |>
+    (fun colored_message ->
+        match style with
+        | Bold -> Color_print.bold colored_message
+        | Underline -> Color_print.underline colored_message
+        | Normal -> Color_print.normal colored_message
+    )
+    |> (* Finaly print escaped string *)
+    (* XXX End-line automatically inserted, maybe not the best option *)
+    printf "%s\n"
+;;
+
+(* Print debugging, information, important... messages *)
+(* XXX Partial applications *)
+let debug message =
+    let mess = (Time.now()|> Time.to_string) ^ " " ^ message in
+    print ~color:White ~style:Bold mess
+;;
+
+let info =
+    print ~color:White ~style:Normal
+;;
+
+let warning =
+    print ~color:Red ~style:Bold
+;;
+
+let ok =
+    print ~color:Green ~style:Bold
+;;
+
+let tips =
+    print ~color:Yellow ~style:Normal
 ;;
