@@ -39,8 +39,7 @@ open Core.Std;;
 (* Modules to manage output messages, with color *)
 
 (* TODO
-    * allow to set verbosity
-    * allow to toggle colors
+    * allow to toggle colors on or off
     * allow to display bold & underlined messages *)
 
 (* Types corresponding to some colors & style of the Core_extended.Color_print
@@ -79,28 +78,48 @@ let print ~color ~style message =
     )
 ;;
 
+(* Behave in a conform way to verbosity
+ * The higher is the number, the more important the message is, the lower
+ * verbosity value display it *)
+let check_verbosity ~f function_number =
+    match function_number <= !Const.verbosity with
+    true -> (* Display the message *)
+        f ()
+    | false -> ()
+;;
+
 (* Print debugging, information, important... messages *)
 let debug message =
-    let mess = (Time.now()|> Time.to_string) ^ " " ^ message ^ "\n" in
-    print ~color:Plum ~style:Underline mess
+    check_verbosity ~f:(fun () ->
+        let mess = (Time.now()|> Time.to_string) ^ " " ^ message ^ "\n" in
+        print ~color:Plum ~style:Underline mess
+    ) 5
 ;;
 
 let info message =
-    let mess = message ^ "\n" in
-    print ~color:White ~style:Normal mess
+    check_verbosity ~f:(fun () ->
+        let mess = message ^ "\n" in
+        print ~color:White ~style:Normal mess
+    ) 4
 ;;
 
 let warning message =
-    let mess = message ^ "\n" in
-    print ~color:Red ~style:Bold mess
+    check_verbosity ~f:(fun () ->
+        let mess = message ^ "\n" in
+        print ~color:Red ~style:Bold mess
+    ) 1
 ;;
 
 let ok message =
-    let mess = message ^ "\n" in
-    print ~color:Green ~style:Bold mess
+    check_verbosity ~f:(fun () ->
+        let mess = message ^ "\n" in
+        print ~color:Green ~style:Bold mess
+    ) 2
 ;;
 
 let tips message =
+    check_verbosity ~f:(fun () ->
     let mess = message ^ "\n" in
     print ~color:Yellow ~style:Normal mess
+    ) 3
 ;;

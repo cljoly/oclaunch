@@ -62,7 +62,7 @@ let rec read () =
     with _ ->
         (* If file is not in the right format, delete it and create a new one.
          * Then, read it *)
-        Messages.ok "Reinitialises tmp file\n"; (* TODO Make it settable *)
+        Messages.ok "Reinitialises tmp file\n";
         Sys.remove name;
         create_tmp_file ();
         read ()
@@ -130,5 +130,5 @@ let reset cmd_num =
             (* Set the number *)
             log ~func:((fun a b -> a) n) ();
             sprintf "Tmp file reseted to %i" n |> Messages.ok
-    | _ -> Messages.warning "Invalid number" (* TODO Make it settable *)
+    | _ -> Messages.warning "Invalid number"
 ;;

@@ -38,7 +38,6 @@ open Core.Std;;
 
 (* Function allowing to set the title of the current terminal windows
  * XXX Maybe better in some lib *)
-(* TODO Allow to set it in configuration file *)
 let set_title new_title =
     (* Use echo command to set term  title *)
     Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
@@ -54,9 +53,8 @@ let num_cmd_to_cmd ~cmd_list number =
       (* If in range of the list, return the corresponding command else return
        * an empty string after displaying error. *)
       | Some x -> set_title x; x
-      (* TODO Make this printing configurable *)
       | None ->
-          Messages.ok "All has been launched!\n";
+          Messages.ok "All has been launched!";
           Messages.tips "You can reset with '-r'";
           (* Return empty string *)
           ""

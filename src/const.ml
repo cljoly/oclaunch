@@ -50,6 +50,9 @@ let editor = match (Sys.getenv "EDITOR") with
   | None -> failwith "Wrong value for $EDITOR\n"
 ;;
 
+(* Level of verbosity, used by Messages module *)
+let verbosity = ref 4;;
+
 (* Default place to read settings *)
 let rc_file_default = home ^ "/" ^ ".oclaunch_rc.json";;
 (* Current place to read settings, maybe modified from command line argument *)

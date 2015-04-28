@@ -48,9 +48,8 @@ let run ~rc:rc_content cmd_number =
   match cmd_number with
     | None -> begin
         (* Execute each item (one by one) in config file *)
-          let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.Settings_t.progs in
-            (* TODO Use display option in rc file *)
-            Exec_cmd.execute cmd_to_exec;
+        let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.Settings_t.progs in
+        Exec_cmd.execute cmd_to_exec;
       end
     | Some num -> begin
         let cmd_to_exec = Exec_cmd.num_cmd_to_cmd ~cmd_list:rc_content.Settings_t.progs num in

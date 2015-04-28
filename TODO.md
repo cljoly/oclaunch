@@ -14,11 +14,8 @@
  + Make multiple tmp file really working by using checksum for rc file.
 
 ## Short term
- + Use a dedicated module, for user messages. Allow to print in color and to set
-   verbosity level (maybe also script output, in JSON format)
 
 ### Configuration value
- + Make displaying command before launching configurable
  + Allow to run infinitely or say when it is finish
  + Make tmp file emplacement configurable
  + Use two modes, one for easy launch and another more

@@ -42,6 +42,11 @@ open Core.Std;;
 let args =
     let open Command.Spec in
     (empty
+    (* Flag to set verbosity level *)
+    +> flag "-v" (optional_with_default !Const.verbosity int)
+        ~aliases:["--verbose" ; "-verbose"]
+        ~doc:"[n] Set verbosity level.\
+        The higher n is, the most verbose the program is."
     (* Flag to use different rc file *)
     +> flag "-c" (optional_with_default !Const.rc_file file)
     ~aliases:["--rc" ; "-rc"]
@@ -83,10 +88,13 @@ let commands =
     ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
     args
 
-    (fun rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
-        Messages.debug "Parsed command line arguments";
+    (fun verbosity rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
+       (* Level of verbosity *)
+       Const.verbosity := verbosity;
+       Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
        (* Use given rc file, should run the nth argument if present *)
        Const.rc_file := rc_file_name;
+       Messages.debug (sprintf "Configuration file is %s" !Const.rc_file);
        (* Obtain data from rc_file *)
        let rc_content = File_com.init_rc () in
        (* A default number, corresponding to first item *)

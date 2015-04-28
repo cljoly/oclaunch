@@ -6,6 +6,7 @@
  + Locking tmp file to prevent launching two times the same item (**not tested
    enough**)
  + Messages displayed with bold, underline and colors.
+ + Add option “-v” to set verbosity.
  + Correct bugs:
    + When executing ```oclaunc -r``` more than once, it tries to delete an
      unexisting file and this led to errors.
