@@ -119,7 +119,13 @@ let log ?(func= (+) 1 ) () =
     * else display an error message *)
 let reset cmd_num =
     match cmd_num with
-    | 0 -> Sys.remove Const.tmp_file; Messages.ok "Tmp file removed"
+    | 0 -> (*Verify that file exist and if not, delete it *)
+            Sys.file_exists Const.tmp_file
+            |> (function
+                | `No -> Messages.ok "Tmp file already removed"
+                | `Unknown -> Messages.warning "Error while removing tmp file"
+                | `Yes -> Sys.remove Const.tmp_file; Messages.ok "Tmp file removed"
+            )
     | n when n > 0 ->
             (* Set the number *)
             log ~func:((fun a b -> a) n) ();
