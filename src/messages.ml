@@ -50,6 +50,7 @@ type color =
     | Red
     | Yellow
     | White
+    | Plum
 ;;
 
 type style =
@@ -75,6 +76,7 @@ let print ~color ~style message =
         | Red -> Color_print.color ~color:`Red message
         | Yellow -> Color_print.color ~color:`Yellow message
         | White -> Color_print.color ~color:`White message
+        | Plum -> Color_print.color ~color:`Plum message
     ) |> (* Finaly print escaped string *)
     printf "%s"
 ;;
@@ -82,7 +84,7 @@ let print ~color ~style message =
 (* Print debugging, information, important... messages *)
 let debug message =
     let mess = (Time.now()|> Time.to_string) ^ " " ^ message ^ "\n" in
-    print ~color:White ~style:Bold mess
+    print ~color:Plum ~style:Bold mess
 ;;
 
 let info message =
