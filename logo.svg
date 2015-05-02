@@ -13,8 +13,10 @@
    height="800"
    id="svg3059"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="logo5.svg">
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="logo.svg">
+  <title
+     id="title3372">OcLaunch Logo</title>
   <defs
      id="defs3061" />
   <sodipodi:namedview
@@ -25,13 +27,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="-52.487122"
-     inkscape:cy="259.87579"
+     inkscape:cx="-359.57349"
+     inkscape:cy="251.79457"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1280"
-     inkscape:window-height="1004"
+     inkscape:window-height="1002"
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
@@ -47,7 +49,11 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title>OcLaunch Logo</dc:title>
+        <dc:description>Thanks to Alexander James Wright and Dario Moriconi, from the noun project for the icon on which the logo is based.   
+Thanks also to [ocaml.org](http://www.ocaml.org) for the camel.
+
+The result is licensed under CC-BY.</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -98,7 +104,6 @@
              cx="16"
              stroke-miterlimit="10"
              display="inline"
-             d="m 25.032,15 c 0,4.988236 -4.043764,9.032 -9.032,9.032 -4.988236,0 -9.0319996,-4.043764 -9.0319996,-9.032 0,-4.988236 4.0437636,-9.0319996 9.0319996,-9.0319996 4.988236,0 9.032,4.0437636 9.032,9.0319996 z"
              sodipodi:cx="16"
              sodipodi:cy="15"
              sodipodi:rx="9.0319996"
@@ -156,7 +161,6 @@
              cx="11.958"
              stroke-miterlimit="10"
              display="inline"
-             d="m 13,3 c 0,0.5754807 -0.466519,1.0420001 -1.042,1.0420001 -0.575481,0 -1.042,-0.4665194 -1.042,-1.0420001 0,-0.5754807 0.466519,-1.0420001 1.042,-1.0420001 C 12.533481,1.9579999 13,2.4245193 13,3 z"
              sodipodi:cx="11.958"
              sodipodi:cy="3"
              sodipodi:rx="1.0420001"
@@ -169,7 +173,6 @@
              cx="19.958"
              stroke-miterlimit="10"
              display="inline"
-             d="m 21,3 c 0,0.5754807 -0.466519,1.0420001 -1.042,1.0420001 -0.575481,0 -1.042,-0.4665194 -1.042,-1.0420001 0,-0.5754807 0.466519,-1.0420001 1.042,-1.0420001 C 20.533481,1.9579999 21,2.4245193 21,3 z"
              sodipodi:cx="19.958"
              sodipodi:cy="3"
              sodipodi:rx="1.0420001"
@@ -182,7 +185,6 @@
              cx="16"
              stroke-miterlimit="10"
              display="inline"
-             d="M 27,12 C 27,18.075132 22.075132,23 16,23 9.9248678,23 5,18.075132 5,12 5,5.9248678 9.9248678,1 16,1 22.075132,1 27,5.9248678 27,12 z"
              sodipodi:cx="16"
              sodipodi:cy="12"
              sodipodi:rx="11"
@@ -195,7 +197,6 @@
              cx="16"
              stroke-miterlimit="10"
              display="inline"
-             d="m 24,11 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z"
              sodipodi:cx="16"
              sodipodi:cy="11"
              sodipodi:rx="8"
