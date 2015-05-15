@@ -41,6 +41,17 @@ open Core.Std;;
 (* TODO
     * allow to display bold & underlined messages *)
 
+(* Store whether a message was already displayed to reset if necessary (see
+ * function reset) *)
+let already = ref false
+
+(* Function to keep a trace of colored messages *)
+let log_already () =
+    match !already with
+    | false -> already := true
+    | true -> ()
+;;
+
 (* Types corresponding to some colors & style of the Core_extended.Color_print
  * library *)
 type color =
@@ -63,6 +74,8 @@ let print ~color ~style message =
     match !Const.no_color with
     | true -> printf "%s" message
     | false -> begin (* Use colors *)
+        (* Log that we used colored messages *)
+        log_already ();
         (* This code create proper escapement to display text with bold/color... *)
         color |>
         (function
@@ -125,4 +138,13 @@ let tips message =
     let mess = message ^ "\n" in
     print ~color:Yellow ~style:Normal mess
     ) 3
+;;
+
+
+(* Reset printing, to avoid color problem on some terminal (Konsole), the  *)
+let reset () =
+    match !already with
+    | true -> debug "Resetted";
+        Core_extended.Color_print.normal "" |> printf "%s\n"
+    | false -> debug "Not resetted"; ()
 ;;

@@ -39,3 +39,5 @@ val info : string -> unit
 val warning : string -> unit
 val ok : string -> unit
 val tips : string -> unit
+
+val reset : unit -> unit
