@@ -38,16 +38,28 @@
 
 open Core.Std;;
 
+(* General function to get environment variables
+ * exp: exception*)
+let get_var ?(exp=false) name =
+    let msg =
+        lazy (sprintf "ERROR: Couldn't get %s. Please consider setting it." name)
+    in
+    match exp with
+    | true -> Sys.getenv name |>
+        (function
+            Some x -> x
+            | None -> failwith (Lazy.force msg))
+    | false -> print_endline (Lazy.force msg); ""
+;;
+
 (* Get current home *)
-let home = match (Sys.getenv "HOME") with
-  | Some x -> x
-  | None -> failwith "Wrong value for home\n"
+let home =
+    get_var ~exp:true "HOME"
 ;;
 
 (* Get default editor *)
-let editor = match (Sys.getenv "EDITOR") with
-  | Some x -> x
-  | None -> failwith "Wrong value for $EDITOR\n"
+let editor =
+    get_var "EDITOR"
 ;;
 
 (* Level of verbosity, used by Messages module *)
