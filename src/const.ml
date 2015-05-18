@@ -58,7 +58,7 @@ let home =
 ;;
 
 (* Get default editor *)
-let editor =
+let editor = (* If editor is not set, it gets "" *)
     get_var "EDITOR"
 ;;
 
