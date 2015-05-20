@@ -54,12 +54,12 @@ let get_var ?(exp=false) name =
 
 (* Get current home *)
 let home =
-    get_var ~exp:true "HOME"
+    lazy (get_var ~exp:true "HOME")
 ;;
 
 (* Get default editor *)
 let editor = (* If editor is not set, it gets "" *)
-    get_var "EDITOR"
+    lazy (get_var "EDITOR")
 ;;
 
 (* Level of verbosity, used by Messages module *)
@@ -68,7 +68,8 @@ let verbosity = ref 4;;
 let no_color = ref false;;
 
 (* Default place to read settings *)
-let rc_file_default = home ^ "/" ^ ".oclaunch_rc.json";;
+let rc_file_default = Lazy.(home >>| (fun home -> home ^ "/" ^
+    ".oclaunch_rc.json"));;
 (* Current place to read settings, maybe modified from command line argument *)
 let rc_file = ref rc_file_default;;
 (* Set tmp file, in witch stock launches, in biniou format *)

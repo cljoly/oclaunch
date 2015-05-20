@@ -52,7 +52,7 @@ let new_list current_list position new_items =
 
 
 
-(* Function which get the nth element, put it in afile, let the user edit it,
+(* Function which get the nth element, put it in a file, let the user edit it,
  * and then remplace with the new result *)
 let run ~(rc:File_com.t) position =
     (* Current list of commands *)
@@ -72,7 +72,7 @@ let run ~(rc:File_com.t) position =
 
 
     (* Edit file *)
-    let edit = String.concat [ Const.editor ; " " ; tmp_edit ] in
+    let edit = String.concat [ Lazy.force Const.editor ; " " ; tmp_edit ] in
     Sys.command edit
     |> (function
         0 -> ()

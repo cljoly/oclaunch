@@ -52,7 +52,7 @@ let args =
         ~aliases:["-no-color"]
         ~doc:"Use this flag to disable color usage."
     (* Flag to use different rc file *)
-    +> flag "-c" (optional_with_default !Const.rc_file file)
+    +> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
     ~aliases:["--rc" ; "-rc"]
     ~doc:"file Read configuration from the given file and continue parsing."
     (* Flag to reset tmp file *)
@@ -100,8 +100,8 @@ let commands =
        Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
        Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
        (* Use given rc file, should run the nth argument if present *)
-       Const.rc_file := rc_file_name;
-       Messages.debug (sprintf "Configuration file is %s" !Const.rc_file);
+       Const.rc_file := (Lazy.return rc_file_name);
+       Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
        (* Obtain data from rc_file *)
        let rc_content = File_com.init_rc () in
        (* A default number, corresponding to first item *)

@@ -3,6 +3,7 @@
 ## 0.2.x
 
 ### v0.2.2
+ + Use lazyness to speed up and lead to less error
  + Locking tmp file to prevent launching two times the same item (**not tested
    enough**)
  + Messages displayed with bold, underline and colors.
@@ -12,6 +13,8 @@
  + Correct bugs:
    + When executing ```oclaunc -r``` more than once, it tries to delete an
      unexisting file and this led to errors.
+   + When some variable like $EDITOR was not set, it was crashing everytime.
+     Now, it crashes only if there is no other solution.
 
 ### v0.2.1
  + Add new command line option:
