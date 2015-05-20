@@ -43,5 +43,11 @@ binary=../oclaunch.native
 # Should throw one error, about $HOME
 env -i $binary
 
+# An exception with $EDITOR
+env -u EDITOR $binary -m 0
+
 # Should throw no blocking error (2)
 env -u EDITOR $binary
+# No exception
+env -u EDITOR $binary -l
+

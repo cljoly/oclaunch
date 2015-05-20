@@ -58,8 +58,8 @@ let home =
 ;;
 
 (* Get default editor *)
-let editor = (* If editor is not set, it gets "" *)
-    lazy (get_var "EDITOR")
+let editor = (* If editor is not set, it gets "", but an exeption is trowed *)
+    lazy (get_var ~exp:true "EDITOR")
 ;;
 
 (* Level of verbosity, used by Messages module *)
