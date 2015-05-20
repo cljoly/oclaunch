@@ -3,6 +3,7 @@
 ## 0.2.x
 
 ### v0.2.2
+ + Clean help
  + Use lazyness to speed up and lead to less error
  + Locking tmp file to prevent launching two times the same item (**not tested
    enough**)
@@ -10,6 +11,7 @@
  + Add options:
     + “-v” to set verbosity.
     + “--no-color” to toggle color off
+    + “--edit” is synonym of “--modify” now
  + Correct bugs:
    + When executing ```oclaunc -r``` more than once, it tries to delete an
      unexisting file and this led to errors.

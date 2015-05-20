@@ -50,7 +50,7 @@ let args =
     (* Flag to set colors *)
     +> flag "--no-color" no_arg
         ~aliases:["-no-color"]
-        ~doc:"Use this flag to disable color usage."
+        ~doc:" Use this flag to disable color usage."
     (* Flag to use different rc file *)
     +> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
     ~aliases:["--rc" ; "-rc"]
@@ -71,15 +71,15 @@ let args =
     (* Flag to remove a command from rc file *)
     +> flag "-d" no_arg
     ~aliases:["-delete" ; "--delete"]
-    ~doc:"[n] remove the nth command from configuration file. If n is absent, remove last one"
+    ~doc:"[n] remove the nth command from configuration file. If n is absent, remove last one."
     (* Flag to display current number *)
     +> flag "-n" no_arg
     ~aliases:["-number" ; "--number"]
-    ~doc:" Display current state of the program"
+    ~doc:" Display current state of the program."
     (* Flag to edit the nth command *)
     +> flag "-m" no_arg
-    ~aliases:["-modify" ; "--modify"]
-    ~doc:"[n] Edit the nth command of the rc file. [Not working properly]"
+    ~aliases:["-modify" ; "--modify" ; "--edit" ; "-edit"]
+    ~doc:"[n] Edit the nth command of the rc file in your $EDITOR. May be used to add new entries."
 
     +> anon (maybe ("Command number" %: int)))
 ;;
