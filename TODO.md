@@ -15,6 +15,9 @@
 
 ## Short term
 
+ + Add command --edit-rc to edit configuration file
+ + Add command to exchange item
+
 ### Configuration value
  + Allow to run infinitely or say when it is finish
  + Make tmp file emplacement configurable
