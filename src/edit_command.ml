@@ -38,6 +38,11 @@ open Core.Std;;
 
 (* Module to edit command without editing the rc file directly *)
 
+(* Function to remove empty element in a list *)
+let epur =
+     List.filter ~f:(function "" -> false | _ -> true)
+;;
+
 (* Function to create a new list augmented by some commands *)
 (* TODO Factorise this *)
 let new_list current_list position new_items =
@@ -73,6 +78,7 @@ let run ~(rc:File_com.t) position =
 
     (* Edit file *)
     let edit = String.concat [ Lazy.force Const.editor ; " " ; tmp_edit ] in
+    Messages.debug edit;
     Sys.command edit
     |> (function
         0 -> ()
@@ -80,16 +86,29 @@ let run ~(rc:File_com.t) position =
         |> Messages.warning);
 
     (* Reading and applying the result *)
-    let new_commands = In_channel.read_lines tmp_edit in
+    let new_commands = In_channel.read_lines tmp_edit |> epur in
     let cmd_list = new_list shorter_list position new_commands in
     let updated_rc = { rc with Settings_t.progs = cmd_list} in
     File_com.write updated_rc;
+    (* Concat edited item. messages should start as "".
+        * If only one element, return "elt".
+        * If more than one "\nelt1\nelt2\nelt3" 
+        * TODO Test it *)
+    let rec gen_modification items =
+        let r = "\n" in
+        epur items
+        |> (function
+            | [] -> ""
+            (* Only one element *)
+            | element :: [] -> element
+            (* The list as more than two elements *)
+            | _ ->
+                    let msg = String.concat ~sep:r items in
+                    String.concat [ r ; msg ; r ])
+    in
     (* Display the result *)
-    sprintf "'%s' -> '%s'\n\n" original_command
-        (List.fold
-            ~f:(fun accum item -> String.concat [ accum ; item ; "\n" ])
-            ~init:""
-            new_commands)
+    sprintf "'%s' -> '%s'\n" original_command
+        (gen_modification new_commands)
         |> Messages.ok;
     let reread_rc = File_com.init_rc () in
     (* Display new rc file *)

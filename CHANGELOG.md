@@ -4,9 +4,9 @@
 
 ### v0.2.2
  + Clean help
+ + Better display after editing an entry. Ignore empty lines and fix #10
  + Use lazyness to speed up and lead to less error
- + Locking tmp file to prevent launching two times the same item (**not tested
-   enough**)
+ + Locking tmp file to prevent launching two times the same item
  + Messages displayed with bold, underline and colors.
  + Add options:
     + “-v” to set verbosity.
