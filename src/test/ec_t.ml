@@ -45,9 +45,23 @@ let epur () =
     OUnit.assert_equal current expected
 ;;
 
+(* Function gen_modification *)
+let gm1 () =
+    let current = Edit_command.gen_modification [ "qw" ] in
+    let expected = "qw" in
+    OUnit.assert_equal current expected
+;;
+let gm2 () =
+    let current = Edit_command.gen_modification [ "qw" ; "erty" ; "a" ; "zerty"] in
+    let expected = "\nqw\nerty\na\nzerty" in
+    OUnit.assert_equal current expected
+;;
+
 let n_l =
     [
         ("Remove empty strings in list",`Quick, epur);
+        ("Summary of modifications : one element",`Quick, gm1);
+        ("Summary of modifications : several elements",`Quick, gm2);
     ]
 ;;
 

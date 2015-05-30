@@ -56,6 +56,21 @@ let new_list current_list position new_items =
 ;;
 
 
+(* Concat edited item, to have a proper list to display
+    * If only one element, return "elt".
+    * If more than one "\nelt1\nelt2\nelt3" *)
+let rec gen_modification items =
+    let r = "\n" in
+    epur items
+    |> (function
+        | [] -> ""
+        (* Only one element *)
+        | element :: [] -> element
+        (* The list as more than two elements *)
+        | _ ->
+                let msg = String.concat ~sep:r items in
+                String.concat [ r ; msg ; r ])
+;;
 
 (* Function which get the nth element, put it in a file, let the user edit it,
  * and then remplace with the new result *)
@@ -90,22 +105,6 @@ let run ~(rc:File_com.t) position =
     let cmd_list = new_list shorter_list position new_commands in
     let updated_rc = { rc with Settings_t.progs = cmd_list} in
     File_com.write updated_rc;
-    (* Concat edited item. messages should start as "".
-        * If only one element, return "elt".
-        * If more than one "\nelt1\nelt2\nelt3" 
-        * TODO Test it *)
-    let rec gen_modification items =
-        let r = "\n" in
-        epur items
-        |> (function
-            | [] -> ""
-            (* Only one element *)
-            | element :: [] -> element
-            (* The list as more than two elements *)
-            | _ ->
-                    let msg = String.concat ~sep:r items in
-                    String.concat [ r ; msg ; r ])
-    in
     (* Display the result *)
     sprintf "'%s' -> '%s'\n" original_command
         (gen_modification new_commands)
