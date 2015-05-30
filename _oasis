@@ -30,3 +30,17 @@ Executable oclaunch
   MainIs:     oclaunch.ml
   BuildDepends: core, core_extended, atdgen, threads
   CompiledObject: best
+
+Executable "run_test"
+  Path: src
+  MainIs: test/test.ml
+  Build$: flag(tests)
+  CompiledObject: best
+  Install: false
+  BuildDepends: alcotest, oUnit, core, threads, core_extended, atdgen
+
+Test "tests"
+  Run$: flag(tests)
+  Command: $run_test
+  WorkingDirectory: src/test
+

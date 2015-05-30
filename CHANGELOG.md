@@ -3,6 +3,7 @@
 ## 0.2.x
 
 ### v0.2.2
+ + Add unit tests, to improve stability
  + Clean help
  + Better display after editing an entry. Ignore empty lines and fix #10
  + Use lazyness to speed up and lead to less error

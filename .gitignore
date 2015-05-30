@@ -6,6 +6,8 @@ _build
 setup.data
 setup.log
 setup.exe
+# Tests
+_tests
 # # pkg.sh
 dist
 # Misc
