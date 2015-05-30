@@ -53,7 +53,7 @@ let gm1 () =
 ;;
 let gm2 () =
     let current = Edit_command.gen_modification [ "qw" ; "erty" ; "a" ; "zerty"] in
-    let expected = "\nqw\nerty\na\nzerty" in
+    let expected = "\nqw\nerty\na\nzerty\n" in
     OUnit.assert_equal current expected
 ;;
 
