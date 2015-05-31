@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,18 +36,26 @@
 
 open Core.Std;;
 
-(* Variable to store version number *)
-(* TODO Get value from file *)
-let version_number = "";;
+(* File to test who is the faster fo a special case *)
+open Core_bench.Std
 
-(* Variable store building information *)
-(* XXX This is fake value, it corresponds to the running
- * information *)
-let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
+let str = "qwertyuiop"
+
+(* With sprintf *)
+let sprtf () =
+    sprintf "\n%s\n" str
+    |> ignore
+
+let conc () =
+    String.concat [ "\n" ; str ; "\n" ]
+    |> ignore
+
+let tests = [
+  "Sprintf", sprtf;
+  "String.concat", conc;
+]
 
 let () =
-  Command.run ~version:version_number ~build_info:build_info
-  Command_def.commands;
-  (* Reset display *)
-  Messages.reset ()
-;;
+  List.map tests ~f:(fun (name,test) -> Bench.Test.create ~name test)
+  |> Bench.make_command
+  |> Command.run

@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2015                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,18 +36,9 @@
 
 open Core.Std;;
 
-(* Variable to store version number *)
-(* TODO Get value from file *)
-let version_number = "";;
-
-(* Variable store building information *)
-(* XXX This is fake value, it corresponds to the running
- * information *)
-let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
+(* A module launching all tests *)
 
 let () =
-  Command.run ~version:version_number ~build_info:build_info
-  Command_def.commands;
-  (* Reset display *)
-  Messages.reset ()
+    Alcotest.run "Test suite for the project"
+        (List.concat [ Ec_t.alco ])
 ;;

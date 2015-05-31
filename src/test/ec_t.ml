@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2015                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,18 +36,35 @@
 
 open Core.Std;;
 
-(* Variable to store version number *)
-(* TODO Get value from file *)
-let version_number = "";;
+(* A module containing tests for src/edit_command.ml *)
 
-(* Variable store building information *)
-(* XXX This is fake value, it corresponds to the running
- * information *)
-let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
-
-let () =
-  Command.run ~version:version_number ~build_info:build_info
-  Command_def.commands;
-  (* Reset display *)
-  Messages.reset ()
+(* Function epur *)
+let epur () =
+    let current = Edit_command.epur [ "qw" ; "" ; "erty" ; "a" ; "" ; "zerty"] in
+    let expected = [ "qw" ; "erty" ; "a" ; "zerty" ] in
+    OUnit.assert_equal current expected
 ;;
+
+(* Function gen_modification *)
+let gm1 () =
+    let current = Edit_command.gen_modification [ "qw" ] in
+    let expected = "qw" in
+    OUnit.assert_equal current expected
+;;
+let gm2 () =
+    let current = Edit_command.gen_modification [ "qw" ; "erty" ; "a" ; "zerty"] in
+    let expected = "\nqw\nerty\na\nzerty\n" in
+    OUnit.assert_equal current expected
+;;
+
+let n_l =
+    [
+        ("Remove empty strings in list",`Quick, epur);
+        ("Summary of modifications : one element",`Quick, gm1);
+        ("Summary of modifications : several elements",`Quick, gm2);
+    ]
+;;
+
+(* To be used in test.ml *)
+let alco = [( "Edit_command.ml",n_l );];;
+
