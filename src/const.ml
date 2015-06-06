@@ -40,16 +40,24 @@ open Core.Std;;
 
 (* General function to get environment variables
  * exp: exception*)
-let get_var ?(exp=false) name =
+let get_var ?(exp=false) ?default name =
     let msg =
         lazy (sprintf "ERROR: Couldn't get %s. Please consider setting it." name)
     in
-    match exp with
-    | true -> Sys.getenv name |>
-        (function
-            Some x -> x
-            | None -> failwith (Lazy.force msg))
-    | false -> print_endline (Lazy.force msg); ""
+    (* Return value or exception *)
+    let run_exn () =
+        match exp with
+        | true -> failwith (Lazy.force msg)
+        | false -> print_endline (Lazy.force msg); ""
+    in
+    (* Get the var *)
+    Sys.getenv name
+    |> (function
+        | Some x -> x
+        | None ->
+                match default with
+                | None -> run_exn ()
+                | Some default -> default)
 ;;
 
 (* Get current home *)
@@ -58,7 +66,7 @@ let home =
 ;;
 
 (* Get default editor *)
-let editor = (* If editor is not set, it gets "", but an exeption is trowed *)
+let editor = (* If editor is not set, it gets "", but an exception is raised *)
     lazy (get_var ~exp:true "EDITOR")
 ;;
 
@@ -73,4 +81,4 @@ let rc_file_default = Lazy.(home >>| (fun home -> home ^ "/" ^
 (* Current place to read settings, maybe modified from command line argument *)
 let rc_file = ref rc_file_default;;
 (* Set tmp file, in witch stock launches, in biniou format *)
-let tmp_file = "/tmp/.oclaunch_trace.dat";; (* File where launch are logged *)
+let tmp_file = get_var ~default:"/tmp/.oclaunch_trace.dat" "OC_TMP";; (* File where launch are logged *)

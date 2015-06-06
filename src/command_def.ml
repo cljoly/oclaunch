@@ -102,6 +102,7 @@ let commands =
        (* Use given rc file, should run the nth argument if present *)
        Const.rc_file := (Lazy.return rc_file_name);
        Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
+       Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
        (* Obtain data from rc_file *)
        let rc_content = File_com.init_rc () in
        (* A default number, corresponding to first item *)
