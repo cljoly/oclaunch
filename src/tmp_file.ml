@@ -113,11 +113,24 @@ let log ?(func= (+) 1 ) () =
   write { file with Tmp_biniou_t.number = (func file.Tmp_biniou_t.number)}
 ;;
 
+(* Return current number *)
+let get_current () =
+    (* Read tmp file *)
+    let tmp_file = init () in
+    (* Return the number *)
+    tmp_file.Tmp_biniou_t.number;
+;;
+
 (* Reset command number in two ways :
     * if cmd_num is 0, delete tmp file, to reinitialise program
     * if cmd_num is 0>, set to this value
     * else display an error message *)
 let reset cmd_num =
+    let n = get_current () in
+    sprintf  "Last N was %i" n
+    |> Messages.info;
+    sprintf  "Restore with 'oclaunch -r %i'" n
+    |> Messages.tips;
     match cmd_num with
     | 0 -> (*Verify that file exist and if not, delete it *)
             Sys.file_exists Const.tmp_file

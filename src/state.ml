@@ -38,17 +38,9 @@ open Core.Std;;
 
 (* Module to display the current state of the program *)
 
-(* Return current number *)
-let get_current () =
-    (* Read tmp file *)
-    let tmp_file = Tmp_file.init () in
-    (* Return the number *)
-    tmp_file.Tmp_biniou_t.number;
-;;
-
 (* Display current number *)
 let print_current () =
     (* Display the number *)
-    sprintf "Current state: %i" (get_current ())
+    sprintf "Current state: %i" (Tmp_file.get_current ())
     |> Messages.ok
 ;;

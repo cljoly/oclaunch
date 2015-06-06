@@ -53,5 +53,5 @@ let disp_cmd_num current_number number command =
 (* Function which list *)
 let run ~(rc:File_com.t) =
     List.iteri rc.Settings_t.progs ~f:(fun i item ->
-        disp_cmd_num (State.get_current ()) i item)
+        disp_cmd_num (Tmp_file.get_current ()) i item)
 ;;

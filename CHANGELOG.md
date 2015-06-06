@@ -3,6 +3,7 @@
 ## 0.2.x
 
 ### v0.2.2
+ + Improve resetting: tips, way to roll back
  + Allow to set tmp file with environment variable “OC\_TMP”. See #9 and #6
  + Add unit tests, to improve stability
  + Allow to install from opam throw opam pin add <pkg> <repo>
