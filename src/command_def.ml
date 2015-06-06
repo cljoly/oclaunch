@@ -45,7 +45,7 @@ let args =
     (* Flag to set verbosity level *)
     +> flag "-v" (optional_with_default !Const.verbosity int)
         ~aliases:["--verbose" ; "-verbose"]
-        ~doc:"[n] Set verbosity level.\
+        ~doc:"[n] Set verbosity level. \
         The higher n is, the most verbose the program is."
     (* Flag to set colors *)
     +> flag "--no-color" no_arg

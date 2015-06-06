@@ -3,19 +3,21 @@
 ## 0.2.x
 
 ### v0.2.2
- + Improve resetting: tips, way to roll back
- + Allow to set tmp file with environment variable “OC\_TMP”. See #9 and #6
- + Add unit tests, to improve stability
- + Allow to install from opam throw opam pin add <pkg> <repo>
- + Clean help
- + Better display after editing an entry. Ignore empty lines and fix #10
- + Use lazyness to speed up and lead to less error
- + Locking tmp file to prevent launching two times the same item
- + Messages displayed with bold, underline and colors.
- + Add options:
-    + “-v” to set verbosity.
-    + “--no-color” to toggle color off
-    + “--edit” is synonym of “--modify” now
+ + Major functionality:
+    + Allow to install from opam throw opam pin add <pkg> <repo>
+    + Allow to set tmp file with environment variable “OC\_TMP”. See #9 and #6
+    + Messages displayed with bold, underline and colors.
+    + Add options:
+       + “-v” to set verbosity.
+       + “--no-color” to toggle color off
+       + “--edit” is synonym of “--modify” now
+ + Minor functionality:
+    + Improve resetting: tips, way to roll back
+    + Add unit tests, to improve stability
+    + Clean help
+    + Better display after editing an entry. Ignore empty lines and fix #10
+    + Use lazyness to speed up and lead to less error
+    + Locking tmp file to prevent launching two times the same item
  + Correct bugs:
    + When executing ```oclaunc -r``` more than once, it tries to delete an
      unexisting file and this led to errors.
