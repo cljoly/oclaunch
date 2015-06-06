@@ -5,6 +5,7 @@
 ### v0.2.2
  + Allow to set tmp file with environment variable “OC\_TMP”. See #9 and #6
  + Add unit tests, to improve stability
+ + Allow to install from opam throw opam pin add <pkg> <repo>
  + Clean help
  + Better display after editing an entry. Ignore empty lines and fix #10
  + Use lazyness to speed up and lead to less error

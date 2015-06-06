@@ -15,6 +15,9 @@
 
 ## Short term
 
+ + Add command --edit-rc to edit configuration file
+ + Add command to exchange item
+
 ### Configuration value
  + Allow to run infinitely or say when it is finish
  + Make tmp file emplacement configurable
@@ -27,15 +30,11 @@
  + Relaunch the terminal detached after (possible -> use $TERM &; it resists to
    program exit)
  + Allow to tag entry and do things according to tags
- + Display text before and after, maybe in color (For example
-   "================================================")
 
 ### Misc
  + Documentation ;-)
  + Handle errors in reading rc file
  + Return error code when necessary
- + Add build info in binary for 0install
- + Use color in messages
 
 ## Long term
  + Translate displayed messages.
