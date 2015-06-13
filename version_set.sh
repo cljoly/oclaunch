@@ -24,4 +24,4 @@ oasis setup
 
 # Display the result
 echo "Result"
-git diff
+git diff -U0
