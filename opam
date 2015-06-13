@@ -1,6 +1,6 @@
 opam-version: "1.2"
 name: "oclaunch"
-version: "git-dev"
+version: "0.2.2.1-dev"
 maintainer: "Leo <leowzukw@vmail.me>"
 authors: "Leo <leowzukw@vmail.me>"
 license: "CeCILL"

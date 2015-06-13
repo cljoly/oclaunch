@@ -13,10 +13,11 @@ new_version=$1
 # Print what will be done
 echo "Put" $new_version "instead of" $new_version
 
-# Replace in the three files : VERSION, _oasis, src/oclaunch.ml
+# Replace in the 4 files : VERSION, _oasis, src/oclaunch.ml, opam
 echo $new_version > VERSION
 sed -i -e "s/Version:     .*/Version:     $new_version/" _oasis
 sed -i -e "s/\\(let version_number = \"\\).*\\(\";;\\)/\\1$new_version\\2/" src/oclaunch.ml
+sed -i -e "s/^version: \".*\"$/version: \"$new_version\"/" opam
 
 # Update oasis
 oasis setup
