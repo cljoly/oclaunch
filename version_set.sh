@@ -11,7 +11,7 @@ new_version=$1
 
 
 # Print what will be done
-echo "Put" $new_version "instead of" $new_version
+echo "Put" $new_version "instead of" $current_version
 
 # Replace in the 4 files : VERSION, _oasis, src/oclaunch.ml, opam
 echo $new_version > VERSION
