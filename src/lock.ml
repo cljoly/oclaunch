@@ -44,8 +44,8 @@ let lock_name = "/tmp/.ocl.lock";;
 
 (* Create lock file *)
 let lock () =
-    (* XXX Verify if file exists ? *)
-    Out_channel.write_all lock_name ~data:"OcLaunch is running and did not finish."
+    try Out_channel.write_all lock_name ~data:"OcLaunch is running and did not finish."
+    with Sys_error msg -> Messages.debug "Couldn't write in lock file."
 ;;
 
 (* Pause the program until lock file is removed, until argument is in second *)

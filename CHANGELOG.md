@@ -1,5 +1,12 @@
 # Changelog of OcLaunch
 
+## 0.3.x
+
+### 0.3.0
+
+ + Fix bug: in special circumstances, it was not possible to write in lock file.
+   The program was crashing.
+
 ## 0.2.x
 
 ### v0.2.2
