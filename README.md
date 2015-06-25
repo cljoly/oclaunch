@@ -4,6 +4,8 @@
 OcLaunch - Launch commands automagically
 ========================================
 
+[![Join the chat at https://gitter.im/leowzukw/oclaunch](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/leowzukw/oclaunch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 OcLaunch is a command-line tool to launch successively (each time the program
 is called) commands. It is designed to be used with any program, interactive
 or not. Feedback is welcome at leowzukw@vmail.me. Help at
