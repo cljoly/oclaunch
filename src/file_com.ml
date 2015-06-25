@@ -49,10 +49,12 @@ let write (tmp_file:t) =
         let data = (Settings_j.string_of_rc_file tmp_file
         |> Yojson.Basic.prettify ~std:true) in
         Out_channel.write_all (Lazy.force name) ~data
+;;
 
 (* Return the configuration file template *)
 let rc_template () =
   Settings_v.create_rc_file ~progs:[] ~settings:[]
+;;
 
 (* Function to create configuration file if it does not
  * exist *)
