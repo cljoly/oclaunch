@@ -69,7 +69,8 @@ let rec read () =
 
 (* Function to create the tmp file *)
 and create_tmp_file () =
-    Tmp_biniou_v.create_tmp_file ~command:[] ~number:0 ()
+    (* An empty list, without launchment *)
+    Tmp_biniou_v.create_tmp_file ~daemon:0 ~rc:[] ()
     (* Convert it to biniou *)
     |> write
 ;;
@@ -86,6 +87,13 @@ let rec init () =
           init ()
         end
       | `Yes -> read ()
+;;
+
+(* Get a log of values from the tmp file, like this
+ * (cmd,number of launch) list *)
+let get_log ~rc =
+  List.map ~f:(fun { Tmp_biniou_t.commands = (cmd,number) } ->
+        (cmd,number)) rc
 ;;
 
 (* Verify that the value exist *)
@@ -105,20 +113,27 @@ let rec is_prog_in_rc list_from_rc_file program =
 ;;
 
 (* Log when a program has been launched in a file in /tmp
-   ~func is the function applied to the value *)
-let log ?(func= (+) 1 ) () =
+   ~func is the function applied to the value
+   ~cmd is the launched entry *)
+let log ~cmd ?(func= (+) 1 ) () =
   (* Make sure that file exists, otherwise strange things appears *)
   let file = init () in
+  (* Function to generate the new list with right number *)
+  let new_li ( li : Tmp_biniou_t.rc_entry list ) =
+    let open List.Assoc in
+    (* Only number of launchment associated with commands *)
+    let l = get_log li in
+    find l cmd
+      |> (function None -> add l cmd 0 | Some n -> add l cmd (func n)) (* XXX Using 0 as default value *)
+      |> List.map ~f:(fun e -> { Tmp_biniou_t.commands = e})
+    in
   (* Write the file with the new value *)
-  write { file with Tmp_biniou_t.number = (func file.Tmp_biniou_t.number)}
+  write { file with Tmp_biniou_t.rc = new_li file.rc }
 ;;
 
 (* Return current number *)
 let get_current () =
-    (* Read tmp file *)
-    let tmp_file = init () in
-    (* Return the number *)
-    tmp_file.Tmp_biniou_t.number;
+    failwith "Deprecated"
 ;;
 
 (* Reset command number in two ways :
@@ -145,3 +160,15 @@ let reset cmd_num =
             sprintf "Tmp file reseted to %i" n |> Messages.ok
     | _ -> Messages.warning "Invalid number"
 ;;
+
+(* Get number of launchment for each command in rc file *)
+let get_accurate_log ~rc ~tmp =
+  let open List in
+  let rc_in_tmp = get_log tmp.Tmp_biniou_t.rc in
+  map rc.Settings_t.progs ~f:(fun key ->
+        Assoc.find rc_in_tmp key
+    |> Option.value ~default:0
+    |> (function number -> (key,number)))
+;;
+
+

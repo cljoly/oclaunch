@@ -42,7 +42,8 @@ val init : unit -> t
 
 val verify_key_exist : key:'a -> 'a -> bool
 val is_prog_in_rc : 'a list -> 'a -> bool
-val log : ?func:(int -> int) -> unit -> unit
+val log : cmd:string -> ?func:(int -> int) -> unit -> unit
 (** Return current state *)
 val get_current : unit -> int
 val reset : int -> unit
+val get_accurate_log : rc:Settings_t.rc_file -> tmp:t -> (string * int) list

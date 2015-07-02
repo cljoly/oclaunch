@@ -39,7 +39,14 @@
  * place, get faster parsing and make harder manual, unwanted modification. A special command line is
  * available to change current number *)
 
+(* Store values from the configuration file *)
+type rc_entry = {
+    commands: (string * int); (* A list of command, with current number, i.e. number
+    of launches *)
+}
+
+(* Source of the file *)
 type tmp_file = {
-    command: string list; (* A list of command, for future use *)
-    number: int; (* The current number/state of the launches *)
+    rc: rc_entry list; (* A list of rc files *)
+    daemon: int; (* The current state of the daemon, maybe by pid *)
 }

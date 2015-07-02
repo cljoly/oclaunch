@@ -35,6 +35,7 @@
  + Documentation ;-)
  + Handle errors in reading rc file
  + Return error code when necessary
+ + Log duration of commands, ignore some return code
 
 ## Long term
  + Translate displayed messages.

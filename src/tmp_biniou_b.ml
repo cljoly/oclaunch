@@ -1,14 +1,125 @@
 (* Auto-generated from "tmp_biniou.atd" *)
 
 
-type tmp_file = Tmp_biniou_t.tmp_file = { command: string list; number: int }
+type rc_entry = Tmp_biniou_t.rc_entry = { commands: (string * int) }
 
+type tmp_file = Tmp_biniou_t.tmp_file = { rc: rc_entry list; daemon: int }
+
+let rc_entry_tag = Bi_io.record_tag
+let write_untagged_rc_entry : Bi_outbuf.t -> rc_entry -> unit = (
+  fun ob x ->
+    Bi_vint.write_uvint ob 1;
+    Bi_outbuf.add_char4 ob '\190' 'U' '\176' '\200';
+    (
+      fun ob x ->
+        Bi_io.write_tag ob Bi_io.tuple_tag;
+        Bi_vint.write_uvint ob 2;
+        (
+          let x, _ = x in (
+            Bi_io.write_string
+          ) ob x
+        );
+        (
+          let _, x = x in (
+            Bi_io.write_svint
+          ) ob x
+        );
+    ) ob x.commands;
+)
+let write_rc_entry ob x =
+  Bi_io.write_tag ob Bi_io.record_tag;
+  write_untagged_rc_entry ob x
+let string_of_rc_entry ?(len = 1024) x =
+  let ob = Bi_outbuf.create len in
+  write_rc_entry ob x;
+  Bi_outbuf.contents ob
+let get_rc_entry_reader = (
+  fun tag ->
+    if tag <> 21 then Ag_ob_run.read_error () else
+      fun ib ->
+        let field_commands = ref (Obj.magic 0.0) in
+        let bits0 = ref 0 in
+        let len = Bi_vint.read_uvint ib in
+        for i = 1 to len do
+          match Bi_io.read_field_hashtag ib with
+            | 1045803208 ->
+              field_commands := (
+                (
+                  fun ib ->
+                    if Bi_io.read_tag ib <> 20 then Ag_ob_run.read_error_at ib;
+                    let len = Bi_vint.read_uvint ib in
+                    if len < 2 then Ag_ob_run.missing_tuple_fields len [ 0; 1 ];
+                    let x0 =
+                      (
+                        Ag_ob_run.read_string
+                      ) ib
+                    in
+                    let x1 =
+                      (
+                        Ag_ob_run.read_int
+                      ) ib
+                    in
+                    for i = 2 to len - 1 do Bi_io.skip ib done;
+                    (x0, x1)
+                ) ib
+              );
+              bits0 := !bits0 lor 0x1;
+            | _ -> Bi_io.skip ib
+        done;
+        if !bits0 <> 0x1 then Ag_ob_run.missing_fields [| !bits0 |] [| "commands" |];
+        (
+          {
+            commands = !field_commands;
+          }
+         : rc_entry)
+)
+let read_rc_entry = (
+  fun ib ->
+    if Bi_io.read_tag ib <> 21 then Ag_ob_run.read_error_at ib;
+    let field_commands = ref (Obj.magic 0.0) in
+    let bits0 = ref 0 in
+    let len = Bi_vint.read_uvint ib in
+    for i = 1 to len do
+      match Bi_io.read_field_hashtag ib with
+        | 1045803208 ->
+          field_commands := (
+            (
+              fun ib ->
+                if Bi_io.read_tag ib <> 20 then Ag_ob_run.read_error_at ib;
+                let len = Bi_vint.read_uvint ib in
+                if len < 2 then Ag_ob_run.missing_tuple_fields len [ 0; 1 ];
+                let x0 =
+                  (
+                    Ag_ob_run.read_string
+                  ) ib
+                in
+                let x1 =
+                  (
+                    Ag_ob_run.read_int
+                  ) ib
+                in
+                for i = 2 to len - 1 do Bi_io.skip ib done;
+                (x0, x1)
+            ) ib
+          );
+          bits0 := !bits0 lor 0x1;
+        | _ -> Bi_io.skip ib
+    done;
+    if !bits0 <> 0x1 then Ag_ob_run.missing_fields [| !bits0 |] [| "commands" |];
+    (
+      {
+        commands = !field_commands;
+      }
+     : rc_entry)
+)
+let rc_entry_of_string ?pos s =
+  read_rc_entry (Bi_inbuf.from_string ?pos s)
 let _1_tag = Bi_io.array_tag
 let write_untagged__1 = (
   Ag_ob_run.write_untagged_list
-    Bi_io.string_tag
+    rc_entry_tag
     (
-      Bi_io.write_untagged_string
+      write_untagged_rc_entry
     )
 )
 let write__1 ob x =
@@ -20,12 +131,12 @@ let string_of__1 ?(len = 1024) x =
   Bi_outbuf.contents ob
 let get__1_reader = (
   Ag_ob_run.get_list_reader (
-    Ag_ob_run.get_string_reader
+    get_rc_entry_reader
   )
 )
 let read__1 = (
   Ag_ob_run.read_list (
-    Ag_ob_run.get_string_reader
+    get_rc_entry_reader
   )
 )
 let _1_of_string ?pos s =
@@ -34,14 +145,14 @@ let tmp_file_tag = Bi_io.record_tag
 let write_untagged_tmp_file : Bi_outbuf.t -> tmp_file -> unit = (
   fun ob x ->
     Bi_vint.write_uvint ob 2;
-    Bi_outbuf.add_char4 ob '\129' 'm' 'q' 'K';
+    Bi_outbuf.add_char4 ob '\128' '\000' 'c' '\177';
     (
       write__1
-    ) ob x.command;
-    Bi_outbuf.add_char4 ob '\161' 'z' '\134' '\201';
+    ) ob x.rc;
+    Bi_outbuf.add_char4 ob '\152' '\163' '\253' '\132';
     (
       Bi_io.write_svint
-    ) ob x.number;
+    ) ob x.daemon;
 )
 let write_tmp_file ob x =
   Bi_io.write_tag ob Bi_io.record_tag;
@@ -54,21 +165,21 @@ let get_tmp_file_reader = (
   fun tag ->
     if tag <> 21 then Ag_ob_run.read_error () else
       fun ib ->
-        let field_command = ref (Obj.magic 0.0) in
-        let field_number = ref (Obj.magic 0.0) in
+        let field_rc = ref (Obj.magic 0.0) in
+        let field_daemon = ref (Obj.magic 0.0) in
         let bits0 = ref 0 in
         let len = Bi_vint.read_uvint ib in
         for i = 1 to len do
           match Bi_io.read_field_hashtag ib with
-            | 23949643 ->
-              field_command := (
+            | 25521 ->
+              field_rc := (
                 (
                   read__1
                 ) ib
               );
               bits0 := !bits0 lor 0x1;
-            | 561678025 ->
-              field_number := (
+            | 413400452 ->
+              field_daemon := (
                 (
                   Ag_ob_run.read_int
                 ) ib
@@ -76,32 +187,32 @@ let get_tmp_file_reader = (
               bits0 := !bits0 lor 0x2;
             | _ -> Bi_io.skip ib
         done;
-        if !bits0 <> 0x3 then Ag_ob_run.missing_fields [| !bits0 |] [| "command"; "number" |];
+        if !bits0 <> 0x3 then Ag_ob_run.missing_fields [| !bits0 |] [| "rc"; "daemon" |];
         (
           {
-            command = !field_command;
-            number = !field_number;
+            rc = !field_rc;
+            daemon = !field_daemon;
           }
          : tmp_file)
 )
 let read_tmp_file = (
   fun ib ->
     if Bi_io.read_tag ib <> 21 then Ag_ob_run.read_error_at ib;
-    let field_command = ref (Obj.magic 0.0) in
-    let field_number = ref (Obj.magic 0.0) in
+    let field_rc = ref (Obj.magic 0.0) in
+    let field_daemon = ref (Obj.magic 0.0) in
     let bits0 = ref 0 in
     let len = Bi_vint.read_uvint ib in
     for i = 1 to len do
       match Bi_io.read_field_hashtag ib with
-        | 23949643 ->
-          field_command := (
+        | 25521 ->
+          field_rc := (
             (
               read__1
             ) ib
           );
           bits0 := !bits0 lor 0x1;
-        | 561678025 ->
-          field_number := (
+        | 413400452 ->
+          field_daemon := (
             (
               Ag_ob_run.read_int
             ) ib
@@ -109,11 +220,11 @@ let read_tmp_file = (
           bits0 := !bits0 lor 0x2;
         | _ -> Bi_io.skip ib
     done;
-    if !bits0 <> 0x3 then Ag_ob_run.missing_fields [| !bits0 |] [| "command"; "number" |];
+    if !bits0 <> 0x3 then Ag_ob_run.missing_fields [| !bits0 |] [| "rc"; "daemon" |];
     (
       {
-        command = !field_command;
-        number = !field_number;
+        rc = !field_rc;
+        daemon = !field_daemon;
       }
      : tmp_file)
 )

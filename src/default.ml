@@ -41,18 +41,21 @@ open Core.Std;;
 
 (* cmd_number is the number of the command the user wants
  * to execute *)
-let run ~rc:rc_content cmd_number =
+let run ~rc cmd_number =
   (* Wait for another oclaunch instance which could launch the same program at
    * the same time *)
   Lock.wait ();
+  let tmp = Tmp_file.init () in
   match cmd_number with
     | None -> begin
         (* Execute each item (one by one) in config file *)
-        let cmd_to_exec = Exec_cmd.what_next ~cmd_list:rc_content.Settings_t.progs in
+        let cmd_to_exec = Exec_cmd.what_next ~rc ~tmp in
         Exec_cmd.execute cmd_to_exec;
       end
     | Some num -> begin
-        let cmd_to_exec = Exec_cmd.num_cmd_to_cmd ~cmd_list:rc_content.Settings_t.progs num in
-          Exec_cmd.execute cmd_to_exec;
+        Exec_cmd.num_cmd_to_cmd ~rc num
+        |> function
+            | None -> Messages.warning "Your number is out of bound"
+            | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
       end
 ;;

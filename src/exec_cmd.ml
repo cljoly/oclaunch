@@ -45,26 +45,41 @@ let set_title new_title =
     |> Messages.warning
 ;;
 
-(* Function to return the corresponding command to a number *)
-let num_cmd_to_cmd ~cmd_list number =
-  (* List.nth return None if out of the list *)
-  List.nth cmd_list number
-  |> function
-      (* If in range of the list, return the corresponding command else return
-       * an empty string after displaying error. *)
-      | Some x -> set_title x; x
-      | None ->
-          Messages.ok "All has been launched!";
-          Messages.tips "You can reset with '-r'";
-          (* Return empty string *)
-          ""
+(* Function to return the less launched command, at least the first one *)
+(* TODO Test it *)
+(* Log is a list of entry (commands) asociated with numbers *)
+let less_launched (log : (string * int) list) =
+  let max = 1 in (* Number of maunch, maximum TODO set it in const & rc file *)
+  (* Return smallest, n is the smaller key *)
+  let entries_by_number = List.Assoc.inverse log  in
+    List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
+    |> (function Some (min,cmd) ->
+        if min < max
+        then Some cmd
+        else None
+      | None -> assert false) (* XXX Use exception here? *)
+;;
+
+(* Get the command corresponding to a number *)
+let num_cmd_to_cmd ~rc n =
+  List.nth rc.Settings_t.progs n
 ;;
 
 (* Function to determinate what is the next command to
  * execute. It takes the current number from tmp file. *)
-let what_next ~cmd_list =
-  let tmp_file = Tmp_file.init () in
-  num_cmd_to_cmd ~cmd_list:cmd_list tmp_file.Tmp_biniou_t.number
+let what_next ~rc ~tmp =
+  Tmp_file.get_accurate_log ~rc ~tmp
+  (* Find the less launched, with order *)
+  |> less_launched
+  |> function
+    (* If in range of the list, return the corresponding command else return
+     * an empty string after displaying error. *)
+    | Some x -> set_title x; x
+    | None ->
+        Messages.ok "All has been launched!";
+        Messages.tips "You can reset with '-r'";
+        (* Return empty string *)
+        ""
 ;;
 
 (* Display an error message if command can't run
@@ -81,7 +96,7 @@ let display_result command status =
 
 (* Execute some command and log it *)
 let execute ?(display=true) cmd =
-    Tmp_file.log ~func:((+) 1) ();
+    Tmp_file.log ~cmd ~func:((+) 1) ();
     if display then
         Messages.ok cmd;
     (* We can remove lock file since number in tmp_file has been incremented *)
