@@ -124,7 +124,7 @@ let log ~cmd ?(func= (+) 1 ) () =
     (* Only number of launchment associated with commands *)
     let l = get_log li in
     find l cmd
-      |> (function None -> add l cmd 0 | Some n -> add l cmd (func n)) (* XXX Using 0 as default value *)
+      |> (function None -> add l cmd Const.default_launch | Some n -> add l cmd (func n))
       |> List.map ~f:(fun e -> { Tmp_biniou_t.commands = e})
     in
   (* Write the file with the new value *)
