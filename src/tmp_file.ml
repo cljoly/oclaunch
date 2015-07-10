@@ -128,7 +128,7 @@ let log ~cmd ?(func= (+) 1 ) () =
       |> List.map ~f:(fun e -> { Tmp_biniou_t.commands = e})
     in
   (* Write the file with the new value *)
-  write { file with Tmp_biniou_t.rc = new_li file.rc }
+  write Tmp_biniou_t.{ file with rc = new_li file.rc }
 ;;
 
 (* Return current number *)
