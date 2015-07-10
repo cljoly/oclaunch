@@ -6,6 +6,8 @@
 
  + Fix bug: in special circumstances, it was not possible to write in lock file.
    The program was crashing.
+ + Changed tmp file format, the new one would allow more things: running
+   infinite, daemon mode...
 
 ## 0.2.x
 
