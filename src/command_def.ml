@@ -87,9 +87,9 @@ let args =
 (* Define commands *)
 let commands =
   Command.basic
-    ~summary:"OcLaunch program is published under CeCILL licence. See
-    https://gitlab.com/WzukW/oclaunch for details."
-    ~readme:(fun () -> "See https://gitlab.com/WzukW/oclaunch for help.")
+    ~summary:"OcLaunch program is published under CeCILL licence.\nSee \
+    http://cecill.info/licences/Licence_CeCILL_V2.1-en.html (http://huit.re/TmdOFmQT) for details."
+    ~readme:(fun () -> "See http://oclaunch.tuxfamily.org for help.")
     args
 
     (fun verbosity no_color rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
