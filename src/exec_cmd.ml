@@ -49,7 +49,7 @@ let set_title new_title =
 (* TODO Test it *)
 (* Log is a list of entry (commands) asociated with numbers *)
 let less_launched (log : (string * int) list) =
-  let max = 1 in (* Number of maunch, maximum TODO set it in const & rc file *)
+  let max = Const.default_launch in (* Number of launch, maximum *)
   (* Return smallest, n is the smaller key *)
   let entries_by_number = List.Assoc.inverse log  in
     List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
