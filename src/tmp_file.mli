@@ -45,5 +45,5 @@ val is_prog_in_rc : 'a list -> 'a -> bool
 val log : cmd:string -> ?func:(int -> int) -> unit -> unit
 (** Return current state *)
 val get_current : unit -> int
-val reset : int -> unit
+val reset : rc:Settings_t.rc_file -> int -> int -> unit
 val get_accurate_log : rc:Settings_t.rc_file -> tmp:t -> (string * int) list

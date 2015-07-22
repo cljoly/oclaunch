@@ -1,6 +1,7 @@
 {
   "progs": [
-    "task", "task +next", "task +rdv", "echo \"Finish\"", "bdump /tmp/v033"
+    "task", "task +next", "task +rdv", "echo \"Finish\"",
+    "bdump -w daemon,rc,commands /tmp/v033"
   ],
   "settings": []
 }

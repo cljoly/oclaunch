@@ -136,31 +136,6 @@ let get_current () =
     failwith "Deprecated"
 ;;
 
-(* Reset command number in two ways :
-    * if cmd_num is 0, delete tmp file, to reinitialise program
-    * if cmd_num is 0>, set to this value
-    * else display an error message *)
-let reset cmd_num =
-    let n = get_current () in
-    sprintf  "Last N was %i" n
-    |> Messages.info;
-    sprintf  "Restore with 'oclaunch -r %i'" n
-    |> Messages.tips;
-    match cmd_num with
-    | 0 -> (*Verify that file exist and if not, delete it *)
-            Sys.file_exists Const.tmp_file
-            |> (function
-                | `No -> Messages.ok "Tmp file already removed"
-                | `Unknown -> Messages.warning "Error while removing tmp file"
-                | `Yes -> Sys.remove Const.tmp_file; Messages.ok "Tmp file removed"
-            )
-    | n when n > 0 ->
-            (* Set the number *)
-            log ~func:((fun a b -> a) n) ();
-            sprintf "Tmp file reseted to %i" n |> Messages.ok
-    | _ -> Messages.warning "Invalid number"
-;;
-
 (* Get number of launchment for each command in rc file *)
 let get_accurate_log ~rc ~tmp =
   let open List in
@@ -171,4 +146,30 @@ let get_accurate_log ~rc ~tmp =
     |> (function number -> (key,number)))
 ;;
 
+(* Reset number of launch for a given command *)
+let reset ~rc cmd cmd_num =
+  (* Debugging *)
+  [(cmd_num,"cmd_num") ; (cmd,"cmd")]
+    |> List.map ~f:(fun (i , str) -> str ^ ": " ^ (Int.to_string i))
+    |> List.iter ~f:(fun s -> Messages.debug s);
+
+  let log' = get_accurate_log ~rc ~tmp:(init ()) in
+  (* The command (string) corresponding to the number *)
+  let cmd_str = (File_com.num_cmd2cmd ~rc cmd_num |> function Some s -> s
+                                  | None -> failwith "Out of bound") in
+
+  (* Current number of launch for that cmd *)
+  let i = List.Assoc.find_exn log' cmd_str in
+    sprintf  "Last N for command '%s' was %i"
+      cmd_str
+      i
+    |> Messages.info;
+    sprintf  "Restore with 'oclaunch -r %i %i'" i cmd_num
+    |> Messages.tips;
+
+    (* Do the work *)
+    (* Set the number *)
+    log ~func:(fun a -> cmd_num) ~cmd:cmd_str ();
+    sprintf "Reseted command '%s' to %i successfully" cmd_str cmd_num |> Messages.ok
+;;
 

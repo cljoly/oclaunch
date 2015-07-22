@@ -56,14 +56,15 @@ let args =
     ~aliases:["--rc" ; "-rc"]
     ~doc:"file Read configuration from the given file and continue parsing."
     (* Flag to reset tmp file *)
-    +> flag "-r" no_arg
+    +> flag "-r" (optional int)
         ~aliases:["-reset-tmp" ; "--reset-tmp"]
-        ~doc:"[n] Reinitialises launches by setting a new number in temporal file.
-        If nothing is given, reinitialises to 0 and delete tmp file."
+        ~doc:"[n][command] Reinitialises launches of a given [command] to [n]. \
+        If no [n] is given, the entry is deleted. With neither [command] nor [n], all entries are reseted."
     (* Flag to list each commands with its number *)
     +> flag "-l" no_arg
     ~aliases:["-list" ; "--list"]
-    ~doc:" Print a list of all commands with their number. Useful to launch with number. Displays a star next to next command to launch."
+    ~doc:" Print a list of all commands with their number. Useful to launch with number. \
+    Displays a star next to next command to launch."
     (* Flag to add a command to rc file, from stdin or directly *)
     +> flag "-a" no_arg
     ~aliases:["-add" ; "--add"]
@@ -92,17 +93,20 @@ let commands =
     ~readme:(fun () -> "See http://oclaunch.tuxfamily.org for help.")
     args
 
-    (fun verbosity no_color rc_file_name reset_tmp list_commands add delete number modify num_cmd () ->
-       (* Level of verbosity *)
+    (fun verbosity no_color rc_file_name reset_cmd list_commands add delete number modify num_cmd () ->
+       (* Set the level of verbosity *)
        Const.verbosity := verbosity;
        (* Do not use color *)
        Const.no_color := no_color;
-       Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
-       Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
        (* Use given rc file, should run the nth argument if present *)
        Const.rc_file := (Lazy.return rc_file_name);
+
+       (* Debugging *)
+       Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
+       Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
        Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
        Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
+
        (* Obtain data from rc_file *)
        let rc_content = File_com.init_rc () in
        (* A default number, corresponding to first item *)
@@ -115,11 +119,19 @@ let commands =
        else if delete then Remove_command.run ~rc:rc_content num_cmd
        (* To print current state *)
        else if number then State.print_current ()
-       (* Reset to a value *)
-       else if reset_tmp then Tmp_file.reset default_n
        (* Edit the nth command *)
        else if modify then Edit_command.run ~rc:rc_content default_n
+       else
+           (* Other things to test, especially flags with arguments *)
+           (* Reset to a value *)
+         reset_cmd |>
+            function
+              | Some reset_cmd -> Tmp_file.reset ~rc:rc_content reset_cmd default_n
+              | None ->
        (* Else: Run the nth command *)
-       else Default.run ~rc:rc_content num_cmd
+       sprintf "Default: run nth command: %s"
+         (match num_cmd with None -> "None"
+            | Some n -> "Some " ^ (Int.to_string n)) |> Messages.debug;
+       Default.run ~rc:rc_content num_cmd
     )
 ;;

@@ -53,7 +53,7 @@ let run ~rc cmd_number =
         Exec_cmd.execute cmd_to_exec;
       end
     | Some num -> begin
-        Exec_cmd.num_cmd_to_cmd ~rc num
+        File_com.num_cmd2cmd ~rc num
         |> function
             | None -> Messages.warning "Your number is out of bound"
             | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;

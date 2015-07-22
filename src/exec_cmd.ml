@@ -60,11 +60,6 @@ let less_launched (log : (string * int) list) =
       | None -> assert false) (* XXX Use exception here? *)
 ;;
 
-(* Get the command corresponding to a number *)
-let num_cmd_to_cmd ~rc n =
-  List.nth rc.Settings_t.progs n
-;;
-
 (* Function to determinate what is the next command to
  * execute. It takes the current number from tmp file. *)
 let what_next ~rc ~tmp =

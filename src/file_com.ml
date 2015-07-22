@@ -83,3 +83,9 @@ let rec init_rc ?(rc=(!Const.rc_file)) () =
             | Yojson.Json_error _ -> (* Invalid file, delete, so that it will be reseted
             on next call *) Sys.remove rc'; init_rc ~rc ()
 ;;
+
+(* Get the command corresponding to a number *)
+let num_cmd2cmd ~rc n =
+  List.nth rc.Settings_t.progs n
+;;
+
