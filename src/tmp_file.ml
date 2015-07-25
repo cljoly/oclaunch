@@ -171,13 +171,13 @@ let reset ~rc cmd cmd_num =
     |> List.map ~f:(fun (i , str) -> str ^ ": " ^ (Int.to_string i))
     |> List.iter ~f:(fun s -> Messages.debug s);
 
-  let log' = get_accurate_log ~tmp:(init ()) () in
+  let ac_log = get_accurate_log ~tmp:(init ()) () in
   (* The command (string) corresponding to the number *)
   let cmd_str = (File_com.num_cmd2cmd ~rc cmd_num |> function Some s -> s
                                   | None -> failwith "Out of bound") in
 
   (* Current number of launch for that cmd *)
-  let i = List.Assoc.find_exn log' cmd_str in
+  let i = List.Assoc.find_exn ac_log cmd_str in
     sprintf  "Last N for command '%s' was %i"
       cmd_str
       i
