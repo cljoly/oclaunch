@@ -49,7 +49,7 @@ let run ~rc cmd_number =
   match cmd_number with
     | None -> begin
         (* Execute each item (one by one) in config file *)
-        let cmd_to_exec = Exec_cmd.what_next ~rc ~tmp in
+        let cmd_to_exec = Exec_cmd.what_next ~tmp in
         Exec_cmd.execute cmd_to_exec;
       end
     | Some num -> begin

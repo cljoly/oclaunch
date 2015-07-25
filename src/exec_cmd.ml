@@ -62,8 +62,8 @@ let less_launched (log : (string * int) list) =
 
 (* Function to determinate what is the next command to
  * execute. It takes the current number from tmp file. *)
-let what_next ~rc ~tmp =
-  Tmp_file.get_accurate_log ~rc ~tmp
+let what_next ~tmp =
+  Tmp_file.get_accurate_log ~tmp ()
   (* Find the less launched, with order *)
   |> less_launched
   |> function

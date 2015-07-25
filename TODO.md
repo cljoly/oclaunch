@@ -11,7 +11,6 @@
     Or send an email to the author !**
 
 ## Major issue
- + Make multiple tmp file really working by using checksum for rc file.
 
 ## Short term
 
@@ -30,6 +29,9 @@
  + Relaunch the terminal detached after (possible -> use $TERM &; it resists to
    program exit)
  + Allow to tag entry and do things according to tags
+   + Make it extensible
+ + Get statistics and collect them : running time, frequency per item, output of
+   the commands...
 
 ### Misc
  + Documentation ;-)
@@ -41,3 +43,6 @@
  + Translate displayed messages.
  + Better command line interface by grouping commands.
  + Use Batteries instead of Core to improve apps size?
+ + Be more carefull with file reading, lazy evaluation (especially in
+   tmp_file.get_accurate_log)
+ + Improve file_com.ml

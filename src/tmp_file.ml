@@ -91,9 +91,9 @@ let rec init () =
 
 (* Get a log of values from the tmp file, like this
  * (cmd,number of launch) list *)
-let get_log ~rc =
+let get_log ~rc_tmp =
   List.map ~f:(fun { Tmp_biniou_t.commands = (cmd,number) } ->
-        (cmd,number)) rc
+        (cmd,number)) rc_tmp
 ;;
 
 (* Verify that the value exist *)
@@ -118,17 +118,25 @@ let rec is_prog_in_rc list_from_rc_file program =
 let log ~cmd ?(func= (+) 1 ) () =
   (* Make sure that file exists, otherwise strange things appears *)
   let file = init () in
+  (* Get rc_file name *)
+  let name = Lazy.force !Const.rc_file in
   (* Function to generate the new list with right number *)
-  let new_li ( li : Tmp_biniou_t.rc_entry list ) =
+  let new_li (li : Tmp_biniou_t.rc_entry list) =
     let open List.Assoc in
     (* Only number of launchment associated with commands *)
-    let l = get_log li in
+    let l = get_log ~rc_tmp:li in
     find l cmd
       |> (function None -> add l cmd Const.default_launch | Some n -> add l cmd (func n))
       |> List.map ~f:(fun e -> { Tmp_biniou_t.commands = e})
     in
   (* Write the file with the new value *)
-  write Tmp_biniou_t.{ file with rc = new_li file.rc }
+  let updated_li =
+    List.Assoc.(find file.Tmp_biniou_t.rc name)
+      |> Option.value ~default:[]
+      |> new_li
+  in
+  write Tmp_biniou_t.{ file with rc = List.Assoc.add file.rc name
+  updated_li }
 ;;
 
 (* Return current number *)
@@ -136,10 +144,20 @@ let get_current () =
     failwith "Deprecated"
 ;;
 
-(* Get number of launchment for each command in rc file *)
-let get_accurate_log ~rc ~tmp =
+(* Get number of launch for each command in rc file *)
+let get_accurate_log ?rc_name ~tmp () =
   let open List in
-  let rc_in_tmp = get_log tmp.Tmp_biniou_t.rc in
+
+  (* Read rc *)
+  (* XXX Forcing evaluation of lazy value Const.rc_file before it is
+   *   necessary *)
+  let name : string = Option.value ~default:(Lazy.force !Const.rc_file) rc_name
+  in
+  let rc =  File_com.init_rc ~rc:(Lazy.return name) () in
+
+  let rc_in_tmp = get_log ~rc_tmp:(Assoc.find tmp.Tmp_biniou_t.rc name
+    |> Option.value ~default:[])
+  in
   map rc.Settings_t.progs ~f:(fun key ->
         Assoc.find rc_in_tmp key
     |> Option.value ~default:0
@@ -153,7 +171,7 @@ let reset ~rc cmd cmd_num =
     |> List.map ~f:(fun (i , str) -> str ^ ": " ^ (Int.to_string i))
     |> List.iter ~f:(fun s -> Messages.debug s);
 
-  let log' = get_accurate_log ~rc ~tmp:(init ()) in
+  let log' = get_accurate_log ~tmp:(init ()) () in
   (* The command (string) corresponding to the number *)
   let cmd_str = (File_com.num_cmd2cmd ~rc cmd_num |> function Some s -> s
                                   | None -> failwith "Out of bound") in

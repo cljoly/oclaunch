@@ -43,7 +43,6 @@ val verbosity : int ref
 val no_color : bool ref
 
 (* Files *)
-val rc_file_default : string Core.Std.Lazy.t
 val rc_file : string Core.Std.Lazy.t ref
 val tmp_file : string
 (* Conf *)

@@ -46,4 +46,4 @@ val log : cmd:string -> ?func:(int -> int) -> unit -> unit
 (** Return current state *)
 val get_current : unit -> int
 val reset : rc:Settings_t.rc_file -> int -> int -> unit
-val get_accurate_log : rc:Settings_t.rc_file -> tmp:t -> (string * int) list
+val get_accurate_log : ?rc_name:string -> tmp:t -> unit -> (string * int) list

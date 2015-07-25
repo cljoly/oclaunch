@@ -1,9 +1,50 @@
 (* Auto-generated from "tmp_biniou.atd" *)
 
 
+type rc_name = Tmp_biniou_t.rc_name
+
 type rc_entry = Tmp_biniou_t.rc_entry = { commands: (string * int) }
 
-type tmp_file = Tmp_biniou_t.tmp_file = { rc: rc_entry list; daemon: int }
+type tmp_file = Tmp_biniou_t.tmp_file = {
+  rc: (rc_name * (rc_entry list)) list;
+  daemon: int
+}
+
+(* Writers for type rc_name *)
+
+val rc_name_tag : Bi_io.node_tag
+  (** Tag used by the writers for type {!rc_name}.
+      Readers may support more than just this tag. *)
+
+val write_untagged_rc_name :
+  Bi_outbuf.t -> rc_name -> unit
+  (** Output an untagged biniou value of type {!rc_name}. *)
+
+val write_rc_name :
+  Bi_outbuf.t -> rc_name -> unit
+  (** Output a biniou value of type {!rc_name}. *)
+
+val string_of_rc_name :
+  ?len:int -> rc_name -> string
+  (** Serialize a value of type {!rc_name} into
+      a biniou string. *)
+
+(* Readers for type rc_name *)
+
+val get_rc_name_reader :
+  Bi_io.node_tag -> (Bi_inbuf.t -> rc_name)
+  (** Return a function that reads an untagged
+      biniou value of type {!rc_name}. *)
+
+val read_rc_name :
+  Bi_inbuf.t -> rc_name
+  (** Input a tagged biniou value of type {!rc_name}. *)
+
+val rc_name_of_string :
+  ?pos:int -> string -> rc_name
+  (** Deserialize a biniou value of type {!rc_name}.
+      @param pos specifies the position where
+                 reading starts. Default: 0. *)
 
 (* Writers for type rc_entry *)
 

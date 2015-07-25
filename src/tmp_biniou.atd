@@ -45,8 +45,10 @@ type rc_entry = {
     of launches *)
 }
 
+type rc_name = string
+
 (* Source of the file *)
 type tmp_file = {
-    rc: rc_entry list; (* A list of rc files *)
+  rc: (rc_name * (rc_entry list)) list; (* A list of rc files *)
     daemon: int; (* The current state of the daemon, maybe by pid *)
 }
