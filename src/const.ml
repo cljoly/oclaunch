@@ -82,5 +82,5 @@ let rc_file_default = Lazy.(home >>| (fun home -> home ^ "/" ^
 let rc_file = ref rc_file_default;;
 (* Set tmp file, in witch stock launches, in biniou format *)
 let tmp_file = get_var ~default:"/tmp/.oclaunch_trace.dat" "OC_TMP";; (* File where launch are logged *)
-(* Default number for launchment *)
+(* Default number for launch *)
 let default_launch = 1;; (* TODO set it in rc file *)

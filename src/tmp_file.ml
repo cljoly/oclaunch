@@ -69,7 +69,7 @@ let rec read () =
 
 (* Function to create the tmp file *)
 and create_tmp_file () =
-    (* An empty list, without launchment *)
+    (* An empty list, without rc, commands, launch... *)
     Tmp_biniou_v.create_tmp_file ~daemon:0 ~rc:[] ()
     (* Convert it to biniou *)
     |> write
@@ -123,7 +123,7 @@ let log ~cmd ?(func= (+) 1 ) () =
   (* Function to generate the new list with right number *)
   let new_li (li : Tmp_biniou_t.rc_entry list) =
     let open List.Assoc in
-    (* Only number of launchment associated with commands *)
+    (* Only number of launch associated with commands *)
     let l = get_log ~rc_tmp:li in
     find l cmd
       |> (function None -> add l cmd Const.default_launch | Some n -> add l cmd (func n))
