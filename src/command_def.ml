@@ -122,16 +122,19 @@ let commands =
        (* Edit the nth command *)
        else if modify then Edit_command.run ~rc:rc_content default_n
        else
+         begin
            (* Other things to test, especially flags with arguments *)
            (* Reset to a value *)
-         reset_cmd |>
-            function
-              | Some reset_cmd -> Tmp_file.reset ~rc:rc_content reset_cmd default_n
-              | None ->
-       (* Else: Run the nth command *)
-       sprintf "Default: run nth command: %s"
-         (match num_cmd with None -> "None"
-            | Some n -> "Some " ^ (Int.to_string n)) |> Messages.debug;
-       Default.run ~rc:rc_content num_cmd
-    )
+           reset_cmd |> (function
+             | Some reset_cmd -> Tmp_file.reset ~rc:rc_content reset_cmd default_n
+             | None -> ());
+
+           (* Else: Run the nth command *)
+           sprintf "Default: run nth command: %s"
+             (match num_cmd with None -> "None"
+                | Some n -> "Some " ^ (Int.to_string n)) |> Messages.debug;
+           Default.run ~rc:rc_content num_cmd;
+           Messages.debug "Default: end"
+         end
+        )
 ;;
