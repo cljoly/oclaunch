@@ -54,7 +54,7 @@ let less_launched (log : (string * int) list) =
   let entries_by_number = List.Assoc.inverse log  in
     List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
     |> (function Some (min,cmd) ->
-        if min <= max
+        if min < max
         then Some cmd
         else None
       | None -> assert false) (* XXX Use exception here? *)
