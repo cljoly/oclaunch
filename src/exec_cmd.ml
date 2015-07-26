@@ -61,20 +61,11 @@ let less_launched (log : (string * int) list) =
 ;;
 
 (* Function to determinate what is the next command to
- * execute. It takes the current number from tmp file. *)
+ * execute. It takes the current numbers from tmp file. *)
 let what_next ~tmp =
   Tmp_file.get_accurate_log ~tmp ()
   (* Find the less launched, with order *)
   |> less_launched
-  |> function
-    (* If in range of the list, return the corresponding command else return
-     * an empty string after displaying error. *)
-    | Some x -> set_title x; x
-    | None ->
-        Messages.ok "All has been launched!";
-        Messages.tips "You can reset with '-r'";
-        (* Return empty string *)
-        ""
 ;;
 
 (* Display an error message if command can't run
@@ -91,6 +82,8 @@ let display_result command status =
 
 (* Execute some command and log it *)
 let execute ?(display=true) cmd =
+  set_title cmd;
+
     Tmp_file.log ~cmd ~func:((+) 1) ();
     if display then
         Messages.ok cmd;
