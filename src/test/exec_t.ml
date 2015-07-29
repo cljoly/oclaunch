@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2015                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,58 +36,31 @@
 
 open Core.Std;;
 
-(* Function allowing to set the title of the current terminal windows
- * XXX Maybe better in some lib *)
-let set_title new_title =
-    (* Use echo command to set term  title *)
-    Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-    |> function | 0 -> () | _ -> sprintf "Error while setting terminal title"
-    |> Messages.warning
+(* A module containing tests for src/exec_cmd.ml *)
+
+(* Function less_launched *)
+let less_launched test solution () =
+  let actual = Exec_cmd.less_launched test in
+  OUnit.assert_equal actual solution
 ;;
 
-(* Function to return the less launched command, at least the first one *)
-(* Log is a list of entry (commands) asociated with numbers *)
-let less_launched (log : (string * int) list) =
-  let max = Const.default_launch in (* Number of launch, maximum *)
-  (* Return smallest, n is the smaller key *)
-  let entries_by_number = List.Assoc.inverse log  in
-    List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
-    |> (function Some (min,cmd) ->
-        if min < max
-        then Some cmd
-        else None
-      | None -> assert false) (* XXX Use exception here? *)
+(* Data for above test *)
+let ll_data =
+  let max = Const.default_launch in
+  [
+  ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], Some "cmd2", "Canonical case 1" );
+  ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], Some "cmd1", "Canonical case 2" );
+  ( [], None, "Empty list" );
+  ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], None, "Everything (strcitly) superior to max" );
+  ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], None, "Twice the same number" );
+]
+
+let llt_l =
+  List.map ll_data ~f:(fun (t, s, name) -> ( (less_launched t s), name))
+  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
 ;;
 
-(* Function to determinate what is the next command to
- * execute. It takes the current numbers from tmp file. *)
-let what_next ~tmp =
-  Tmp_file.get_accurate_log ~tmp ()
-  (* Find the less launched, with order *)
-  |> less_launched
-;;
+(* To be used in test.ml *)
+let alco = [( "Exec_cmd.ml", llt_l );];;
 
-(* Display an error message if command can't run
- * if 0 status, do nothing
- * else display status number *)
-let display_result command status =
-    match status with
-    | 0 -> (* No problem, do nothing *) ()
-    | _ -> (* Problem occur,  display it *)
-            sprintf "Problem while running: '%s'\nExited with code: %i\n"
-            command status
-    |> Messages.warning
-;;
 
-(* Execute some command and log it *)
-let execute ?(display=true) cmd =
-  set_title cmd;
-
-    Tmp_file.log ~cmd ~func:((+) 1) ();
-    if display then
-        Messages.ok cmd;
-    (* We can remove lock file since number in tmp_file has been incremented *)
-    Lock.remove ();
-    Sys.command cmd
-    |> display_result cmd (* Make it settable in rc file *)
-;;
