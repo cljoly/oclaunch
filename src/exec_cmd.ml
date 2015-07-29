@@ -56,7 +56,7 @@ let less_launched (log : (string * int) list) =
         if min < max
         then Some cmd
         else None
-      | None -> assert false) (* XXX Use exception here? *)
+      | None -> None)
 ;;
 
 (* Function to determinate what is the next command to
