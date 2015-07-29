@@ -36,16 +36,18 @@
 
 open Core.Std;;
 
+open Command;;
+
 (* Module containing the definition of the interface of OcLaunch *)
 
-(* Arguments *)
-let args =
-    let open Command.Spec in
-    (empty
+(* A set of default arguments, usable with most of the commands *)
+let common =
+  let open Spec in
+  empty
     (* Flag to set verbosity level *)
     +> flag "-v" (optional_with_default !Const.verbosity int)
-        ~aliases:["--verbose" ; "-verbose"]
-        ~doc:"[n] Set verbosity level. \
+    ~aliases:["--verbose" ; "-verbose"]
+    ~doc:"[n] Set verbosity level. \
         The higher n is, the most verbose the program is."
     (* Flag to set colors *)
     +> flag "--no-color" no_arg
@@ -55,11 +57,62 @@ let args =
     +> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
     ~aliases:["--rc" ; "-rc"]
     ~doc:"file Read configuration from the given file and continue parsing."
-    (* Flag to reset tmp file *)
+;;
+
+(* Way to treat common args *)
+let parse_common ~f = fun verbosity no_color rc_file_name ->
+  (* Set the level of verbosity *)
+  Const.verbosity := verbosity;
+  (* Do not use color *)
+  Const.no_color := no_color;
+  (* Use given rc file, should run the nth argument if present *)
+  Const.rc_file := (Lazy.return rc_file_name);
+
+  (* Debugging *)
+  Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
+  Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
+  Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
+  Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
+
+  (* Obtain data from rc_file *)
+  let rc_content = File_com.init_rc () in
+  (* A default number, corresponding to first item *)
+  (*let default_n = (Option.value ~default:0 num_cmd) in*)
+  f ~rc:rc_content (*~default*)
+;;
+
+
+(* Almost all the subcommands are defined the same way
+ * f: function to parse the special arguments
+ * summary: summary of the subcommand
+ * args: the args of the subcommand
+ * name: the name of the subcommand *)
+let sub ~f ~summary ~args name =
+  let def =
+    basic ~summary Spec.(common +> args)
+      (parse_common ~f)
+  in
+    ( name, def )
+;;
+
+(* Sub-commands *)
+
+(* To reset tmp file *)
+let reset =
+  sub
+    ~summary:"[n][command] Reinitialises launches of a given [command] to [n]. \
+        If no [n] is given, the entry is deleted. With neither [command] nor [n], all entries are reseted."
+    ~args:Spec.(
+       anon ("number" %: int)
+    )
+    ~f:(fun ~rc reset_cmd () ->
+      (*Tmp_file.reset ~rc reset_cmd 0)*)
+      printf "Working\n")
+    "reset-tmp"
+    (*
     +> flag "-r" (optional int)
         ~aliases:["-reset-tmp" ; "--reset-tmp"]
-        ~doc:"[n][command] Reinitialises launches of a given [command] to [n]. \
-        If no [n] is given, the entry is deleted. With neither [command] nor [n], all entries are reseted."
+        ~doc:
     (* Flag to list each commands with its number *)
     +> flag "-l" no_arg
     ~aliases:["-list" ; "--list"]
@@ -137,4 +190,19 @@ let commands =
            Messages.debug "Default: end"
          end
         )
+;;
+*)
+
+let run ~version ~build_info () =
+  begin
+    match
+      group ~summary:"Most of the commands."
+        [ reset ]
+    |> run ~version ~build_info
+    with
+    | () -> exit 0
+    | exception _ -> exit 20
+  end;
+  (* Reset display *)
+  Messages.reset ()
 ;;
