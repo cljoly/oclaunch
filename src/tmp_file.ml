@@ -164,16 +164,18 @@ let get_accurate_log ?rc_name ~tmp () =
     |> (function number -> (key,number)))
 ;;
 
-(* Reset number of launch for a given command *)
-let reset ~rc cmd cmd_num =
+(* Reset number of launch for a given command
+ * cmd: number of the command to be reseted
+ * num: number to reset *)
+let reset ~rc cmd num =
   (* Debugging *)
-  [(cmd_num,"cmd_num") ; (cmd,"cmd")]
+  [(num,"num") ; (cmd,"cmd")]
     |> List.map ~f:(fun (i , str) -> str ^ ": " ^ (Int.to_string i))
     |> List.iter ~f:(fun s -> Messages.debug s);
 
   let ac_log = get_accurate_log ~tmp:(init ()) () in
   (* The command (string) corresponding to the number *)
-  let cmd_str = (File_com.num_cmd2cmd ~rc cmd_num |> function Some s -> s
+  let cmd_str = (File_com.num_cmd2cmd ~rc num |> function Some s -> s
                                   | None -> failwith "Out of bound") in
 
   (* Current number of launch for that cmd *)
@@ -182,12 +184,12 @@ let reset ~rc cmd cmd_num =
       cmd_str
       i
     |> Messages.info;
-    sprintf  "Restore with 'oclaunch -r %i %i'" i cmd_num
+    sprintf  "Restore with 'oclaunch -r %i %i'" i num
     |> Messages.tips;
 
     (* Do the work *)
     (* Set the number *)
-    log ~func:(fun a -> cmd_num) ~cmd:cmd_str ();
-    sprintf "Reseted command '%s' to %i successfully" cmd_str cmd_num |> Messages.ok
+    log ~func:(fun a -> num) ~cmd:cmd_str ();
+    sprintf "Reseted command '%s' to %i successfully" cmd_str num |> Messages.ok
 ;;
 
