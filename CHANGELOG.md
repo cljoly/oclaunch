@@ -6,7 +6,8 @@
 
  + Fix bug: in special circumstances, it was not possible to write in lock file.
    The program was crashing.
- + Rewrite command line parsing, in a cleaner and safer way
+ + Rewrite command line parsing, in a cleaner and safer way. It now handles
+   `exit`
  + Code clean up
  + Add unit tests
  + Changed tmp file format, the new one would allow to do more things:

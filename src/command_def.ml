@@ -60,7 +60,8 @@ let common =
 ;;
 
 (* Way to treat common args *)
-let parse_common ~f = fun verbosity no_color rc_file_name ->
+let parse_common ~f = fun verbosity no_color rc_file_name _ -> (* XXX _ -> some
+special list *)
   (* Set the level of verbosity *)
   Const.verbosity := verbosity;
   (* Do not use color *)
@@ -105,35 +106,104 @@ let reset =
     ~args:Spec.(
        anon ("number" %: int)
     )
-    ~f:(fun ~rc reset_cmd () ->
+    ~f:(fun ~rc () ->
+      Tmp_file.reset ~rc 0(*reset_cmd*) 0
+      )
+    "reset-tmp"
+;;
+
+(* To list each commands with its number *)
+let list =
+  sub
+    ~summary:"Print a list of all commands with their number. Useful to launch with number. \
+    Displays a star next to next command to launch."
+    ~args:Spec.(
+      empty
+    )
+    ~f:(fun ~rc () ->
+      printf "Working\n")
+    "list"
+;;
+
+(* To add a command to rc file, from stdin or directly *)
+let add =
+  sub
+    ~summary:"[n] Add the command given on stdin to the configuration file at a given position. If nothing is given, append it."
+    ~args:Spec.(
+      anon ("number" %: int)
+    )
+    ~f:(fun ~rc (*num_cmd*) () ->
+      Add_command.run ~rc None(*num_cmd*)
+    )
+    "add"
+;;
+
+(* To remove a command from rc file *)
+let delete =
+  sub
+    ~summary:"[n] remove the nth command from configuration file. If n is absent, remove last one."
+    ~args:Spec.(
+      empty
+    )
+    ~f:(fun ~rc () ->
       (*Tmp_file.reset ~rc reset_cmd 0)*)
       printf "Working\n")
-    "reset-tmp"
+    "delete"
+;;
+
+(* To display current state *)
+let state =
+  sub
+    ~summary:" Display current state of the program."
+    ~args:Spec.(
+      empty
+    )
+    ~f:(fun ~rc () ->
+      (*Tmp_file.reset ~rc reset_cmd 0)*)
+      printf "Working\n")
+    "state"
+;;
+
+
+(* To edit the nth command *)
+let edit =
+  sub
+    ~summary:"[n] Edit the nth command of the rc file in your $EDITOR. May be used to add new entries."
+    ~args:Spec.(
+      empty
+    )
+    ~f:(fun ~rc () ->
+      (*Tmp_file.reset ~rc reset_cmd 0)*)
+      printf "Working\n")
+    "edit"
+;;
+
+(* Run th enth command, default use *)
+let default =
+  sub
+    ~summary:"Run the nth command"
+    ~args:Spec.(
+      anon (maybe ("Command number" %: int))
+    )
+    ~f:(fun ~rc () ->
+      Default.run ~rc None)
+    "run"
     (*
-    +> flag "-r" (optional int)
-        ~aliases:["-reset-tmp" ; "--reset-tmp"]
-        ~doc:
-    (* Flag to list each commands with its number *)
-    +> flag "-l" no_arg
-    ~aliases:["-list" ; "--list"]
-    ~doc:" Print a list of all commands with their number. Useful to launch with number. \
-    Displays a star next to next command to launch."
-    (* Flag to add a command to rc file, from stdin or directly *)
     +> flag "-a" no_arg
     ~aliases:["-add" ; "--add"]
     ~doc:"[n] Add the command given on stdin to the configuration file at a given position. If nothing is given, append it."
     (* Flag to remove a command from rc file *)
     +> flag "-d" no_arg
     ~aliases:["-delete" ; "--delete"]
-    ~doc:"[n] remove the nth command from configuration file. If n is absent, remove last one."
+    ~doc:
     (* Flag to display current number *)
     +> flag "-n" no_arg
     ~aliases:["-number" ; "--number"]
-    ~doc:" Display current state of the program."
+    ~doc:
     (* Flag to edit the nth command *)
     +> flag "-m" no_arg
     ~aliases:["-modify" ; "--modify" ; "--edit" ; "-edit"]
-    ~doc:"[n] Edit the nth command of the rc file in your $EDITOR. May be used to add new entries."
+    ~doc:
 
     +> anon (maybe ("Command number" %: int)))
 ;;
@@ -141,9 +211,6 @@ let reset =
 (* Define commands *)
 let commands =
   Command.basic
-    ~summary:"OcLaunch program is published under CeCILL licence.\nSee \
-    http://cecill.info/licences/Licence_CeCILL_V2.1-en.html (http://huit.re/TmdOFmQT) for details."
-    ~readme:(fun () -> "See http://oclaunch.tuxfamily.org for help.")
     args
 
     (fun verbosity no_color rc_file_name reset_cmd list_commands add delete number modify num_cmd () ->
@@ -194,15 +261,20 @@ let commands =
 *)
 
 let run ~version ~build_info () =
-  begin
+  let exit_code =
     match
-      group ~summary:"Most of the commands."
-        [ reset ]
+    group
+      ~summary:"OcLaunch program is published under CeCILL licence.\nSee \
+      http://cecill.info/licences/Licence_CeCILL_V2.1-en.html (http://huit.re/TmdOFmQT) for details."
+      ~readme:(fun () -> "See http://oclaunch.tuxfamily.org for help.")
+      [ reset ; list ; add ; delete ; state ; edit ; default ]
     |> run ~version ~build_info
     with
-    | () -> exit 0
-    | exception _ -> exit 20
-  end;
+    | () -> `Exit 0
+    | exception _ -> `Exit 20
+  in
   (* Reset display *)
-  Messages.reset ()
+  Messages.reset ();
+
+  exit_code
 ;;

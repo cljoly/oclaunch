@@ -46,5 +46,7 @@ let version_number = "0.3.1-dev";;
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
 let () =
-  Command_def.run ~version:version_number ~build_info:build_info ();
+  Command_def.run ~version:version_number ~build_info:build_info ()
+  |> function
+    `Exit n -> exit n
 ;;
