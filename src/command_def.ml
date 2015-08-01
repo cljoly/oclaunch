@@ -40,225 +40,145 @@ open Command;;
 
 (* Module containing the definition of the interface of OcLaunch *)
 
+(* Type to return result of the work with common arguments *)
+type return_arg = {
+  rc : Settings_t.rc_file;
+}
+
 (* A set of default arguments, usable with most of the commands *)
-let common =
-  let open Spec in
-  empty
-    (* Flag to set verbosity level *)
-    +> flag "-v" (optional_with_default !Const.verbosity int)
-    ~aliases:["--verbose" ; "-verbose"]
-    ~doc:"[n] Set verbosity level. \
+let shared_params =
+  let open Param in
+  (* Way to treat common args *)
+  return (fun verbosity no_color rc_file_name ->
+    (* Set the level of verbosity *)
+    Const.verbosity := verbosity;
+    (* Do not use color *)
+    Const.no_color := no_color;
+    (* Use given rc file, should run the nth argument if present *)
+    Const.rc_file := (Lazy.return rc_file_name);
+
+    (* Debugging *)
+    Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
+    Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
+    Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
+    Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
+
+    (* Obtain data from rc_file *)
+    let rc_content = File_com.init_rc () in
+    { rc = rc_content } (* We use type for futur use *)
+  )
+  (* Flag to set verbosity level *)
+    <*> flag "-v" (optional_with_default !Const.verbosity int)
+      ~aliases:["--verbose" ; "-verbose"]
+      ~doc:"[n] Set verbosity level. \
         The higher n is, the most verbose the program is."
     (* Flag to set colors *)
-    +> flag "--no-color" no_arg
+    <*> flag "--no-color" no_arg
         ~aliases:["-no-color"]
         ~doc:" Use this flag to disable color usage."
     (* Flag to use different rc file *)
-    +> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
-    ~aliases:["--rc" ; "-rc"]
-    ~doc:"file Read configuration from the given file and continue parsing."
-;;
-
-(* Way to treat common args *)
-let parse_common ~f = fun verbosity no_color rc_file_name _ -> (* XXX _ -> some
-special list *)
-  (* Set the level of verbosity *)
-  Const.verbosity := verbosity;
-  (* Do not use color *)
-  Const.no_color := no_color;
-  (* Use given rc file, should run the nth argument if present *)
-  Const.rc_file := (Lazy.return rc_file_name);
-
-  (* Debugging *)
-  Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
-  Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
-  Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
-  Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
-
-  (* Obtain data from rc_file *)
-  let rc_content = File_com.init_rc () in
-  (* A default number, corresponding to first item *)
-  (*let default_n = (Option.value ~default:0 num_cmd) in*)
-  f ~rc:rc_content (*~default*)
+    <*> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
+      ~aliases:["--rc" ; "-rc"]
+      ~doc:"file Read configuration from the given file and continue parsing."
 ;;
 
 
-(* Almost all the subcommands are defined the same way
- * f: function to parse the special arguments
- * summary: summary of the subcommand
- * args: the args of the subcommand
- * name: the name of the subcommand *)
-let sub ~f ~summary ~args name =
-  let def =
-    basic ~summary Spec.(common +> args)
-      (parse_common ~f)
-  in
-    ( name, def )
-;;
-
-(* Sub-commands *)
+(* basic-commands *)
 
 (* To reset tmp file *)
 let reset =
-  sub
+  basic
     ~summary:"[n][command] Reinitialises launches of a given [command] to [n]. \
-        If no [n] is given, the entry is deleted. With neither [command] nor [n], all entries are reseted."
-    ~args:Spec.(
-       anon ("number" %: int)
+      If no [n] is given, the entry is deleted. With neither [command] nor [n], all entries are reseted."
+    Spec.(
+      empty
+       +> shared_params
+       +> anon ("command_number" %: int)
+       +> anon ("target_number" %: int)
     )
-    ~f:(fun ~rc () ->
-      Tmp_file.reset ~rc 0(*reset_cmd*) 0
-      )
-    "reset-tmp"
+    (fun { rc } reset_cmd default_n () ->
+      Tmp_file.reset ~rc reset_cmd default_n
+    )
 ;;
 
 (* To list each commands with its number *)
 let list =
-  sub
+  basic
     ~summary:"Print a list of all commands with their number. Useful to launch with number. \
     Displays a star next to next command to launch."
-    ~args:Spec.(
+    Spec.(
       empty
+      +> shared_params
     )
-    ~f:(fun ~rc () ->
-      printf "Working\n")
-    "list"
+    (fun { rc } () ->
+      List_rc.run ~rc)
 ;;
 
 (* To add a command to rc file, from stdin or directly *)
 let add =
-  sub
+  basic
     ~summary:"[n] Add the command given on stdin to the configuration file at a given position. If nothing is given, append it."
-    ~args:Spec.(
-      anon ("number" %: int)
+    Spec.(
+      empty
+      +> shared_params
+      +> anon  (maybe ("number" %: int))
     )
-    ~f:(fun ~rc (*num_cmd*) () ->
-      Add_command.run ~rc None(*num_cmd*)
+    (fun { rc } num_cmd () ->
+      Add_command.run ~rc num_cmd
     )
-    "add"
 ;;
 
 (* To remove a command from rc file *)
 let delete =
-  sub
+  basic
     ~summary:"[n] remove the nth command from configuration file. If n is absent, remove last one."
-    ~args:Spec.(
+    Spec.(
       empty
+       +> shared_params
+       +> anon (maybe ("command_number" %: int))
     )
-    ~f:(fun ~rc () ->
+    (fun { rc } num_cmd () ->
       (*Tmp_file.reset ~rc reset_cmd 0)*)
-      printf "Working\n")
-    "delete"
+      Remove_command.run ~rc num_cmd)
 ;;
 
 (* To display current state *)
 let state =
-  sub
+  basic
     ~summary:" Display current state of the program."
-    ~args:Spec.(
+    Spec.(
       empty
+      +> shared_params
     )
-    ~f:(fun ~rc () ->
-      (*Tmp_file.reset ~rc reset_cmd 0)*)
-      printf "Working\n")
-    "state"
+    (fun _ () ->
+      State.print_current ())
 ;;
 
 
 (* To edit the nth command *)
 let edit =
-  sub
+  basic
     ~summary:"[n] Edit the nth command of the rc file in your $EDITOR. May be used to add new entries."
-    ~args:Spec.(
+    Spec.(
       empty
+      +> shared_params
+      +> anon ("command_number" %: int)
     )
-    ~f:(fun ~rc () ->
-      (*Tmp_file.reset ~rc reset_cmd 0)*)
-      printf "Working\n")
-    "edit"
+    (fun { rc } default_n () ->
+      Edit_command.run ~rc default_n)
 ;;
 
 (* Run th enth command, default use *)
 let default =
-  sub
+  basic
     ~summary:"Run the nth command"
-    ~args:Spec.(
-      anon (maybe ("Command number" %: int))
+    Spec.(
+      empty
+      +> shared_params
+      +> anon (maybe ("Command number" %: int))
     )
-    ~f:(fun ~rc () ->
-      Default.run ~rc None)
-    "run"
-    (*
-    +> flag "-a" no_arg
-    ~aliases:["-add" ; "--add"]
-    ~doc:"[n] Add the command given on stdin to the configuration file at a given position. If nothing is given, append it."
-    (* Flag to remove a command from rc file *)
-    +> flag "-d" no_arg
-    ~aliases:["-delete" ; "--delete"]
-    ~doc:
-    (* Flag to display current number *)
-    +> flag "-n" no_arg
-    ~aliases:["-number" ; "--number"]
-    ~doc:
-    (* Flag to edit the nth command *)
-    +> flag "-m" no_arg
-    ~aliases:["-modify" ; "--modify" ; "--edit" ; "-edit"]
-    ~doc:
-
-    +> anon (maybe ("Command number" %: int)))
-;;
-
-(* Define commands *)
-let commands =
-  Command.basic
-    args
-
-    (fun verbosity no_color rc_file_name reset_cmd list_commands add delete number modify num_cmd () ->
-       (* Set the level of verbosity *)
-       Const.verbosity := verbosity;
-       (* Do not use color *)
-       Const.no_color := no_color;
-       (* Use given rc file, should run the nth argument if present *)
-       Const.rc_file := (Lazy.return rc_file_name);
-
-       (* Debugging *)
-       Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
-       Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
-       Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
-       Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
-
-       (* Obtain data from rc_file *)
-       let rc_content = File_com.init_rc () in
-       (* A default number, corresponding to first item *)
-       let default_n = (Option.value ~default:0 num_cmd) in
-       (* First try to list *)
-       if list_commands then List_rc.run ~rc:rc_content
-       (* To add command to rc file *)
-       else if add then Add_command.run ~rc:rc_content num_cmd
-       (* To delete command from rc file *)
-       else if delete then Remove_command.run ~rc:rc_content num_cmd
-       (* To print current state *)
-       else if number then State.print_current ()
-       (* Edit the nth command *)
-       else if modify then Edit_command.run ~rc:rc_content default_n
-       else
-         begin
-           (* Other things to test, especially flags with arguments *)
-           (* Reset to a value *)
-           reset_cmd |> (function
-             | Some reset_cmd -> Tmp_file.reset ~rc:rc_content reset_cmd default_n
-             | None -> ());
-
-           (* Else: Run the nth command *)
-           sprintf "Default: run nth command: %s"
-             (match num_cmd with None -> "None"
-                | Some n -> "Some " ^ (Int.to_string n)) |> Messages.debug;
-           Default.run ~rc:rc_content num_cmd;
-           Messages.debug "Default: end"
-         end
-        )
-;;
-*)
+    (fun { rc } n () ->
+      Default.run ~rc n)
 
 let run ~version ~build_info () =
   let exit_code =
@@ -267,11 +187,15 @@ let run ~version ~build_info () =
       ~summary:"OcLaunch program is published under CeCILL licence.\nSee \
       http://cecill.info/licences/Licence_CeCILL_V2.1-en.html (http://huit.re/TmdOFmQT) for details."
       ~readme:(fun () -> "See http://oclaunch.tuxfamily.org for help.")
-      [ reset ; list ; add ; delete ; state ; edit ; default ]
+      [ ( "reset-tmp", reset) ; ("list", list) ; ("add", add) ; ("delete",
+      delete) ; ("state", state) ; ("edit", edit) ; ("run", default) ]
     |> run ~version ~build_info
     with
     | () -> `Exit 0
-    | exception _ -> `Exit 20
+    | exception message ->
+        "Exception: " ^ (Exn.to_string message)
+        |> Messages.warning;
+        `Exit 20
   in
   (* Reset display *)
   Messages.reset ();
