@@ -88,8 +88,9 @@ let shared_params =
 (* To reset tmp file *)
 let reset =
   basic
-    ~summary:"[n][command] Reinitialises launches of a given [command] to [n]. \
-      If no [n] is given, the entry is deleted. With neither [command] nor [n], all entries are reseted."
+    ~summary:"OUTDATED\n Reinitialises launches of a given [command] to [n]. \
+      If no [n] is given, the entry is deleted. \
+      With neither [command] nor [n], all entries are reseted."
     Spec.(
       empty
        +> shared_params
@@ -117,7 +118,8 @@ let list =
 (* To add a command to rc file, from stdin or directly *)
 let add =
   basic
-    ~summary:"[n] Add the command given on stdin to the configuration file at a given position. If nothing is given, append it."
+    ~summary:"Add the command given on stdin to the configuration file at a \
+    given position ([NUMBER]). If nothing is given, append it."
     Spec.(
       empty
       +> shared_params
@@ -131,7 +133,8 @@ let add =
 (* To remove a command from rc file *)
 let delete =
   basic
-    ~summary:"[n] remove the nth command from configuration file. If n is absent, remove last one."
+    ~summary:"Remove the [COMMAND_NUMBER]th command from configuration file. \
+    If [COMMAND_NUMBER] is absent, remove last one."
     Spec.(
       empty
        +> shared_params
@@ -145,7 +148,7 @@ let delete =
 (* To display current state *)
 let state =
   basic
-    ~summary:" Display current state of the program."
+    ~summary:"Display current state of the program."
     Spec.(
       empty
       +> shared_params
@@ -158,7 +161,8 @@ let state =
 (* To edit the nth command *)
 let edit =
   basic
-    ~summary:"[n] Edit the nth command of the rc file in your $EDITOR. May be used to add new entries."
+    ~summary:"Edit the [COMMAND_NUMBER]th command of the rc file in your \
+    $EDITOR. May be used to add new entries."
     Spec.(
       empty
       +> shared_params
@@ -171,11 +175,11 @@ let edit =
 (* Run th enth command, default use *)
 let default =
   basic
-    ~summary:"Run the nth command"
+    ~summary:"Run the [COMMAND_NUMBER]th command"
     Spec.(
       empty
       +> shared_params
-      +> anon (maybe ("Command number" %: int))
+      +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } n () ->
       Default.run ~rc n)
