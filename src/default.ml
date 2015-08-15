@@ -42,9 +42,13 @@ open Core.Std;;
 (* cmd_number is the number of the command the user wants
  * to execute *)
 let run ~rc cmd_number =
+
   (* Wait for another oclaunch instance which could launch the same program at
-   * the same time *)
+   * the same time and then lock *)
+  Messages.debug "Waiting for locker";
   Lock.wait ();
+  Messages.debug "Locked";
+
   let tmp = Tmp_file.init () in
   match cmd_number with
     | None -> begin

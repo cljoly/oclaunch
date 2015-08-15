@@ -49,6 +49,7 @@ let lock () =
 ;;
 
 (* Pause the program until lock file is removed, until argument is in second *)
+(* TODO Implement recursion *)
 let rec wait ?(until=10) ?(delay=1) () =
     match Sys.file_exists lock_name with
      `Yes -> Unix.sleep delay; wait ()

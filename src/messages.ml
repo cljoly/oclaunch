@@ -107,7 +107,7 @@ let check_verbosity ~f function_number =
 (* Print debugging, information, important... messages *)
 let debug message =
     check_verbosity ~f:(fun () ->
-        let mess = (Time.now()|> Time.to_string) ^ " " ^ message ^ "\n" in
+        let mess = (Time.now() |> Time.to_string) ^ " " ^ message ^ "\n" in
         print ~color:Plum ~style:Underline mess
     ) 5
 ;;
