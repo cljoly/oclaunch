@@ -11,6 +11,7 @@
    help messages
  + Code clean up
  + Add unit tests
+ + Add licence warning
  + Changed tmp file format, the new one would allow to do more things:
    + Restart edited command (reset number of launch)
    + Support multiple configuration file
