@@ -1,0 +1,6 @@
+PKG core yojson atdgen core_extended
+
+S *
+
+B ./_build/src/
+
