@@ -188,7 +188,7 @@ let licence =
     )
 ;;
 
-(* Run th enth command, default use *)
+(* Run nth command, default use *)
 let default =
   basic
     ~summary:"Run the [COMMAND_NUMBER]th command"
@@ -207,10 +207,11 @@ let run ~version ~build_info () =
       ~summary:"OcLaunch program is published under CeCILL licence.\n You may \
       run the program with 'licence' command or see \
       http://cecill.info/licences/Licence_CeCILL_V2.1-en.html (http://huit.re/TmdOFmQT) for details."
-      [ ( "reset-tmp", reset) ; ("list", list) ; ("add", add) ; ("delete",
-      delete) ; ("state", state) ; ("edit", edit) ; ("licence", licence) ; ("run", default) ]
       ~readme:(fun () -> "Use '-h' flag to get help (it works both after the \
       name of the software and with a subcommand). For further help, see http://oclaunch.tuxfamily.org for help.")
+      [ ( "reset-tmp", reset) ; ("list", list) ; ("add", add)
+      ; ("delete", delete) ; ("state", state) ; ("edit", edit)
+      ; ("licence", licence) ; ("run", default) ]
     |> run ~version ~build_info
     with
     | () -> `Exit 0
