@@ -172,6 +172,22 @@ let edit =
       Edit_command.run ~rc default_n)
 ;;
 
+(* To display informations about the licence *)
+let licence =
+  basic
+    ~summary:"Display the licence of the program"
+    Spec.(
+      empty
+       +> shared_params
+       +> flag "-header" no_arg
+        ~doc:" Display the text of the licence"
+    )
+    (fun _ header () ->
+      let cecill = not(header) in (* When cecill is false, it displays the header *)
+      Licencing.print ~cecill
+    )
+;;
+
 (* Run th enth command, default use *)
 let default =
   basic
@@ -192,7 +208,7 @@ let run ~version ~build_info () =
       http://cecill.info/licences/Licence_CeCILL_V2.1-en.html (http://huit.re/TmdOFmQT) for details."
       ~readme:(fun () -> "See http://oclaunch.tuxfamily.org for help.")
       [ ( "reset-tmp", reset) ; ("list", list) ; ("add", add) ; ("delete",
-      delete) ; ("state", state) ; ("edit", edit) ; ("run", default) ]
+      delete) ; ("state", state) ; ("edit", edit) ; ("licence", licence) ; ("run", default) ]
     |> run ~version ~build_info
     with
     | () -> `Exit 0
