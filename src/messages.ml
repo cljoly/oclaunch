@@ -116,7 +116,7 @@ let info message =
     check_verbosity ~f:(fun () ->
         let mess = message ^ "\n" in
         print ~color:White ~style:Normal mess
-    ) 4
+    ) 3
 ;;
 
 let warning message =
@@ -137,7 +137,7 @@ let tips message =
     check_verbosity ~f:(fun () ->
     let mess = message ^ "\n" in
     print ~color:Yellow ~style:Normal mess
-    ) 3
+    ) 4
 ;;
 
 
