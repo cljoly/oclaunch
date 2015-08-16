@@ -56,7 +56,7 @@ let array li a b =
   let ar = List.to_array li in
   (* Store a value *)
   let v = ar.(a) in
-  ar.(a) <- ar.(a);
+  ar.(a) <- ar.(b);
   ar.(b) <- v;
   Array.to_list ar
 ;;
@@ -83,12 +83,57 @@ let list li a b =
       else
         element
       )
+;;
+
+(* Another idee *)
+let once li a b =
+  let rec worker li head middle tail ~ca ~cb ~i =
+    match ( ca, cb ) with
+    | ( Some ca ), ( Some cb ) -> head @ [cb] @ middle @ [ca] @ tail
+    | _ -> li |> (function
+      | hd :: tl ->
+        if i < a
+        then worker tl (head @ [hd]) middle tail ~ca ~cb ~i:(succ i)
+        else if i = a
+        then worker tl head middle tail ~ca:(Some hd) ~cb ~i:(succ i)
+        else if i < b
+        then worker tl head (middle @ [hd]) tail ~ca ~cb ~i:(succ i)
+        else if i = b
+        then worker ~ca ~cb:(Some hd) tl ~i:(succ i) head middle tail
+        else if i > b
+        then worker [] head middle li ~ca ~cb ~i:(-1)
+        else assert false
+      | [] -> []) (* both a and b are set, should be taken before *)
+  in
+  let ( a, b ) = if a < b then (a,b) else (b,a) in
+  worker li [] [] [] ~ca:None ~cb:None ~i:0
+;;
+
+
+(* Element to swap *)
+let a' = 2;;
+let b' = 4;;
+let a'' = 0;;
+let b'' = 10_000 - 1;;
+
+(* Visual test *)
+let print_li li =
+  printf "[ ";
+  List.iter li ~f:(fun e -> printf "%i; " e);
+  printf "]\n"
+;;
+
+print_li (array data a' b');;
+print_li (list data a' b');;
+print_li (once data a' b');;
 
 let tests = [
-  "Array - small list", (fun () -> array data 2 4);
-  "Array - big list", (fun () -> array big_data 20 80);
-  "List - small list", (fun () -> list data 2 4);
-  "List - big list", (fun () -> list big_data 20 80);
+  "Array - small list", (fun () -> array data a' b');
+  "Array - big list", (fun () -> array big_data a'' b'');
+  "List - small list", (fun () -> list data a' b');
+  "List - big list", (fun () -> list big_data a'' b'');
+  "Once - small list", (fun () -> once data a' b');
+  "Once - big once", (fun () -> once big_data a'' b'');
 ]
 
 (*let () =*)
