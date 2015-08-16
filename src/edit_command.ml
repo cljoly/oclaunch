@@ -81,7 +81,7 @@ let run ~(rc:File_com.t) position =
     (* Creating tmp file *)
     let tmp_filename = [
         "/tmp/oc_edit_" ;
-        (Int.to_string (Random.int 10000)) ;
+        (Int.to_string (Random.int 100_000)) ;
         ".txt" ;
     ] in
     let tmp_edit = String.concat tmp_filename in
