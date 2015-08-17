@@ -210,9 +210,10 @@ let run ~version ~build_info () =
       (http://huit.re/TmdOFmQT) for details."
       ~readme:(fun () -> "Use '-h' flag to get help (it works both after the \
       name of the software and with a subcommand). For further help, see http://oclaunch.tuxfamily.org for help.")
-      [ ( "reset-tmp", reset) ; ("list", list) ; ("add", add)
-      ; ("delete", delete) ; ("state", state) ; ("edit", edit)
-      ; ("licence", licence) ; ("run", default) ]
+      ~preserve_subcommand_order:()
+      [ ("run", default) ; ("licence", licence) ; ("add", add) ; ("edit", edit)
+      ; ("list", list) ; ("delete", delete) ; ("state", state)
+      ; ( "reset-tmp", reset) ]
     |> run ~version ~build_info
     with
     | () -> `Exit 0
