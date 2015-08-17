@@ -204,9 +204,10 @@ let run ~version ~build_info () =
   let exit_code =
     match
     group
-      ~summary:"OcLaunch program is published under CeCILL licence.\n You may \
-      run the program with 'licence' command or see \
-      http://cecill.info/licences/Licence_CeCILL_V2.1-en.html (http://huit.re/TmdOFmQT) for details."
+      ~summary:"OcLaunch program is published under CeCILL licence.\n \
+      You may run the program with 'licence' command or see \
+      http://cecill.info/licences/Licence_CeCILL_V2.1-en.html \
+      (http://huit.re/TmdOFmQT) for details."
       ~readme:(fun () -> "Use '-h' flag to get help (it works both after the \
       name of the software and with a subcommand). For further help, see http://oclaunch.tuxfamily.org for help.")
       [ ( "reset-tmp", reset) ; ("list", list) ; ("add", add)
