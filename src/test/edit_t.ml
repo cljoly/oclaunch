@@ -47,7 +47,10 @@ let epur test solution () =
 (* Data for above test *)
 let ll_data = [
   ( [ "cmd1" ; "cmd2"; "" ], [ "cmd1" ; "cmd2" ], "Canonical case" );
-  ( [ "" ; "cmd1" ; "" ; "" ; "cmd2"; "" ], [ "cmd1" ; "cmd2" ], "Harder case" );
+  ( [ "" ; "cmd1" ; "" ; "" ; "cmd2"; "" ], [ "cmd1" ; "cmd2" ],
+  "Many empty elements, with some following" );
+  ( [ "cmd1" ; "" ; "cmd2" ], [ "cmd1" ; "cmd2" ],
+    "Two elements + empty ones, in the middle" );
   ( [], [], "Empty list" );
   ( [ "" ; "" ; "" ], [], "Empty list resulting of empty strings" );
 ]
@@ -104,9 +107,33 @@ let lt_l =
 ;;
 (* =========================================== *)
 
+(* Function gen_modification ================ *)
+let gen_mod test solution () =
+  let actual = Edit_command.gen_modification test in
+  OUnit.assert_equal actual solution
+;;
+
+(* Data for above test *)
+let gm_data = [
+  ( [ "cmd1" ], "cmd1", "Canonical case, one element" );
+  ( [ "cmd1" ; "cmd2" ], "\ncmd1\ncmd2\n", "Canonical case, two elements" );
+  ( [ "cmd1" ; "" ], "cmd1", "Canonical case, one element + empty one" );
+  ( [ "cmd1" ; "" ; "cmd2" ], "\ncmd1\ncmd2\n",
+    "Canonical case, two elements + empty ones" );
+  ( [], "", "Empty list" );
+]
+
+let gmt_l =
+  List.map gm_data ~f:(fun (t, s, name) -> ( (gen_mod t s), name))
+  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
+;;
+(* =========================================== *)
+
+
 (* To be used in test.ml *)
 let alco = [( "Edit_command.ml: Epur", llt_l ) ;
-  ( "Edit_command.ml: New list", ( big :: lt_l ) )
+  ( "Edit_command.ml: New list", ( big :: lt_l ) ) ;
+  ( "Edit_command.ml: Modification summary", gmt_l )
 ];;
 
 
