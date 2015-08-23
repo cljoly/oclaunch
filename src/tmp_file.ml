@@ -175,8 +175,12 @@ let reset ~rc num cmd =
 
   let ac_log = get_accurate_log ~tmp:(init ()) () in
   (* The command (string) corresponding to the number *)
-  let cmd_str = (File_com.num_cmd2cmd ~rc cmd |> function Some s -> s
-                                  | None -> failwith "Out of bound") in
+  let cmd_str =
+    File_com.num_cmd2cmd ~rc cmd
+    |> function
+      Some s -> s
+      | None -> failwith "Out of bound"
+  in
 
   (* Current number of launch for that cmd *)
   let i = List.Assoc.find_exn ac_log cmd_str in
