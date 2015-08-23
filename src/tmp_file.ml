@@ -128,7 +128,7 @@ let log ~cmd ?(func= (+) 1 ) () =
     find l cmd
       |> (function None -> add l cmd Const.default_launch | Some n -> add l cmd (func n))
       |> List.map ~f:(fun e -> { Tmp_biniou_t.commands = e})
-    in
+  in
   (* Write the file with the new value *)
   let updated_li =
     List.Assoc.(find file.Tmp_biniou_t.rc name)
@@ -191,9 +191,8 @@ let reset ~rc num cmd =
     sprintf  "Restore with 'oclaunch -r %i %i'" i cmd
     |> Messages.tips;
 
-    (* Do the work *)
-    (* Set the number *)
-    log ~func:(fun a -> num) ~cmd:cmd_str ();
+    (* Do the work, set the number *)
+    log ~func:(fun _ -> num) ~cmd:cmd_str ();
     sprintf "Reseted command '%s' to %i successfully" cmd_str num |> Messages.ok
 ;;
 
