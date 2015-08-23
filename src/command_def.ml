@@ -201,8 +201,25 @@ let default =
       Default.run ~rc n)
 
 let run ~version ~build_info () =
-  let exit_code =
-    match
+
+  (* XXX Hack to allow to run 'oclaunch 5' or 'oclaunch' as before, i.e. do not
+   * display help for sub commands but use the program directly *)
+  let hack_parse () =
+    let run_default () =
+      default
+      |> run ~version ~build_info
+    in
+    match Sys.argv with
+    | [| _ |] -> Result.Ok (run_default ()) (* Program called with nothing *)
+    | _ -> (* Program followed by a number *)
+        Or_error.try_with (fun () ->
+          (* Verify the fist argument is a number, not a subcommand (string) *)
+          ignore (Int.of_string (Sys.argv.(1)));
+          run_default ())
+  in
+
+  (* Parsing with subcommands *)
+  let parse_sub () =
     group
       ~summary:"OcLaunch program is published under CeCILL licence.\n \
       You may run the program with 'licence' command or see \
@@ -215,6 +232,14 @@ let run ~version ~build_info () =
       ; ("list", list) ; ("delete", delete) ; ("state", state)
       ; ( "reset", reset) ]
     |> run ~version ~build_info
+  in
+
+  let exit_code =
+    match
+      hack_parse ()
+      |> (function
+        Result.Ok () -> ()
+        | Error _ -> parse_sub ())
     with
     | () -> `Exit 0
     | exception message ->
