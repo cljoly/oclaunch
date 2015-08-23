@@ -94,11 +94,11 @@ let reset =
     Spec.(
       empty
        +> shared_params
-       +> anon ("command_number" %: int)
        +> anon ("target_number" %: int)
+       +> anon ("command_number" %: int)
     )
-    (fun { rc } reset_cmd default_n () ->
-      Tmp_file.reset ~rc reset_cmd default_n
+    (fun { rc } n cmd () ->
+      Tmp_file.reset ~rc n cmd
     )
 ;;
 
@@ -213,7 +213,7 @@ let run ~version ~build_info () =
       ~preserve_subcommand_order:()
       [ ("run", default) ; ("licence", licence) ; ("add", add) ; ("edit", edit)
       ; ("list", list) ; ("delete", delete) ; ("state", state)
-      ; ( "reset-tmp", reset) ]
+      ; ( "reset", reset) ]
     |> run ~version ~build_info
     with
     | () -> `Exit 0
