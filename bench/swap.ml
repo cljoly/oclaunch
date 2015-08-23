@@ -35,7 +35,7 @@
 (******************************************************************************)
 
 open Core.Std
-(*open Core_bench.Std*)
+open Core_bench.Std
 
 (* File to test who is the faster to swap two elements *)
 (* TODO:
@@ -136,21 +136,7 @@ let tests = [
   "Once - big once", (fun () -> once big_data a'' b'');
 ]
 
-(*let () =*)
-  (*List.map tests ~f:(fun (name,test) -> Bench.Test.create ~name test)*)
-  (*|> Bench.make_command*)
-  (*|> Command.run*)
-
-(* Manual way to test, it don't have core_bench yet *)
-let man_run f =
-  let open Time in
-  let start = now () in
-  let i = f () in
-  let stop = now () in
-  diff stop start |> Core.Span.to_string
-;;
-
 let () =
-  List.map tests ~f:(fun (name,test) -> ( name, man_run test ))
-  |> List.iter ~f:(fun ( name, duration ) -> printf "%s: %s\n" name duration)
-
+  List.map tests ~f:(fun (name,test) -> Bench.Test.create ~name test)
+  |> Bench.make_command
+  |> Command.run
