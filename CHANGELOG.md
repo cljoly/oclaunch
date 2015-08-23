@@ -7,8 +7,11 @@
  + Fix bug: in special circumstances, it was not possible to write in lock file.
    The program was crashing.
  + Rewrite command line parsing, in a cleaner and safer way. It now handles
-   `exit`, would be able to deal with autocompletion and display more accurate
-   help messages
+   `exit`, would be able to deal with auto completion and display more accurate
+   help messages. Though, for backward compatibility reasons, a hack has been
+   setted up, allowing to call the program with a number as first argument or
+   without any argument. This way, the program tries to launch the corresponding
+   command or the next one.
  + Code clean up
  + Add unit tests
  + Add licence warning
