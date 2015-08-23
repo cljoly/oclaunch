@@ -59,7 +59,7 @@ let new_list current_list position new_items =
 (* Concat edited item, to have a proper list to display
     * If only one element, return "elt".
     * If more than one "\nelt1\nelt2\nelt3\n" *)
-let rec gen_modification items =
+let gen_modification items =
     let r = "\n" in
     epur items
     |> (function
@@ -67,7 +67,7 @@ let rec gen_modification items =
         (* Only one element *)
         | element :: [] -> element
         (* The list as more than two elements *)
-        | _ ->
+        | items ->
                 let msg = String.concat ~sep:r items in
                 String.concat [ r ; msg ; r ])
 ;;
