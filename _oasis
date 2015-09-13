@@ -22,7 +22,7 @@ PreBuildCommand: atdgen -v ./src/settings.atd
 PreBuildCommand: atdgen -b ./src/tmp_biniou.atd
 PreBuildCommand: atdgen -t ./src/tmp_biniou.atd
 PreBuildCommand: atdgen -v ./src/tmp_biniou.atd
-# Test, to be shure that atgen commands above run
+# Test, to be sure that atdgen commands above run
 PreBuildCommand: echo "Atdgen executed"
 
 Executable oclaunch
