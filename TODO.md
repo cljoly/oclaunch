@@ -39,6 +39,9 @@
  + Return error code when necessary
  + Log duration of commands, ignore some return code
 
+### Plug-in
+ + Add plugins for Age (precisely, such as number of minutes, seconds…), Date
+
 ## Long term
  + Translate displayed messages.
  + Better command line interface by grouping commands.
@@ -46,3 +49,4 @@
  + Be more carefull with file reading, lazy evaluation (especially in
    tmp_file.get_accurate_log)
  + Improve file_com.ml
+
