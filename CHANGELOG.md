@@ -11,6 +11,8 @@
  + Changed tmp file format, the new one would allow to do more things:
    + Restart edited command (reset number of launch)
    + Support multiple configuration file
+   + More natural behavior when starting from an empty file. (Don't increment
+     number of launch when nothing is actually launched)
    + For the futur : Running infinite, daemon mode...
 
 ## 0.2.x
