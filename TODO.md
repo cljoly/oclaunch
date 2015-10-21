@@ -11,6 +11,8 @@
     Or send an email to the author !**
 
 ## Major issue
+ + Test behavior with an empty rc file (start from 0 after calling many times
+   and adding first command). Auto test it.
 
 ## Short term
 
