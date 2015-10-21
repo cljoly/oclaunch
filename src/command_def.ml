@@ -200,7 +200,7 @@ let licence =
       empty
        +> shared_params
        +> flag "-header" no_arg
-        ~doc:" Display the text of the licence"
+        ~doc:" Display the header of the licence"
     )
     (fun _ header () ->
       let cecill = not(header) in (* When cecill is false, it displays the header *)

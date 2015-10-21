@@ -41,7 +41,7 @@ open Core.Std;;
 (* French version *)
 let fr_header =
   "\
-  Copyright © Joly Clément, 2015 \
+  Copyright © Joly Clément, 2014-2015 \
 
  leowzukw@vmail.me \
 
