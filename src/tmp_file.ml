@@ -212,6 +212,7 @@ let reset2num ~rc num =
 
 (* Reset all command *)
 let reset_all () =
+  Messages.debug "Preparing to reset all";
   let reset_without_ask () =
     (* Make sure that file exists, otherwise strange things appears *)
     let tmp = init () in
@@ -219,7 +220,9 @@ let reset_all () =
     let name = Lazy.force !Const.rc_file in
     write Tmp_biniou_t.{ tmp with rc = List.Assoc.add tmp.rc name [] }
   in
+  Messages.debug "Asking question";
   Messages.confirm "You will lose number of launch for every command."
+  |> (fun answer -> sprintf "Answer %s" (Messages.answer2str answer) |> Messages.debug; answer) (* Spy *)
     |> function
       Messages.Yes -> reset_without_ask ()
       | Messages.No -> ()

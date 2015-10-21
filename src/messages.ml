@@ -131,6 +131,10 @@ let warning message =
 
 (* Type for the answers *)
 type answer = Yes | No;;
+(* Usefull to display result *)
+let answer2str = function
+  Yes -> "Yes" | No -> "No"
+;;
 (* State of the program, if you should always answer yes, no or ask to the user
  * (default)*)
 (* TODO Put it in Const *)
@@ -146,13 +150,15 @@ let check_assume_yes ~f =
 (* Get confirmation
  * TODO:
    * allow option like -y
-   * test it *)
+   * test it (display, line return, etc...) *)
 let rec confirm info =
   check_assume_yes ~f:(fun () ->
     print ~color:Cyan ~style:Normal info;
-    print ~color:Cyan ~style:Normal "Are you sure ? (Yes/No): ";
-    In_channel.(input_line ~fix_win_eol:true stdin)
-    |> (function
+    print ~color:Cyan ~style:Normal "\nAre you sure ? (Yes/No): ";
+    (* XXX Be sure to show the message *)
+    Out_channel.(flush stdout);
+    let str_answer = In_channel.(input_line ~fix_win_eol:true stdin) in
+    str_answer |> (function
       | Some "Y" | Some "y" | Some "Yes" | Some "YES" | Some "yes" -> Yes
       | Some "N" | Some "n" | Some "No" | Some "NO" | Some "no" -> No
       | Some _ | None ->
