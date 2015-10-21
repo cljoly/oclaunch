@@ -91,7 +91,9 @@ let wait ?(until=10) ?(delay=1) () =
     |> (function
        None ->
          Messages.warning "Removing lock file, ran out of patience";
-         remove ()
+         remove ();
+         (* We need to lock back, since it's the purpose of this function *)
+         lock ()
        | _ -> ()
     )
 ;;
