@@ -38,6 +38,12 @@ open Core.Std;;
 
 (* Module to mange locking, when another instance of OcLaunch is running *)
 
+(* Status of the locker *)
+type lock_status =
+    Locked
+  | Free
+  | Error
+;;
 (* Name of the lock file *)
 (* TODO Put it in Const *)
 let lock_name = "/tmp/.ocl.lock";;
@@ -48,16 +54,25 @@ let lock () =
     with Sys_error msg -> Messages.debug "Couldn't write in lock file."
 ;;
 
+(* To know if we are locked, return None if there is no locker,  *)
+let status () =
+    match Sys.file_exists lock_name with
+      `Yes -> Locked
+    | `No -> Free
+    | `Unknown -> Error
+;;
+
 (* Pause the program until lock file is removed, until argument is in second *)
 (* TODO Implement recursion *)
 let rec wait ?(until=10) ?(delay=1) () =
-    match Sys.file_exists lock_name with
-     `Yes -> Unix.sleep delay; wait ()
-    | `No -> lock ()
-    | `Unknown -> failwith "Problem with lock file"
+    match status () with
+      Locked -> Unix.sleep delay; wait ()
+    | Free -> lock ()
+    | Error -> failwith "Problem with lock file"
 ;;
 
 (* Remove the lock file *)
 let remove () =
     Sys.remove lock_name
 ;;
+
