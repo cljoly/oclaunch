@@ -88,17 +88,14 @@ let shared_params =
 (* To reset tmp file *)
 let reset =
   basic
-    ~summary:"command n Reinitialises launches for the command number [command] to [n]. \
-      All arguments are optionnal. \
+    ~summary:"Reinitialises launches for the command number [command] to [n]. \
       With both the [command] and the [n] argumennt, the command number \
       [command] is resetted to [n]. \
-      With only the [n] argument, every entry in current rc file is resetted to [n]. \
-      If no [n] is given, the entry is deleted. \
-      Without any argument, everything is deleted."
+      With only the [n] argument, every entry in current rc file is resetted to [n]."
     Spec.(
       empty
        +> shared_params
-       +> anon (maybe ("target_number" %: int))
+       +> anon ("target_number" %: int)
        +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } num cmd () ->
@@ -109,10 +106,19 @@ let reset =
        * cmd: number of the command to be reseted
        * num: number to reset *)
         match ( num, cmd ) with
-        | ( Some num, Some cmd ) -> Tmp_file.reset_cmd ~rc num cmd
-        | ( Some num, None ) -> Tmp_file.reset2num ~rc num
-        | ( None, None ) -> Tmp_file.reset_all ()
-        | ( None, Some _ ) -> assert false
+        | ( num, Some cmd ) -> Tmp_file.reset_cmd ~rc num cmd
+        | ( num, None ) -> Tmp_file.reset2num ~rc num
+    )
+;;
+let reset_all =
+  basic
+    ~summary:" Reinitialises launches for everything."
+    Spec.(
+      empty
+       +> shared_params
+    )
+    (fun { rc } () ->
+      Tmp_file.reset_all ()
     )
 ;;
 
@@ -244,7 +250,7 @@ let run ~version ~build_info () =
       ~preserve_subcommand_order:()
       [ ("run", default) ; ("licence", licence) ; ("add", add) ; ("edit", edit)
       ; ("list", list) ; ("delete", delete) ; ("state", state)
-      ; ( "reset", reset) ]
+      ; ( "reset", reset) ; ( "reset-all", reset_all) ]
     |> run ~version ~build_info
   in
 
