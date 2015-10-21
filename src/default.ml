@@ -53,7 +53,7 @@ let run ~rc cmd_number =
           |> function
             | None -> (* If no command was found, all has been launched *)
                 Messages.ok "All has been launched!";
-                Messages.tips "You can reset with '-r'";
+                Messages.tips "You can reset with 'reset' subcommand";
                 Lock.remove ()
             | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
       end

@@ -179,7 +179,7 @@ let tips message =
 (* Reset printing, to avoid color problem on some terminal (Konsole), the  *)
 let reset () =
     match !already with
-    | true -> debug "Resetted colors";
+    | true -> debug "Reseted colors";
         Core_extended.Color_print.normal "" |> printf "%s\n"
     | false -> debug "Not resetted"; ()
 ;;

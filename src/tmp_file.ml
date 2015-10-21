@@ -188,7 +188,7 @@ let reset_cmd ~rc num cmd =
       cmd_str
       i
     |> Messages.info;
-    sprintf  "Restore with 'oclaunch -r %i %i'" i cmd
+    sprintf  "Restore with 'oclaunch reset %i %i'" i cmd
     |> Messages.tips;
 
     (* Do the work, set the number *)
