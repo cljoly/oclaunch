@@ -88,17 +88,31 @@ let shared_params =
 (* To reset tmp file *)
 let reset =
   basic
-    ~summary:"OUTDATED\n Reinitialises launches of a given [command] to [n]. \
+    ~summary:"command n Reinitialises launches for the command number [command] to [n]. \
+      All arguments are optionnal. \
+      With both the [command] and the [n] argumennt, the command number \
+      [command] is resetted to [n]. \
+      With only the [n] argument, every entry in current rc file is resetted to [n]. \
       If no [n] is given, the entry is deleted. \
-      With neither [command] nor [n], all entries are reseted."
+      Without any argument, everything is deleted."
     Spec.(
       empty
        +> shared_params
-       +> anon ("target_number" %: int)
-       +> anon ("command_number" %: int)
+       +> anon (maybe ("target_number" %: int))
+       +> anon (maybe ("command_number" %: int))
     )
-    (fun { rc } n cmd () ->
-      Tmp_file.reset ~rc n cmd
+    (fun { rc } num cmd () ->
+      (* Call the right function, according to optionnal argument.
+       * Since it's arguments passed on command line, we can not have
+       * num = None
+       * cmd = Some n
+       * cmd: number of the command to be reseted
+       * num: number to reset *)
+        match ( num, cmd ) with
+        | ( Some num, Some cmd ) -> Tmp_file.reset_cmd ~rc num cmd
+        | ( Some num, None ) -> Tmp_file.reset2num ~rc num
+        | ( None, None ) -> Tmp_file.reset_all ()
+        | ( None, Some _ ) -> assert false
     )
 ;;
 
