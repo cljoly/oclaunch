@@ -11,7 +11,8 @@
    help messages. Though, for backward compatibility reasons, a hack has been
    setted up, allowing to call the program with a number as first argument or
    without any argument. This way, the program tries to launch the corresponding
-   command or the next one.
+   command or the next one. The problem is that you can't call it with an
+   option. To do this, use the `run` subcommand.
  + Code clean up
  + Add unit tests
  + Add licence warning
