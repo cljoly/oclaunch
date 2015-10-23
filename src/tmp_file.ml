@@ -144,7 +144,8 @@ let get_current () =
     failwith "Deprecated"
 ;;
 
-(* Get number of launch for each command in rc file *)
+(* Get number of launch for each command in rc file, as follow:
+  * (command:string, number of the command:int) list *)
 let get_accurate_log ?rc_name ~tmp () =
   let open List in
 
