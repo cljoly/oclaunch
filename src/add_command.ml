@@ -63,6 +63,6 @@ let run ~(rc:File_com.t) position =
     File_com.write updated_rc;
     (* Display the result *)
     let reread_rc = File_com.init_rc () in
-    List_rc.run ~rc:reread_rc
+    List_rc.run ~rc:reread_rc ()
 ;;
 

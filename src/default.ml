@@ -36,7 +36,7 @@
 
 open Core.Std;;
 
-(* The module containing the step runned when the program is
+(* The module containing the step run when the program is
  * used without argument *)
 
 (* cmd_number is the number of the command the user wants

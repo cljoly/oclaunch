@@ -111,5 +111,5 @@ let run ~(rc:File_com.t) position =
         |> Messages.ok;
     let reread_rc = File_com.init_rc () in
     (* Display new rc file *)
-    List_rc.run ~rc:reread_rc
+    List_rc.run ~rc:reread_rc ()
 ;;

@@ -13,6 +13,7 @@
    without any argument. This way, the program tries to launch the corresponding
    command or the next one. The problem is that you can't call it with an
    option. To do this, use the `run` subcommand.
+ + Improve list subcommand, now using Textutils library, displaying in an array
  + Code clean up
  + Add unit tests
  + Add licence warning

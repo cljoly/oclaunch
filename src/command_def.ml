@@ -132,7 +132,7 @@ let list =
       +> shared_params
     )
     (fun { rc } () ->
-      List_rc.run ~rc)
+      List_rc.run ~rc ())
 ;;
 
 (* To add a command to rc file, from stdin or directly *)
