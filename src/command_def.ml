@@ -182,14 +182,18 @@ let state =
 let edit =
   basic
     ~summary:"Edit the [COMMAND_NUMBER]th command of the rc file in your \
-    $EDITOR. May be used to add new entries."
+    $EDITOR. May be used to add new entries, without argument, one new \
+    command per line."
     Spec.(
       empty
       +> shared_params
-      +> anon ("command_number" %: int)
+      +> anon (maybe ("command_number" %: int))
     )
-    (fun { rc } default_n () ->
-      Edit_command.run ~rc default_n)
+    (fun { rc } n () ->
+      let position = Option.value
+        ~default:(List.length (rc.Settings_t.progs) - 1) n
+      in
+      Edit_command.run ~rc position)
 ;;
 
 (* To display informations about the licence *)
