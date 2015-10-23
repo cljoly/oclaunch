@@ -106,10 +106,12 @@ let run ~(rc:File_com.t) position =
     let cmd_list = new_list shorter_list position new_commands in
     let updated_rc = { rc with Settings_t.progs = cmd_list} in
     File_com.write updated_rc;
-    (* Display the result *)
-    sprintf "'%s' -> '%s'\n" original_command
-        (gen_modification new_commands)
-        |> Messages.ok;
+    (* Display the result, only if modified *)
+    let new_cmd_mod = gen_modification new_commands in
+    if ( original_command <> new_cmd_mod )
+    then sprintf "'%s' -> '%s'\n" original_command new_cmd_mod |> Messages.ok
+    else Messages.warning "Nothing changed";
+
     let reread_rc = File_com.init_rc () in
     (* Display new rc file *)
     List_rc.run ~rc:reread_rc ()
