@@ -48,7 +48,7 @@ open Core.Std;;
 let run ?rc () =
   let rc_numbered =
     File_com.init_rc ()
-    |> fun rc -> rc.progs
+    |> fun rc -> rc.Settings_t.progs
     |> List.mapi ~f:(fun i item -> ( item, i ))
   in
   let tmp : Tmp_file.t = Tmp_file.init () in
