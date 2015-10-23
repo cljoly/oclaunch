@@ -222,7 +222,8 @@ let reset_all () =
     write Tmp_biniou_t.{ tmp with rc = List.Assoc.add tmp.rc name [] }
   in
   Messages.debug "Asking question";
-  Messages.confirm "You will lose number of launch for every command."
+  Messages.confirm "You will lose number of launch for every command.\
+    Are you sure?"
   |> (fun answer -> sprintf "Answer %s" (Messages.answer2str answer) |> Messages.debug; answer) (* Spy *)
     |> function
       Messages.Yes -> reset_without_ask ()

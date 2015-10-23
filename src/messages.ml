@@ -154,7 +154,7 @@ let check_assume_yes ~f =
 let rec confirm info =
   check_assume_yes ~f:(fun () ->
     print ~color:Cyan ~style:Normal info;
-    print ~color:Cyan ~style:Normal "\nAre you sure ? (Yes/No): ";
+    print ~color:Cyan ~style:Normal "\n(Yes/No): ";
     (* XXX Be sure to show the message *)
     Out_channel.(flush stdout);
     let str_answer = In_channel.(input_line ~fix_win_eol:true stdin) in

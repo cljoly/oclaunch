@@ -14,7 +14,8 @@
    command or the next one. The problem is that you can't call it with an
    option. To do this, use the `run` subcommand.
  + Improve list subcommand, now using Textutils library, displaying in an array
- + Improve editing command (explain how to use to add commands, improve messages…)
+ + Improve editing command (explain how to use to add commands, improve
+   messages, offer to reedit when nothing was done).
  + Code clean up
  + Add unit tests
  + Add licence warning

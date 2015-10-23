@@ -74,7 +74,7 @@ let rec gen_modification items =
 
 (* Function which get the nth element, put it in a file, let the user edit it,
  * and then remplace with the new result *)
-let run ~(rc:File_com.t) position =
+let rec run ~(rc:File_com.t) position =
     (* Current list of commands *)
     let current_list = rc.Settings_t.progs in
 
@@ -108,11 +108,24 @@ let run ~(rc:File_com.t) position =
     File_com.write updated_rc;
     (* Display the result, only if modified *)
     let new_cmd_mod = gen_modification new_commands in
-    if ( original_command <> new_cmd_mod )
-    then sprintf "'%s' -> '%s'\n" original_command new_cmd_mod |> Messages.ok
-    else Messages.warning "Nothing changed";
+    (* We are doing things in this order to avoid multiple listing of rc file
+     * when reediting. *)
+    if ( original_command = new_cmd_mod )
+    then (* Nothing change, try reediting *)
+      begin
+        let open Messages in
+        warning "Nothing changed.";
+        confirm "Do you want to reedit?"
+        |> function
+          | Yes -> run ~rc position
+          | No -> ()
+      end
 
-    let reread_rc = File_com.init_rc () in
-    (* Display new rc file *)
-    List_rc.run ~rc:reread_rc ()
+    else (* Display summary of changes *)
+      begin
+        sprintf "'%s' -> '%s'\n" original_command new_cmd_mod |> Messages.ok;
+        (* Display new rc file *)
+        let reread_rc = File_com.init_rc () in
+        List_rc.run ~rc:reread_rc ()
+      end;
 ;;
