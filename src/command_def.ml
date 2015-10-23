@@ -91,7 +91,7 @@ let reset =
     ~summary:"Reinitialises launches for the command number [command] to [n]. \
       With both the [command] and the [n] argumennt, the command number \
       [command] is resetted to [n]. \
-      With only the [n] argument, every entry in current rc file is resetted to [n]."
+      With only the [n] argument, every entry in current tmp file is resetted to [n]."
     Spec.(
       empty
        +> shared_params
