@@ -78,16 +78,17 @@ let run ~(rc:File_com.t) position =
     (* Current list of commands *)
     let current_list = rc.Settings_t.progs in
 
-    (* Creating tmp file *)
+    (* Creating tmp file, for editing *)
     let tmp_filename = [
         "/tmp/oc_edit_" ;
-        (Int.to_string (Random.int 10000)) ;
+        (Int.to_string (Random.int 100_000)) ;
         ".txt" ;
     ] in
     let tmp_edit = String.concat tmp_filename in
     (* Remove item to be edited *)
-    let original_command,shorter_list = Remove_command.remove current_list
-    position in
+    let original_command,shorter_list =
+      Remove_command.remove current_list position
+    in
     Out_channel.write_all tmp_edit original_command;
 
 
