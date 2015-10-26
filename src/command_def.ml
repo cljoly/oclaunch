@@ -173,8 +173,8 @@ let state =
       empty
       +> shared_params
     )
-    (fun _ () ->
-      State.print_current ())
+    (fun { rc } () ->
+      State.print_current ~rc ())
 ;;
 
 

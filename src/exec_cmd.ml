@@ -46,7 +46,7 @@ let set_title new_title =
 ;;
 
 (* Function to return the less launched command, at least the first one *)
-(* Log is a list of entry (commands) asociated with numbers *)
+(* Log is a list of entry (commands) associated with numbers *)
 let less_launched (log : (string * int) list) =
   let max = Const.default_launch in (* Number of launch, maximum *)
   (* Return smallest, n is the smaller key *)
@@ -57,6 +57,16 @@ let less_launched (log : (string * int) list) =
         then Some cmd
         else None
       | None -> None)
+;;
+
+(* Function to get the number corresponding to the next command to launch (less
+ * launched) *)
+(* TODO Test it *)
+let less_launched_num log =
+  less_launched log
+    |> function
+      | Some cmd -> List.Assoc.find log cmd
+      | None -> None
 ;;
 
 (* Function to determinate what is the next command to
