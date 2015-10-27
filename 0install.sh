@@ -15,7 +15,7 @@ mv BUILD_INFO.txt ./dist/
 
 cd dist
 # Archive name
-name=oclaunch-v$(cat ../VERSION)
+name=oclaunch-v$(cat ../VERSION)_$(arch)
 mkdir $name
 # Put executable in it
 mv oclaunch BUILD_INFO.txt $name
