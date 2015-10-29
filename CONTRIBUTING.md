@@ -3,4 +3,4 @@
 See [the website](http://oclaunch.tuxfamily.org/contribute.html) for details.
 
 By participating in this project you agree to abide by its
-[terms](oclaunch.tuxfamily.org/rules.html).
+[terms](http://www.oclaunch.tuxfamily.org/rules.html).
