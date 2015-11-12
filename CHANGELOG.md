@@ -1,5 +1,8 @@
 # Changelog of OcLaunch
 
+>Note: XXX Means that the functionality needs test and TODO means that its
+>implementation is partial
+
 ## 0.3.x
 
 ### 0.3.0
@@ -19,6 +22,8 @@
  + Code clean up
  + Add unit tests
  + Add licence warning
+ + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
+   ctrl-C. See issue #14 for known problems
  + Changed tmp file format, the new one would allow to do more things:
    + Restart edited command (reset number of launch)
    + Support multiple configuration file
