@@ -39,6 +39,7 @@ val info : string -> unit
 val warning : string -> unit
 val ok : string -> unit
 val tips : string -> unit
+
 type answer = Yes | No
 val answer2str : answer -> string
 val confirm : string -> answer
