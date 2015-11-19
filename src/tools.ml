@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2015                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,28 +36,34 @@
 
 open Core.Std;;
 
-(* Module to display the current state of the program *)
+(* Various tools for the program *)
 
-(* Display current number *)
-let print_current ~rc () =
-  Tmp_file.(init ()
-    |> (fun tmp -> get_accurate_log ~tmp ())
-    |> Exec_cmd.less_launched_num
-    |> Tools.spy1_int_option)
-  |> Option.value_map
-    ~default:"Nothing next"
-    ~f:(fun ( num : int ) ->
+(* Spying expression, template for the others. Takes the string corespondig to
+ * the original value and return the original one *)
+let spy orig (value : string) =
+  Messages.debug value;
+  orig
+;;
 
-      (* XXX Debug *)
-      sprintf "Num: %i" num |> Messages.debug;
-
-      File_com.num_cmd2cmd ~rc num
-      |> (function
-        | Some cmd -> cmd
-        | None -> Messages.warning "Error, should not append, this is a bug";
-          assert false)
-      |> (fun ( cmd : string ) ->
-          Messages.debug cmd; (* TODO Use tools.spy1 *)
-          sprintf "Next: command %i, '%s'" num cmd))
-  |> Messages.ok
+(* Functions exposed to spy special types *)
+let spy1_int i =
+  sprintf "%i" i
+  |> spy i
+;;
+let spy1_int_option io =
+  let i = io |> (function
+    None -> "None"
+    | Some i -> sprintf "Some %i" i)
+  in
+  spy io i
+;;
+let spy1_string str =
+  spy str str
+;;
+let spy1_float f =
+  sprintf "%f" f
+  |> spy f
+;;
+let spy1_rc rc =
+  failwith "Not implemented"
 ;;
