@@ -44,6 +44,12 @@ let less_launched test solution () =
   OUnit.assert_equal actual solution
 ;;
 
+(* Function less_launched_num *)
+let less_launched_num test solution () =
+  let actual = Exec_cmd.less_launched_num test in
+  OUnit.assert_equal actual solution
+;;
+
 (* Data for above test *)
 let ll_data =
   let max = Const.default_launch in
@@ -54,13 +60,39 @@ let ll_data =
   ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], None, "Everything (strcitly) superior to max" );
   ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], None, "Twice the same number" );
 ]
+;;
+let ll_data2 =
+  let max = Const.default_launch in
+  [
+  ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], Some 0, "Canonical case 1" );
+  ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], Some 1, "Canonical case 2" );
+  ( [ ( "cmd1", 0 ) ; ( "cmd2", 3 ) ; ( "cmd3", 4 )  ; ( "cmd4", 5 ) ], Some 1, "Canonical case 3" );
+  ( [ ( "cmd1", 0 ) ; ( "cmd2", 4 ) ; ( "cmd3", 4 )  ; ( "cmd5", 5 ) ], None,
+  "Twice the same number, with others" );
+  ( [], None, "Empty list" );
+  ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], None, "Everything (strcitly) superior to max" );
+  ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], None, "Twice the same number" );
+]
+;;
 
 let llt_l =
-  List.map ll_data ~f:(fun (t, s, name) -> ( (less_launched t s), name))
+  let less_launched_suit =
+    List.map ll_data ~f:(fun (t, s, name) -> ( (less_launched t s), name))
+  in
+  less_launched_suit
+  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
+;;
+
+let llt_l2 =
+  let less_launched_num_suit =
+    List.map ll_data2 ~f:(fun (t, s, name) -> ( (less_launched_num t s), name))
+  in
+  less_launched_num_suit
   |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
 ;;
 
 (* To be used in test.ml *)
-let alco = [( "Exec_cmd.ml", llt_l );];;
+let alco = [( "Exec_cmd.ml.less_launched", llt_l ) ;
+  ( "Exec_cmd.ml.less_launched_num", llt_l2 )];;
 
 

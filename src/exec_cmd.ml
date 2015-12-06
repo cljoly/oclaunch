@@ -61,11 +61,15 @@ let less_launched (log : (string * int) list) =
 
 (* Function to get the number corresponding to the next command to launch (less
  * launched) *)
-(* TODO Test it *)
 let less_launched_num log =
-  less_launched log
+  (* Debug *)
+  Messages.debug "less_launched_num: LOG:";
+  Tools.spy1_log log
+  |> less_launched
     |> function
-      | Some cmd -> List.Assoc.find log cmd
+      | Some cmd ->
+          Messages.debug (sprintf "Less launched cmd (in num) %s" cmd);
+          List.Assoc.find log cmd
       | None -> None
 ;;
 
