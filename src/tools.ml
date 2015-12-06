@@ -38,10 +38,13 @@ open Core.Std;;
 
 (* Various tools for the program *)
 
+(* Printing methods, common to all function in this modules *)
+let printing = Messages.debug;;
+
 (* Spying expression, template for the others. Takes the string corespondig to
  * the original value and return the original one *)
 let spy orig (value : string) =
-  Messages.debug value;
+  printing value;
   orig
 ;;
 
@@ -69,8 +72,7 @@ let spy1_log (log : (string * int) list) =
     sprintf "( %s, %i )" s i)
   in
   "[ " ^ (String.concat log_str) ^ " ]"
-  |> spy
-  |> ignore;
+  |> printing;
   log
 ;;
 let spy1_rc rc =
