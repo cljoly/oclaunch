@@ -69,7 +69,7 @@ let spy1_float f =
 ;;
 let spy1_log (log : (string * int) list) =
   let log_str = List.map log ~f:(fun (s, i) ->
-    sprintf "( %s, %i )" s i)
+    sprintf "( %s, %i ), " s i)
   in
   "[ " ^ (String.concat log_str) ^ " ]"
   |> printing;
