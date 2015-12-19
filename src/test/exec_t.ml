@@ -64,6 +64,11 @@ let common_data =
       "Twice the same number, with others" );
     ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], "Everything (strictly) superior to max" );
     ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], "Twice the same number" );
+    (* To prevent >= and > misuse in code *)
+    ( [ ( "cmd1", max - 1 ) ; ( "cmd2", max ) ; ( "cmd3", max + 1 ) ;
+      ( "cmd3", max + 2) ], "Around maximum (ordered)" );
+    ( [ ( "cmd1", max + 1 ) ; ( "cmd2", max ) ; ( "cmd3", max - 1 ) ;
+      ( "cmd3", max + 2) ], "Around maximum (disordered)" )
   ]
 ;;
 (* Add expected result to corresponding to the data provided common set *)
@@ -82,7 +87,9 @@ let ll_data =
       Some "cmd1";
       Some "cmd1";
       None;
-      None
+      None;
+      Some "cmd1";
+      Some "cmd3"
   ]
 ;;
 let ll_data2 =
@@ -94,7 +101,9 @@ let ll_data2 =
     Some 0;
     Some 0;
     None;
-    None
+    None;
+    Some 0;
+    Some 2
   ]
 ;;
 
