@@ -65,23 +65,18 @@ let less_launched_num log =
   (* Debug *)
   Messages.debug "less_launched_num: LOG:";
   Tools.spy1_log log
-  |> less_launched
+
+  (* Find the less launched by sorting and taking he first *)
+  |> List.sort ~cmp:(fun ( _, i1 ) ( _, i2 ) -> Int.compare i1 i2)
+  |> List.hd
     |> function
-      | Some cmd ->
+      | Some ( cmd, launch_number) ->
           Messages.debug (sprintf "Less launched cmd (in num) %s" cmd);
-          List.Assoc.find_exn log cmd (* Should always be found, taken from the
-          same list *)
-      |> (fun position_in_log ->
-          sprintf "Found position: %i" position_in_log
-          |> Messages.debug;
-          List.nth_exn log position_in_log
-       (* Should always be found, taken from the
-        * same list *)
-          |> function ( _,num ) ->
-              Messages.debug "Found number: ";
-              Tools.spy1_int num |> ignore;
-              Some num)
-      | None -> None
+          Messages.debug "Return launch number (printed bellow):";
+          Some ( Tools.spy1_int launch_number )
+      | None ->
+          Messages.debug "No less launched cmd.";
+          None
 ;;
 
 (* Function to determinate what is the next command to
