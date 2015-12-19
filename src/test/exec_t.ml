@@ -62,8 +62,9 @@ let common_data =
     ( [ ( "cmd1", 0 ) ; ( "cmd2", 3 ) ; ( "cmd3", 4 )  ; ( "cmd4", 5 ) ], "Canonical case 3" );
     ( [ ( "cmd1", 0 ) ; ( "cmd2", 4 ) ; ( "cmd3", 4 )  ; ( "cmd5", 5 ) ],
       "Twice the same number, with others" );
-    ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], "Everything (strictly) superior to max" );
     ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], "Twice the same number" );
+    ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ],
+      "Everything (strictly) superior to maximum" );
     (* To prevent >= and > misuse in code *)
     ( [ ( "cmd1", max - 1 ) ; ( "cmd2", max ) ; ( "cmd3", max + 1 ) ;
       ( "cmd3", max + 2) ], "Around maximum (ordered)" );
