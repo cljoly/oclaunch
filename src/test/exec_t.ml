@@ -50,29 +50,52 @@ let less_launched_num test solution () =
   OUnit.assert_equal actual solution
 ;;
 
-(* Data for above test *)
-let ll_data =
-  let max = Const.default_launch in
+(* Maximum number of launch *)
+let max = Const.default_launch;;
+(* Data for above test, common data provided to both function since there
+ * purpose are very close from one to the other *)
+let common_data =
   [
-  ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], Some "cmd2", "Canonical case 1" );
-  ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], Some "cmd1", "Canonical case 2" );
-  ( [], None, "Empty list" );
-  ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], None, "Everything (strcitly) superior to max" );
-  ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], None, "Twice the same number" );
-]
+    ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], "Canonical case 1" );
+    ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], "Canonical case 2" );
+    ( [], "Empty list" );
+    ( [ ( "cmd1", 0 ) ; ( "cmd2", 3 ) ; ( "cmd3", 4 )  ; ( "cmd4", 5 ) ], "Canonical case 3" );
+    ( [ ( "cmd1", 0 ) ; ( "cmd2", 4 ) ; ( "cmd3", 4 )  ; ( "cmd5", 5 ) ],
+      "Twice the same number, with others" );
+    ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], "Everything (strictly) superior to max" );
+    ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], "Twice the same number" );
+  ]
+;;
+(* Add expected result to corresponding to the data provided common set *)
+let add_solutions data expected =
+  List.map2_exn data expected ~f:(fun ( log, name ) solution ->
+    ( log, solution, name ))
+;;
+
+(* Data customized for the tests *)
+let ll_data =
+  add_solutions common_data
+  [
+      Some "cmd2";
+      Some "cmd1";
+      None;
+      Some "cmd1";
+      Some "cmd1";
+      None;
+      None
+  ]
 ;;
 let ll_data2 =
-  let max = Const.default_launch in
+  add_solutions common_data
   [
-  ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], Some 0, "Canonical case 1" );
-  ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], Some 1, "Canonical case 2" );
-  ( [ ( "cmd1", 0 ) ; ( "cmd2", 3 ) ; ( "cmd3", 4 )  ; ( "cmd4", 5 ) ], Some 0, "Canonical case 3" );
-  ( [ ( "cmd1", 0 ) ; ( "cmd2", 4 ) ; ( "cmd3", 4 )  ; ( "cmd5", 5 ) ], Some 0,
-  "Twice the same number, with others" );
-  ( [], None, "Empty list" );
-  ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], None, "Everything (strcitly) superior to max" );
-  ( [ ( "cmd1", 4 ) ; ( "cmd2", 4 ) ], None, "Twice the same number" );
-]
+    Some 1;
+    Some 0;
+    None;
+    Some 0;
+    Some 0;
+    None;
+    None
+  ]
 ;;
 
 let llt_l =
