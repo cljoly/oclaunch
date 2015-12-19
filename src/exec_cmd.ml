@@ -69,7 +69,18 @@ let less_launched_num log =
     |> function
       | Some cmd ->
           Messages.debug (sprintf "Less launched cmd (in num) %s" cmd);
-          List.Assoc.find log cmd
+          List.Assoc.find_exn log cmd (* Should always be found, taken from the
+          same list *)
+      |> (fun position_in_log ->
+          sprintf "Found position: %i" position_in_log
+          |> Messages.debug;
+          List.nth_exn log position_in_log
+       (* Should always be found, taken from the
+        * same list *)
+          |> function ( _,num ) ->
+              Messages.debug "Found number: ";
+              Tools.spy1_int num |> ignore;
+              Some num)
       | None -> None
 ;;
 
