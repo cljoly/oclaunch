@@ -64,10 +64,10 @@ let ll_data =
 let ll_data2 =
   let max = Const.default_launch in
   [
-  ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], Some 0, "Canonical case 1" );
-  ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], Some 1, "Canonical case 2" );
-  ( [ ( "cmd1", 0 ) ; ( "cmd2", 3 ) ; ( "cmd3", 4 )  ; ( "cmd4", 5 ) ], Some 1, "Canonical case 3" );
-  ( [ ( "cmd1", 0 ) ; ( "cmd2", 4 ) ; ( "cmd3", 4 )  ; ( "cmd5", 5 ) ], None,
+  ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], Some 0, "Canonical case 1" );
+  ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], Some 1, "Canonical case 2" );
+  ( [ ( "cmd1", 0 ) ; ( "cmd2", 3 ) ; ( "cmd3", 4 )  ; ( "cmd4", 5 ) ], Some 0, "Canonical case 3" );
+  ( [ ( "cmd1", 0 ) ; ( "cmd2", 4 ) ; ( "cmd3", 4 )  ; ( "cmd5", 5 ) ], Some 0,
   "Twice the same number, with others" );
   ( [], None, "Empty list" );
   ( [ ( "cmd1", max ) ; ( "cmd2", (max + 5) ) ], None, "Everything (strcitly) superior to max" );

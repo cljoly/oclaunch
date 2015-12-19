@@ -66,17 +66,23 @@ let less_launched_num log =
   Messages.debug "less_launched_num: LOG:";
   Tools.spy1_log log
 
-  (* Find the less launched by sorting and taking he first *)
-  |> List.sort ~cmp:(fun ( _, i1 ) ( _, i2 ) -> Int.compare i1 i2)
+  (* Function to return nothing (None) when max launch number is reached, Some
+   * number otherwise *)
+  |> List.filter_mapi ~f:(fun entry_number ( _, launch_number ) ->
+      if launch_number >= Const.default_launch
+      then None
+      else Some ( entry_number, launch_number ))
+  (* Find the less launched by sorting and taking the first *)
+  |> List.sort ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) -> Int.compare launch_number1 launch_number2)
   |> List.hd
-    |> function
-      | Some ( cmd, launch_number) ->
-          Messages.debug (sprintf "Less launched cmd (in num) %s" cmd);
-          Messages.debug "Return launch number (printed bellow):";
-          Some ( Tools.spy1_int launch_number )
-      | None ->
-          Messages.debug "No less launched cmd.";
-          None
+  |> function
+    | Some ( entry_number, launch_number) ->
+        launch_number |> sprintf "Launch number found: %i" |> Messages.debug;
+        Messages.debug "Return launch number (printed bellow):";
+        Some ( Tools.spy1_int entry_number )
+    | None ->
+        Messages.debug "No less launched cmd.";
+        None
 ;;
 
 (* Function to determinate what is the next command to
