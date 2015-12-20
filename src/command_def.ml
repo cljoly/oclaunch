@@ -49,13 +49,16 @@ type return_arg = {
 let shared_params =
   let open Param in
   (* Way to treat common args *)
-  return (fun verbosity no_color rc_file_name ->
+  return (fun verbosity no_color rc_file_name handle_signal ->
     (* Set the level of verbosity *)
     Const.verbosity := verbosity;
     (* Do not use color *)
     Const.no_color := no_color;
     (* Use given rc file, should run the nth argument if present *)
     Const.rc_file := (Lazy.return rc_file_name);
+    (* Active signal handling *)
+    if handle_signal then
+      Signals.handle ();
 
     (* Debugging *)
     Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
@@ -80,6 +83,11 @@ let shared_params =
     <*> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
       ~aliases:["--rc" ; "-rc"]
       ~doc:"file Read configuration from the given file and continue parsing."
+    (* Flag to handle signals *)
+    <*> flag "-s" no_arg
+      ~aliases:["--sinals" ; "-signals"]
+      ~doc:"Handle signals. Warning, this is not much tested and not \
+      implemented the best way."
 ;;
 
 
