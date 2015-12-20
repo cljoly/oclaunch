@@ -17,7 +17,7 @@
  + Improve editing command (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
  + Code clean up
- + Add unit tests
+ + Add unit tests and clean up them
  + Add licence warning
  + Changed tmp file format, the new one would allow to do more things:
    + Restart edited command (reset number of launch)
