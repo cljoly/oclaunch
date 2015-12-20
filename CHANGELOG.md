@@ -20,7 +20,7 @@
  + Improve editing command (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
  + Code clean up
- + Add unit tests and clean up them
+ + Add unit tests and clean them up
  + Add licence warning
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
    ctrl-C. See issue #14 for known problems
