@@ -1,5 +1,8 @@
 # Changelog of OcLaunch
 
+>Note: XXX Means that the functionality needs test and TODO means that its
+>implementation is partial
+
 ## 0.3.x
 
 ### 0.3.0
@@ -9,8 +12,21 @@
  + To limit future problem with lockers, two things were done:
    + Remove automatically lock file at the end of the program (See commit 075c5b7074ea62ec337fe45309fbc3d808ad74fc)
    + Add delay when waiting for locker, to avoid endless loop (See commit cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and bd712c97c788922aabdda15f75e78cb05882c53f)
+ + Rewrite command line parsing, in a cleaner and safer way. It now handles
+   `exit`, would be able to deal with auto completion and display more accurate
+   help messages. Though, for backward compatibility reasons, a hack has been
+   setted up, allowing to call the program with a number as first argument or
+   without any argument. This way, the program tries to launch the corresponding
+   command or the next one. The problem is that you can't call it with an
+   option. To do this, use the `run` subcommand.
+ + Improve list subcommand, now using Textutils library, displaying in an array
+ + Improve editing command (explain how to use to add commands, improve
+   messages, offer to reedit when nothing was done).
  + Code clean up
- + Add unit tests
+ + Add unit tests and clean them up
+ + Add licence warning
+ + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
+   ctrl-C. See issue #14 for known problems
  + Changed tmp file format, the new one would allow to do more things:
    + Restart edited command (reset number of launch)
    + Support multiple configuration file

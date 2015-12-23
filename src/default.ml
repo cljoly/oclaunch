@@ -36,8 +36,8 @@
 
 open Core.Std;;
 
-(* The module containing the step runned when the program is
- * used without argument *)
+(* The module containing the step run when the program is
+ * used without argument or with run command *)
 
 (* cmd_number is the number of the command the user wants
  * to execute *)
@@ -57,7 +57,8 @@ let run ~rc cmd_number =
           |> function
             | None -> (* If no command was found, all has been launched *)
                 Messages.ok "All has been launched!";
-                Messages.tips "You can reset with '-r'";
+                Messages.tips "You can reset with 'reset' subcommand";
+                Lock.remove ()
             | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
       end
     | Some num -> begin

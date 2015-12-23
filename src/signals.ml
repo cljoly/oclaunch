@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2015                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,34 +36,32 @@
 
 open Core.Std;;
 
-(* This modules contains function to list the content of the rc file *)
+(* Working with signals and behave according to it *)
+(* XXX May use async for this. Here is what the Core's doc say
+ * An OCaml signal handler can run at any time, which introduces all the
+ * semantic complexities of multithreading. *)
 
-(* Function which list, rc would be automatically reread, this optional
- * argument is kept for backward compatibility *)
-(* FIXME Remove ?rc or use it *)
-(* TODO:
-  * Test it, esp. ordering
-  * Allow to set form of the table, multiple rc file, display next to be
-    * launched… *)
-let run ?rc () =
-  let rc_numbered =
-    File_com.init_rc ()
-    |> fun rc -> rc.Settings_t.progs
-    |> List.mapi ~f:(fun i item -> ( item, i ))
+(* TODO Finish it! Handle sigint (ctrl-C) and ask to launch next command *)
+let handle_sigint () =
+  let launch_next () =
+    Messages.(confirm "Would you like to launch next command?"
+    |> function
+      | Yes -> (* Launch next *)
+        failwith "TODO Relaunch"
+      | No -> (* Quit *)
+        failwith "TODO Quit"
+    )
   in
-  let tmp : Tmp_file.t = Tmp_file.init () in
-  Tmp_file.get_accurate_log ~tmp ()
-  (* Generate list to feed the table,
-   * XXX assuming all will be in the right order *)
-  |> List.map ~f:(function
-    ( cmd, number ) ->
-      [ (* Number of a command in rc file, command, number of launch *)
-        (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
-        cmd;
-        (Int.to_string number)
-      ])
-  |> Textutils.Ascii_table.simple_list_table
-    ~display:Textutils.Ascii_table.Display.column_titles
-    [ "Id" ; "Command" ; "Number of launch" ]
+  let open Signal in
+  Expert.handle int (fun signal ->
+    if signal = int
+    then
+      launch_next ()
+    else ())
+;;
+
+(* Called from external to activate signal handling *)
+let handle () =
+  handle_sigint ()
 ;;
 

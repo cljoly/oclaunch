@@ -74,11 +74,11 @@ let gen_modification items =
 
 (* Function which get the nth element, put it in a file, let the user edit it,
  * and then remplace with the new result *)
-let run ~(rc:File_com.t) position =
+let rec run ~(rc:File_com.t) position =
     (* Current list of commands *)
     let current_list = rc.Settings_t.progs in
 
-    (* Creating tmp file *)
+    (* Creating tmp file, for editing *)
     let tmp_filename = [
         "/tmp/oc_edit_" ;
         (Int.to_string (Random.int 100_000)) ;
@@ -86,8 +86,9 @@ let run ~(rc:File_com.t) position =
     ] in
     let tmp_edit = String.concat tmp_filename in
     (* Remove item to be edited *)
-    let original_command,shorter_list = Remove_command.remove current_list
-    position in
+    let original_command,shorter_list =
+      Remove_command.remove current_list position
+    in
     Out_channel.write_all tmp_edit original_command;
 
 
@@ -105,11 +106,26 @@ let run ~(rc:File_com.t) position =
     let cmd_list = new_list shorter_list position new_commands in
     let updated_rc = { rc with Settings_t.progs = cmd_list} in
     File_com.write updated_rc;
-    (* Display the result *)
-    sprintf "'%s' -> '%s'\n" original_command
-        (gen_modification new_commands)
-        |> Messages.ok;
-    let reread_rc = File_com.init_rc () in
-    (* Display new rc file *)
-    List_rc.run ~rc:reread_rc
+    (* Display the result, only if modified *)
+    let new_cmd_mod = gen_modification new_commands in
+    (* We are doing things in this order to avoid multiple listing of rc file
+     * when reediting. *)
+    if ( original_command = new_cmd_mod )
+    then (* Nothing change, try reediting *)
+      begin
+        let open Messages in
+        warning "Nothing changed.";
+        confirm "Do you want to reedit?"
+        |> function
+          | Yes -> run ~rc position
+          | No -> ()
+      end
+
+    else (* Display summary of changes *)
+      begin
+        sprintf "'%s' -> '%s'\n" original_command new_cmd_mod |> Messages.ok;
+        (* Display new rc file *)
+        let reread_rc = File_com.init_rc () in
+        List_rc.run ~rc:reread_rc ()
+      end;
 ;;
