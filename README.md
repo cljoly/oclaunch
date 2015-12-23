@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: a582ff5eef328f0f8ccffbe2c68e80aa) --->
+<!--- DO NOT EDIT (digest: 0bfe5fa7f821b21fd80ec7f528e7aa1a) --->
 
 OcLaunch - Launch commands automagically
 ========================================
@@ -12,7 +12,7 @@ https://gitlab.com/WzukW/oclaunch/wikis/home. Try it, it works automagically!
 See the file [INSTALL.md](INSTALL.md) for building and installation
 instructions.
 
-[Home page](http://www.oclaunch.tuxfamily.org)
+[Home page](http://www.oclaunch.eu.org)
 
 Copyright and license
 ---------------------
