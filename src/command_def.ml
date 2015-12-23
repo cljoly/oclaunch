@@ -267,6 +267,7 @@ let run ~version ~build_info () =
     |> run ~version ~build_info
   in
 
+  (* Return error code with exceptions *)
   let exit_code =
     match
       hack_parse ()
