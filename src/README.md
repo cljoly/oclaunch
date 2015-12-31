@@ -9,6 +9,12 @@ functionality.
 
 ![Source organisation scheme](./src_org.svg)
 
+## General work
+
+The general idea is that we read the rc file, adapt it to tmp file and do what
+the user asked. It can be an editing on the rc file or a launching of the next
+command.
+
 ## To Infinity and Beyond
 
 To find your way in modules, read comments explaining the goal of it.      
