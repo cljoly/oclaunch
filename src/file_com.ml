@@ -62,6 +62,10 @@ let create_rc_file ~name =
   (* Notify that we initialise config file *)
   sprintf "Initializing empty configuration file in %s\n" name |> Messages.warning;
   Messages.tips "Feedback is welcomed at leowzukw@vmail.me\n";
+
+  (* Display licence information *)
+  Licencing.print ~cecill:false;
+
   let compact_rc_file = Settings_j.string_of_rc_file (rc_template () ()) in
   let readable_rc_file = Yojson.Basic.prettify compact_rc_file in (* Create human readable string for rc file *)
   let out_file = Out_channel.create name in

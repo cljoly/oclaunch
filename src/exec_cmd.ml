@@ -46,7 +46,7 @@ let set_title new_title =
 ;;
 
 (* Function to return the less launched command, at least the first one *)
-(* Log is a list of entry (commands) asociated with numbers *)
+(* Log is a list of entry (commands) associated with numbers *)
 let less_launched (log : (string * int) list) =
   let max = Const.default_launch in (* Number of launch, maximum *)
   (* Return smallest, n is the smaller key *)
@@ -57,6 +57,32 @@ let less_launched (log : (string * int) list) =
         then Some cmd
         else None
       | None -> None)
+;;
+
+(* Function to get the number corresponding to the next command to launch (less
+ * launched) *)
+let less_launched_num log =
+  (* Debug *)
+  Messages.debug "less_launched_num: LOG:";
+  Tools.spy1_log log
+
+  (* Function to return nothing (None) when max launch number is reached, Some
+   * number otherwise *)
+  |> List.filter_mapi ~f:(fun entry_number ( _, launch_number ) ->
+      if launch_number >= Const.default_launch
+      then None
+      else Some ( entry_number, launch_number ))
+  (* Find the less launched by sorting and taking the first *)
+  |> List.sort ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) -> Int.compare launch_number1 launch_number2)
+  |> List.hd
+  |> function
+    | Some ( entry_number, launch_number) ->
+        launch_number |> sprintf "Launch number found: %i" |> Messages.debug;
+        Messages.debug "Return launch number (printed bellow):";
+        Some ( Tools.spy1_int entry_number )
+    | None ->
+        Messages.debug "No less launched cmd.";
+        None
 ;;
 
 (* Function to determinate what is the next command to

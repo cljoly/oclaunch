@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2015                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,34 +36,10 @@
 
 open Core.Std;;
 
-(* This modules contains function to list the content of the rc file *)
-
-(* Function which list, rc would be automatically reread, this optional
- * argument is kept for backward compatibility *)
-(* FIXME Remove ?rc or use it *)
-(* TODO:
-  * Test it, esp. ordering
-  * Allow to set form of the table, multiple rc file, display next to be
-    * launched… *)
-let run ?rc () =
-  let rc_numbered =
-    File_com.init_rc ()
-    |> fun rc -> rc.Settings_t.progs
-    |> List.mapi ~f:(fun i item -> ( item, i ))
-  in
-  let tmp : Tmp_file.t = Tmp_file.init () in
-  Tmp_file.get_accurate_log ~tmp ()
-  (* Generate list to feed the table,
-   * XXX assuming all will be in the right order *)
-  |> List.map ~f:(function
-    ( cmd, number ) ->
-      [ (* Number of a command in rc file, command, number of launch *)
-        (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
-        cmd;
-        (Int.to_string number)
-      ])
-  |> Textutils.Ascii_table.simple_list_table
-    ~display:Textutils.Ascii_table.Display.column_titles
-    [ "Id" ; "Command" ; "Number of launch" ]
-;;
-
+(* Spying expression *)
+val spy1_int : int -> int
+val spy1_int_option : int option -> int option
+val spy1_string : string -> string
+val spy1_float : float -> float
+val spy1_log : (string * int) list -> (string * int) list
+val spy1_rc : 'a -> 'a

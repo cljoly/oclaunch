@@ -46,18 +46,7 @@ let version_number = "0.3.1-dev";;
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
 let () =
-  Command.run ~version:version_number ~build_info:build_info
-  Command_def.commands;
-
-  (* Unlock, should be done before *)
-  Lock.(status ()
-    |> (function
-        Locked ->
-          Messages.warning "Removing lockfile, should be removed before. \
-          It's a bug!"; remove ()
-      | Free -> ()
-      | Error -> Messages.warning "Error with lockfile"
-  ));
-  (* Reset display *)
-  Messages.reset ()
+  Command_def.run ~version:version_number ~build_info:build_info ()
+  |> function
+    `Exit n -> exit n
 ;;

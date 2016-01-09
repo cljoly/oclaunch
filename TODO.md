@@ -18,6 +18,7 @@
 
  + Add command --edit-rc to edit configuration file
  + Add command to exchange item
+ + Change config file format (Sexp ?)
 
 ### Configuration value
  + Allow to run infinitely or say when it is finish

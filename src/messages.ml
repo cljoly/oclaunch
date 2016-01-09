@@ -60,6 +60,7 @@ type color =
     | Yellow
     | White
     | Plum
+    | Cyan
 ;;
 
 type style =
@@ -84,6 +85,7 @@ let print ~color ~style message =
             | Yellow -> Color_print.color ~color:`Yellow message
             | White -> Color_print.color ~color:`White message
             | Plum -> Color_print.color ~color:`Plum message
+            | Cyan -> Color_print.color ~color:`Cyan message
         ) |> (* Finaly print escaped string *)
         (fun colored_msg ->
             match style with
@@ -103,6 +105,7 @@ let check_verbosity ~f function_number =
         f ()
     | false -> ()
 ;;
+
 
 (* Print debugging, information, important... messages *)
 let debug message =
@@ -126,6 +129,44 @@ let warning message =
     ) 1
 ;;
 
+(* Type for the answers *)
+type answer = Yes | No;;
+(* Usefull to display result *)
+let answer2str = function
+  Yes -> "Yes" | No -> "No"
+;;
+(* State of the program, if you should always answer yes, no or ask to the user
+ * (default)*)
+(* TODO Put it in Const *)
+let assume_yes = None;;
+(* Allow to assume yes or no like with a --yes option *)
+let check_assume_yes ~f =
+  match assume_yes with
+  | Some true -> Yes (* --yes *)
+  | Some false -> No (* --no *)
+  | None -> f ()
+;;
+
+(* Get confirmation
+ * TODO:
+   * allow option like -y
+   * test it (display, line return, etc...) *)
+let rec confirm info =
+  check_assume_yes ~f:(fun () ->
+    print ~color:Cyan ~style:Normal info;
+    print ~color:Cyan ~style:Normal "\n(Yes/No): ";
+    (* XXX Be sure to show the message *)
+    Out_channel.(flush stdout);
+    let str_answer = In_channel.(input_line ~fix_win_eol:true stdin) in
+    str_answer |> (function
+      | Some "Y" | Some "y" | Some "Yes" | Some "YES" | Some "yes" -> Yes
+      | Some "N" | Some "n" | Some "No" | Some "NO" | Some "no" -> No
+      | Some _ | None ->
+        warning "Please enter 'yes' or 'no' or 'y' or 'n'.";
+        confirm info)
+    )
+;;
+
 let ok message =
     check_verbosity ~f:(fun () ->
         let mess = message ^ "\n" in
@@ -144,7 +185,7 @@ let tips message =
 (* Reset printing, to avoid color problem on some terminal (Konsole), the  *)
 let reset () =
     match !already with
-    | true -> debug "Resetted colors";
+    | true -> debug "Reseted colors";
         Core_extended.Color_print.normal "" |> printf "%s\n"
     | false -> debug "Not resetted"; ()
 ;;

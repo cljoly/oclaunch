@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014                                             *)
+(* Copyright © Joly Clément, 2014-2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -144,7 +144,8 @@ let get_current () =
     failwith "Deprecated"
 ;;
 
-(* Get number of launch for each command in rc file *)
+(* Get number of launch for each command in rc file, as follow:
+  * (command:string, number of the command:int) list *)
 let get_accurate_log ?rc_name ~tmp () =
   let open List in
 
@@ -167,7 +168,7 @@ let get_accurate_log ?rc_name ~tmp () =
 (* Reset number of launch for a given command
  * cmd: number of the command to be reseted
  * num: number to reset *)
-let reset ~rc cmd num =
+let reset_cmd ~rc num cmd =
   (* Debugging *)
   [(num,"num") ; (cmd,"cmd")]
     |> List.map ~f:(fun (i , str) -> str ^ ": " ^ (Int.to_string i))
@@ -175,8 +176,12 @@ let reset ~rc cmd num =
 
   let ac_log = get_accurate_log ~tmp:(init ()) () in
   (* The command (string) corresponding to the number *)
-  let cmd_str = (File_com.num_cmd2cmd ~rc num |> function Some s -> s
-                                  | None -> failwith "Out of bound") in
+  let cmd_str =
+    File_com.num_cmd2cmd ~rc cmd
+    |> function
+      Some s -> s
+      | None -> failwith "Out of bound"
+  in
 
   (* Current number of launch for that cmd *)
   let i = List.Assoc.find_exn ac_log cmd_str in
@@ -184,12 +189,44 @@ let reset ~rc cmd num =
       cmd_str
       i
     |> Messages.info;
-    sprintf  "Restore with 'oclaunch -r %i %i'" i num
+    sprintf  "Restore with 'oclaunch reset %i %i'" i cmd
     |> Messages.tips;
 
-    (* Do the work *)
-    (* Set the number *)
-    log ~func:(fun a -> num) ~cmd:cmd_str ();
+    (* Do the work, set the number *)
+    log ~func:(fun _ -> num) ~cmd:cmd_str ();
     sprintf "Reseted command '%s' to %i successfully" cmd_str num |> Messages.ok
+;;
+
+(* Reset all commands to a number
+ * num: number to reset *)
+let reset2num ~rc num =
+  (* Debugging *)
+  "Num: " ^ (Int.to_string num)
+  |> Messages.debug;
+
+  let ac_log = get_accurate_log ~tmp:(init ()) () in
+
+  (* Erase number of launch for each command *)
+  List.iter ac_log ~f:(fun ( cmd, _ ) ->
+    log ~func:(fun _ -> num) ~cmd ())
+;;
+
+(* Reset all command *)
+let reset_all () =
+  Messages.debug "Preparing to reset all";
+  let reset_without_ask () =
+    (* Make sure that file exists, otherwise strange things appears *)
+    let tmp = init () in
+    (* Get rc_file name *)
+    let name = Lazy.force !Const.rc_file in
+    write Tmp_biniou_t.{ tmp with rc = List.Assoc.add tmp.rc name [] }
+  in
+  Messages.debug "Asking question";
+  Messages.confirm "You will lose number of launch for every command.\
+    Are you sure?"
+  |> (fun answer -> sprintf "Answer %s" (Messages.answer2str answer) |> Messages.debug; answer) (* Spy *)
+    |> function
+      Messages.Yes -> reset_without_ask ()
+      | Messages.No -> ()
 ;;
 
