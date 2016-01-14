@@ -2,9 +2,12 @@
 
 # Script to create 0install archives
 
-# Get and set compilation settings
-./configure --disable-debug --disable-docs --disable-profile --disable-tests > BUILD_INFO.txt
+### parameter variables ###
+build_log=BUILD_INFO.txt # Logs included in distributed archive
+dbg_log=dbg.log #To debug this script, dropped sometimes
 
+# Get and set compilation settings
+./configure --disable-debug --disable-docs --disable-profile --disable-tests > $build_log
 # First compile
 make
 
@@ -18,19 +21,18 @@ name=oclaunch-v$(cat ./VERSION)_$(arch)
 final_binary_name=./$name/oclaunch
 cp ./_build/src/oclaunch.native $dist/oclaunch
 # Move BUILD_INFO
-mv BUILD_INFO.txt ./$dist/
+mv $build_log ./$dist/
 
 cd $dist
 mkdir $name
 # Put executable in it
-mv oclaunch BUILD_INFO.txt $name
+mv oclaunch $build_log $name
 
-# XXX Debug
-tree
+tree > $dbg_log
 
 # Create archive
-tar -cvaf $name.tar.lzma $name
+tar -cvaf $name.tar.lzma $name >> $dbg_log
 
 # Create stripped archive
 strip $final_binary_name
-tar -cvaf ${name}_stripped.tar.lzma $name
+tar -cvaf ${name}_stripped.tar.lzma $name >> $dbg_log
