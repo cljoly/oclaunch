@@ -15,7 +15,7 @@ if [ ! -d $dist ]; then
 fi
 # Archive name
 name=oclaunch-v$(cat ./VERSION)_$(arch)
-final_binairy_name=$dist/$name/oclaunch
+final_binary_name=$dist/$name/oclaunch
 cp ./_build/src/oclaunch.native $dist/oclaunch
 # Move BUILD_INFO
 mv BUILD_INFO.txt ./$dist/
@@ -32,5 +32,5 @@ tree
 tar -cvaf $name.tar.lzma $name
 
 # Create stripped archive
-strip $final_binairy_name
+strip $final_binary_name
 tar -cvaf $name_stripped.tar.lzma $name
