@@ -24,7 +24,9 @@ cp ./_build/src/oclaunch.native $dist/oclaunch
 mv $build_log ./$dist/
 
 cd $dist
-mkdir $name
+if [ ! -d $name ]; then
+  mkdir $name
+fi
 # Put executable in it
 mv oclaunch $build_log $name
 
