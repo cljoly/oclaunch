@@ -8,13 +8,17 @@
 # First compile
 make
 
-# Copy in dist
-final_binairy_name=./dist/oclaunch
+# Copy in distribution directory (if exists)
+dist=./dist
+if [ ! -d $dist ]; then
+  mkdir $dist
+fi
+final_binairy_name=$dist/oclaunch
 cp ./_build/src/oclaunch.native $final_binairy_name
 # Move BUILD_INFO
-mv BUILD_INFO.txt ./dist/
+mv BUILD_INFO.txt ./$dist/
 
-cd dist
+cd $dist
 # Archive name
 name=oclaunch-v$(cat ../VERSION)_$(arch)
 mkdir $name
