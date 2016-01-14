@@ -13,14 +13,14 @@ dist=./dist
 if [ ! -d $dist ]; then
   mkdir $dist
 fi
-final_binairy_name=$dist/oclaunch
-cp ./_build/src/oclaunch.native $final_binairy_name
+# Archive name
+name=oclaunch-v$(cat ./VERSION)_$(arch)
+final_binairy_name=$dist/$name/oclaunch
+cp ./_build/src/oclaunch.native $dist/oclaunch
 # Move BUILD_INFO
 mv BUILD_INFO.txt ./$dist/
 
 cd $dist
-# Archive name
-name=oclaunch-v$(cat ../VERSION)_$(arch)
 mkdir $name
 # Put executable in it
 mv oclaunch BUILD_INFO.txt $name
