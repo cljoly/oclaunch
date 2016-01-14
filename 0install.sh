@@ -19,8 +19,8 @@ fi
 # Archive name
 name=oclaunch-v$(cat ./VERSION)_$(arch)
 final_binary_path=./$name/oclaunch
-final_binary_name=./$name/oclaunch
-cp ./_build/src/oclaunch.native $dist/oclaunch
+final_binary_name=oclaunch
+cp ./_build/src/oclaunch.native $dist/$final_binary_name
 # Move BUILD_INFO
 mv $build_log ./$dist/
 
@@ -29,7 +29,7 @@ if [ ! -d $name ]; then
   mkdir $name
 fi
 # Put executable in it
-mv oclaunch $build_log $name
+mv $final_binary_name $build_log $name
 
 tree > $dbg_log
 
