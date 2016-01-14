@@ -9,7 +9,8 @@
 make
 
 # Copy in dist
-cp ./_build/src/oclaunch.native ./dist/oclaunch
+final_binairy_name=./dist/oclaunch
+cp ./_build/src/oclaunch.native $final_binairy_name
 # Move BUILD_INFO
 mv BUILD_INFO.txt ./dist/
 
@@ -25,3 +26,7 @@ tree
 
 # Create archive
 tar -cvaf $name.tar.lzma $name
+
+# Create stripped archive
+strip $final_binairy_name
+tar -cvaf $name_stripped.tar.lzma $name
