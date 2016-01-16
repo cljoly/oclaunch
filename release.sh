@@ -17,3 +17,6 @@ fi
 ./0install.sh
 # Source code
 ./pkg.sh
+
+# Signing everything
+./sign-dist.sh
