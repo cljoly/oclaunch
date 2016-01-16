@@ -11,4 +11,7 @@ git tag -s v$(cat VERSION) -m "Release $(cat VERSION)"
 
 # Cleanup dist directory to put the new archives
 rm -r dist/*
+# Binary archives
 ./0install.sh
+# Source code
+./pkg.sh
