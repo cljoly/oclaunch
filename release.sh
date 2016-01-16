@@ -9,8 +9,10 @@
 git commit -a -m "Version $(cat ./VERSION)"
 git tag -s v$(cat VERSION) -m "Release $(cat VERSION)"
 
-# Cleanup dist directory to put the new archives
-rm -r dist/*
+# Cleanup dist directory to put the new archives, if exists
+if [ -d dist ]; then
+  rm -r dist/*
+fi
 # Binary archives
 ./0install.sh
 # Source code
