@@ -7,7 +7,7 @@
 
 # Record changes
 git commit -a -m "Version $(cat ./VERSION)"
-git tag -s v$(cat VERSION) -m "Release $(cat VERSION)"
+git tag -s v$(cat VERSION) -m "Release version $(cat VERSION)"
 
 # Cleanup dist directory to put the new archives, if exists
 if [ -d dist ]; then
