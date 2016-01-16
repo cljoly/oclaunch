@@ -2,6 +2,9 @@
 
 # Script used to sign (almost) everything in the dist folder
 
+if [ ! -d dist ]; then
+  mkdir dist
+fi
 cd dist
 # File to signed
 # MEMO: -e: regexp, -v: not matched
