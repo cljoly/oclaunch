@@ -1,5 +1,13 @@
 # Changelog of OcLaunch
 
+## 0.3.x
+
+### 0.3.0
+
+ + Improve release script, to enhance contributing experience (making easier to
+   release source-code, binaries, signing…). TODO Merge name format of
+   Oinstall.sh and pkg.sh
+
 ## 0.2.x
 
 ### v0.2.2
