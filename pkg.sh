@@ -9,7 +9,7 @@ if ! [ -e dist ]; then
 fi
 
 # If no tag, use commit SHA1
-id=`git describe --abbrev=40 HEAD`
+id=`git describe --abbrev=40 --candidates=50 HEAD`
 name=OcLaunch_${id}.tgz
 
 echo "Writing in" $name
