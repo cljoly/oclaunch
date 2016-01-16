@@ -13,5 +13,5 @@ id=`git describe HEAD`
 name=OcLaunch_${id}.tgz
 
 echo "Writing in" $name
-git archive master --prefix=${name}/ --format=tgz -o dist/${name}
+git archive master --prefix=${name}/ --format=tgz -o dist/${name} -9
 
