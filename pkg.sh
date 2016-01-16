@@ -4,7 +4,7 @@
 echo "Start"
 
 # If directory doesn't exist, create it
-if ! [[ -e dist ]]; then
+if ! [ -e dist ]; then
     mkdir dist
 fi
 
@@ -14,5 +14,5 @@ id=`git rev-parse --short --verify HEAD`
 name=OcLaunch_${tag}-${id}.tgz
 
 echo "Write in" $name
-git archive master --prefix=${name}/ --format=tgz -o dist/$name
+git archive master --prefix=${name}/ --format=tgz -o dist/${name}
 
