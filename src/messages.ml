@@ -71,29 +71,7 @@ type style =
 
 (* General function to print things *)
 let print ~color ~style message =
-    let open Core_extended in
-    match !Const.no_color with
-    | true -> printf "%s" message
-    | false -> begin (* Use colors *)
-        (* Log that we used colored messages *)
-        log_already ();
-        (* This code create proper escapement to display text with bold/color... *)
-        color |>
-        (function
-            | Green -> Color_print.color ~color:`Green message
-            | Red -> Color_print.color ~color:`Red message
-            | Yellow -> Color_print.color ~color:`Yellow message
-            | White -> Color_print.color ~color:`White message
-            | Plum -> Color_print.color ~color:`Plum message
-            | Cyan -> Color_print.color ~color:`Cyan message
-        ) |> (* Finaly print escaped string *)
-        (fun colored_msg ->
-            match style with
-            | Bold -> Color_print.boldprintf "%s" colored_msg
-            | Underline -> Color_print.underlineprintf "%s" colored_msg
-            | Normal -> printf "%s" colored_msg
-        )
-    end
+  failwith "Not implemented"
 ;;
 
 (* Behave in a conform way to verbosity
@@ -184,8 +162,5 @@ let tips message =
 
 (* Reset printing, to avoid color problem on some terminal (Konsole), the  *)
 let reset () =
-    match !already with
-    | true -> debug "Reseted colors";
-        Core_extended.Color_print.normal "" |> printf "%s\n"
-    | false -> debug "Not resetted"; ()
+  failwith "Not implemented"
 ;;

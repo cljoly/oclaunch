@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 641d2e4362cb9e2f3469b89eff9de495) --->
+<!--- DO NOT EDIT (digest: caa10816c3c9689f846b03a0fa379434) --->
 
 This is the INSTALL file for the OcLaunch distribution.
 
@@ -14,7 +14,7 @@ In order to compile this package, you will need:
 * ocaml for all, test tests
 * findlib
 * core
-* core_extended
+* textutils
 * atdgen
 * alcotest for executable run_test
 * oUnit for executable run_test

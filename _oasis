@@ -28,7 +28,7 @@ PreBuildCommand: echo "Atdgen executed"
 Executable oclaunch
   Path:       src
   MainIs:     oclaunch.ml
-  BuildDepends: core, core_extended, atdgen, threads
+  BuildDepends: core, textutils, atdgen, threads
   CompiledObject: best
 
 Executable "run_test"
@@ -37,7 +37,7 @@ Executable "run_test"
   Build$: flag(tests)
   CompiledObject: best
   Install: false
-  BuildDepends: alcotest, oUnit, core, threads, core_extended, atdgen
+  BuildDepends: alcotest, oUnit, core, threads, textutils, atdgen
 
 Test "tests"
   Run$: flag(tests)
