@@ -1,0 +1,15 @@
+Files in this directory are based on the file with the same name of the
+Core_extended library, published under Apache-2.0 as follow:
+
+(C) 2008-2016 Jane Street Group LLC <opensource@janestreet.com>
+Apache-2.0
+
+You may find a copy of the Apache licence in the LICENSE.txt file in this
+folder. The THIRD-PARTY.txt, LICENSE.txt (in this folder) and
+INRIA-DISCLAIMER.txt have been reproduced as they were in commit
+987a5b7994104e6cb41867bb4775ac970fb64830.
+
+The file color_print.ml is as it was in commit
+7351d453b3a7a8d2c77fdff817f19ebf1df1400d. It is symbolic linked in src/ folder,
+for convenience.
+

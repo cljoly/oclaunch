@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: e9ef8e895a62f6d302c93293b9e2d7af)
+# DO NOT EDIT (digest: e83e83ffeca91f64ced159dafe6e0f0c)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -17,8 +17,10 @@ true: annot, bin_annot
 # Executable oclaunch
 <src/oclaunch.{native,byte}>: pkg_atdgen
 <src/oclaunch.{native,byte}>: pkg_core
+<src/oclaunch.{native,byte}>: pkg_re2
 <src/oclaunch.{native,byte}>: pkg_textutils
 <src/oclaunch.{native,byte}>: pkg_threads
+<src/*.ml{,i,y}>: pkg_re2
 # Executable run_test
 <src/test/test.{native,byte}>: pkg_alcotest
 <src/test/test.{native,byte}>: pkg_atdgen
