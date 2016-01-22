@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2014-2015-2016                                   *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -162,5 +162,6 @@ let tips message =
 
 (* Reset printing, to avoid color problem on some terminal (Konsole), the  *)
 let reset () =
+  let open Color_print in
   failwith "Not implemented"
 ;;
