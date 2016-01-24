@@ -35,11 +35,18 @@ mv $final_binary_name $build_log $name
 
 tree > $dbg_log
 
-# Create archive
+# Create archive, building the two in parallel, to speed up the process
+# WARNING the script may exit while the first compression didn't end.
+echo "========= Creating base archive ========="
+tar_name=${name}.tar
+tar -cvaf ${tar_name} $name >> $dbg_log
+
 echo "========= Creating first archive ========="
-tar -cvaf $name.tar.lzma $name >> $dbg_log
+lzma -f -9 ${tar_name} >> $dbg_log &
 
 # Create stripped archive
+tar_name_stripped=${name}_stripped.tar
 strip $final_binary_path
+tar -cvaf ${tar_name_stripped} $name >> $dbg_log
 echo "========= Creating second (stripped) archive ========="
-tar -cvaf ${name}_stripped.tar.lzma $name >> $dbg_log
+lzma -f -9 ${tar_name_stripped} >> $dbg_log
