@@ -47,6 +47,5 @@ let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ 
 
 let () =
   Command_def.run ~version:version_number ~build_info:build_info ()
-  |> function
-    `Exit n -> exit n
+  |> function `Exit n -> exit n
 ;;

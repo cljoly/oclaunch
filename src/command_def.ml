@@ -270,6 +270,7 @@ let run ~version ~build_info () =
     |> run ~version ~build_info
   in
 
+  (* Return error code with exceptions *)
   let exit_code =
     match
       hack_parse ()
@@ -297,6 +298,7 @@ let run ~version ~build_info () =
   (* Display total running time, to float is a number of secconds *)
   Messages.debug Time.(now () |> to_float |> (-.) start |> ( *. ) (-1.)
   |> sprintf "Runned during %f second(s)");
+
   (* Reset display *)
   Messages.reset ();
 
