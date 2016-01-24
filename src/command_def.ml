@@ -233,6 +233,9 @@ let default =
       Default.run ~rc n)
 
 let run ~version ~build_info () =
+  (* Store begin time *)
+  let start = Time.(now () |> to_float) in
+
 
   (* XXX Hack to allow to run 'oclaunch 5' or 'oclaunch' as before, i.e. do not
    * display help for sub commands but use the program directly *)
@@ -291,6 +294,9 @@ let run ~version ~build_info () =
       | Error -> Messages.warning "Error with lockfile"
   ));
 
+  (* Display total running time, to float is a number of secconds *)
+  Messages.debug Time.(now () |> to_float |> (-.) start |> ( *. ) (-1.)
+  |> sprintf "Runned during %f second(s)");
   (* Reset display *)
   Messages.reset ();
 
