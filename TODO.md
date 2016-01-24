@@ -19,6 +19,12 @@
  + Add command --edit-rc to edit configuration file
  + Add command to exchange item
  + Change config file format (Sexp ?)
+ + Run commands based on patterns (i.e. "run git" to run "git bundle /tmp/bundle
+   --all" ), bypassing command numbers
+ + Allow to append arguments (i.e. "run 3 -- A...B" to run "git rev-list
+   left-right --count A...B", if "git rev-list left-right --count" is the third
+   command )
+ + Allow to tag commands
 
 ### Configuration value
  + Allow to run infinitely or say when it is finish
