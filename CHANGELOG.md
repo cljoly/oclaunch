@@ -17,6 +17,9 @@
    + More natural behavior when starting from an empty file. (Don't increment
      number of launch when nothing is actually launched)
    + For the futur : Running infinite, daemon mode...
+ + Improve release script, to enhance contributing experience (making easier to
+   release source-code, binaries, signing…). TODO Merge name format of
+   Oinstall.sh and pkg.sh
 
 ## 0.2.x
 

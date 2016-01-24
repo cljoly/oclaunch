@@ -46,6 +46,10 @@ let version_number = "0.3.1-dev";;
 let build_info = ( "Build with OCaml version " ^ (Sys.ocaml_version) ^ " on " ^ (Sys.os_type) );;
 
 let () =
+  (* Store begin time *)
+  let start = Time.(now () |> to_float) in
+
+  (* Running commands *)
   Command.run ~version:version_number ~build_info:build_info
   Command_def.commands;
 
@@ -58,6 +62,11 @@ let () =
       | Free -> ()
       | Error -> Messages.warning "Error with lockfile"
   ));
+
+  (* Display total running time, to float is a number of secconds *)
+  Messages.debug Time.(now () |> to_float |> (-.) start |> ( *. ) (-1.)
+  |> sprintf "Runned during %f second(s)");
+
   (* Reset display *)
   Messages.reset ()
 ;;
