@@ -18,7 +18,8 @@ if [ ! -d $dist ]; then
   mkdir $dist
 fi
 # Archive name, _the bin emphasis the difference with source tarball
-name=oclaunch-v$(cat ./VERSION)_$(arch)_bin
+id=`git describe --abbrev=40 --candidates=50 HEAD`
+name=oclaunch-${id}_$(arch)_bin
 final_binary_path=./$name/oclaunch
 final_binary_name=oclaunch
 cp ./_build/src/oclaunch.native $dist/$final_binary_name
