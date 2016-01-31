@@ -67,6 +67,14 @@ let spy1_float f =
   sprintf "%f" f
   |> spy f
 ;;
+let spy1_list ~f list =
+  let list_str = List.map list ~f:(fun element ->
+    sprintf "\"%s\"; " (f element))
+  in
+  "[ " ^ (String.concat list_str) ^ " ]"
+  |> printing;
+  list
+;;
 let spy1_log (log : (string * int) list) =
   let log_str = List.map log ~f:(fun (s, i) ->
     sprintf "( \"%s\", %i ); " s i)

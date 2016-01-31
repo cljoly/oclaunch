@@ -41,5 +41,6 @@ val spy1_int : int -> int
 val spy1_int_option : int option -> int option
 val spy1_string : string -> string
 val spy1_float : float -> float
+val spy1_list : f:('a -> string)-> 'a list -> 'a list
 val spy1_log : (string * int) list -> (string * int) list
 val spy1_rc : 'a -> 'a
