@@ -61,8 +61,8 @@ let gm2 () =
 let n_l =
     [
         ("Remove empty strings in list", `Quick, epur);
-        ("Summary of modifications : one element", `Quick, gm1);
-        ("Summary of modifications : several elements", `Quick, gm2);
+        ("Summary of modifications: one element", `Quick, gm1);
+        ("Summary of modifications: several elements", `Quick, gm2);
     ]
 ;;
 
