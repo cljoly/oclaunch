@@ -45,8 +45,9 @@ type t = Settings_v.rc_file;;
 let write (rc_file:t) =
         (* Short name *)
         let name = !Const.rc_file in
-        (* Create string to be written *)
-        let data = (Settings_j.string_of_rc_file rc_file
+        (* Create string to be written, after removing duplicated commands (and
+         * newlines) *)
+        let data = (Unify.prettify rc_file |> Settings_j.string_of_rc_file
         |> Yojson.Basic.prettify ~std:true) in
         Out_channel.write_all (Lazy.force name) ~data
 ;;

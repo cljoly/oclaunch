@@ -58,7 +58,7 @@ let make_uniq dubbled_entries =
 (* Removing doubled entries (cmds). We need to remove carriage return before
  * deduplicating, since they don't need to be in rc file, and the first one
  * would be kept during deduplication. *)
-let pretty rc_file =
+let prettify rc_file =
   let cmds = rc_file.Settings_v.progs in
   let without_lr = (* Removing line return, and trailing spaces *)
     List.filter_map cmds ~f:(fun str ->
@@ -69,16 +69,18 @@ let pretty rc_file =
         | s -> Some s)
   in
   let unique = make_uniq without_lr in
+  (* Store the deduplicated list in new rc_file *)
+  let unified_rc = {rc_file with Settings_v.progs = unique} in
   (* If there is the same number of element, each one is present only once. *)
   if List.(length unique = length without_lr) then
     begin
       Messages.debug "No duplicate found";
-      unique
+      unified_rc
     end
   else
     begin
       Messages.debug "Duplicate found, removed";
-      unique
+      unified_rc
     end
 ;;
 
