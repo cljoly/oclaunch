@@ -37,5 +37,6 @@
 open Core.Std;;
 
 let run ~rc () =
-  File_com.write rc
+  File_com.write rc;
+  Messages.debug "Configuration file cleaned up";
 ;;
