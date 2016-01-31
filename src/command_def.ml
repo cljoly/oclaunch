@@ -143,6 +143,20 @@ let list =
       List_rc.run ~rc ())
 ;;
 
+(* To clean-up rc file *)
+let clean =
+  basic
+    ~summary:"Remove doubled entries, trailing spaces in them... \
+    Useful after manual editing or with rc file from old version."
+    Spec.(
+      empty
+      +> shared_params
+    )
+    (fun { rc } () ->
+      Clean.run ~rc ()
+    )
+;;
+
 (* To add a command to rc file, from stdin or directly *)
 let add =
   basic
@@ -265,8 +279,8 @@ let run ~version ~build_info () =
       further help, see http://oclaunch.eu.org.")
       ~preserve_subcommand_order:()
       [ ("run", default) ; ("licence", licence) ; ("add", add) ; ("edit", edit)
-      ; ("list", list) ; ("delete", delete) ; ("state", state)
-      ; ( "reset", reset) ; ( "reset-all", reset_all) ]
+      ; ("list", list) ; ("cleanup", clean) ; ("delete", delete)
+      ; ("state", state) ; ( "reset", reset) ; ( "reset-all", reset_all) ]
     |> run ~version ~build_info
   in
 

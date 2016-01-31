@@ -1,7 +1,7 @@
 {
   "progs": [
     "ydump dev.json", "task", "task +next", "task +rdv", "echo \"Finish\"",
-    "bdump -w daemon,rc,commands /tmp/v033", "ydump dev.json"
+    "bdump -w daemon,rc,commands /tmp/v033"
   ],
   "settings": []
 }
