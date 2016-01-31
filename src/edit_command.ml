@@ -40,7 +40,7 @@ open Core.Std;;
 
 (* Function to remove empty element in a list *)
 let epur =
-     List.filter ~f:(function "" -> false | _ -> true)
+  Unify.prettify_cmd
 ;;
 
 (* Function to create a new list augmented by some commands *)
