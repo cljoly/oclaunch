@@ -106,14 +106,22 @@ let make_uniq_data = [
 (* Speed is an important aspect, test it. *)
 @ (big_pack ~message:"Quite small list of " 10)
 @ (big_pack ~message:"Practically max length list of " 100)
-@ (big_pack ~message:"Much longer than real use case list of " 1_000)
-@ (big_pack ~message:"Crazy long list of " 9_999)
 ;;
 
-let t_set =
+let t_set_fast =
   List.map make_uniq_data ~f:(fun (t, s, name) -> ( (make_uniq t s), name))
   |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
 ;;
+
+let t_set_long =
+  List.map
+    ((big_pack ~message:"Much longer than real use case list of " 1_000)
+    @ (big_pack ~message:"Crazy long list of " 9_999))
+    ~f:(fun (t, s, name) -> ( (make_uniq t s), name))
+  |> List.map ~f:(fun ( f,name ) -> (name, `Slow, f))
+;;
+
+let t_set = t_set_fast @ t_set_long;;
 (* =========================================== *)
 
 (* To be used in test.ml *)
