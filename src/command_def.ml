@@ -153,7 +153,7 @@ let clean =
       +> shared_params
     )
     (fun { rc } () ->
-      Clean.run ~rc ()
+      Clean_command.run ~rc ()
     )
 ;;
 
