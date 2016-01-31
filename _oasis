@@ -41,6 +41,6 @@ Executable "run_test"
 
 Test "tests"
   Run$: flag(tests)
-  Command: $run_test
+  Command: $run_test -q
   WorkingDirectory: src/test
 
