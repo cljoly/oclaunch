@@ -132,8 +132,8 @@ let gmt_l =
 
 (* To be used in test.ml *)
 let alco = [( "Edit_command.ml: Epur", llt_l ) ;
-  ( "Edit_command.ml: New list", ( big :: lt_l ) ) ;
-  ( "Edit_command.ml: Modification summary", gmt_l )
+  ( "Edit_command.ml.New list", ( big :: lt_l ) ) ;
+  ( "Edit_command.ml.Modification summary", gmt_l )
 ];;
 
 
