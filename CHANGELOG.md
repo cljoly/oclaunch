@@ -7,6 +7,13 @@
 
 ### 0.3.0
 
+ + Beautified rc file:
+  + Remove doubled entries before each write of the rc file. Trailling spaces
+    are remove too. Empty entries are dropped.
+  + This fixes #12
+  + A **new clean command** has been added, to clean up a manually edited or old
+    rc file.
+  + Summary of edit command was improved.
  + Fix bug: in special circumstances, it was not possible to write in lock file.
    The program was crashing.
  + To limit future problem with lockers, two things were done:
