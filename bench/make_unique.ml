@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2015                                             *)
+(* Copyright © Joly Clément, 2015                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,9 +36,21 @@
 
 open Core.Std;;
 
-(* A module launching all tests *)
+(* File to test what's the most efficient way to remove doubled entries, keeping
+ * order *)
+open Core_bench.Std
+
+(* List vs. Hashtbl vs. Set  *)
+
+(* TODO write it! *)
+
+let tests = [
+  "Sprintf", sprtf;
+  "String.concat", conc;
+]
 
 let () =
-    Alcotest.run "Test suite for the project"
-        (List.concat [ Ec_t.alco ; Exec_t.alco ; Edit_t.alco ; Unify_t.alco ])
-;;
+  List.map tests ~f:(fun (name,test) -> Bench.Test.create ~name test)
+  |> Bench.make_command
+  |> Command.run
+

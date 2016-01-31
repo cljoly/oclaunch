@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2015                                             *)
+(* Copyright © Joly Clément, 2016                                        *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -34,11 +34,51 @@
 (*  termes.                                                                   *)
 (******************************************************************************)
 
+(* Function to remove "\n" and space like characters at the start or the end of
+ * a given string. *)
+(* XXX Bypassing Core library, which removes this function. There is maybe
+ * something like this in Core, should search further. *)
+let trim = String.trim;;
+
 open Core.Std;;
 
-(* A module launching all tests *)
-
-let () =
-    Alcotest.run "Test suite for the project"
-        (List.concat [ Ec_t.alco ; Exec_t.alco ; Edit_t.alco ; Unify_t.alco ])
+(* Function to remove doubled entries, keeping order in a given list. Since the
+ * list is a very short one, (a few tens entries), it's cheaper to use a list
+ * internally *)
+let make_uniq dubbled_entries =
+  let seen = ref [] in (* Entries already added *)
+  List.(filter dubbled_entries ~f:(fun entry ->
+    (exists !seen ~f:(fun in_seen -> in_seen = entry)) |> function
+      | false -> (* Entry not already seen, keep it *)
+        seen := (entry :: !seen); true
+      (* Already kept, discard *)
+      | true -> false))
 ;;
+
+(* Removing doubled entries (cmds). We need to remove carriage return before
+ * deduplicating, since they don't need to be in rc file, and the first one
+ * would be kept during deduplication. *)
+let pretty rc_file =
+  let cmds = rc_file.Settings_v.progs in
+  let without_lr = (* Removing line return, and trailing spaces *)
+    List.filter_map cmds ~f:(fun str ->
+      trim str |> function
+        | "" ->
+          Messages.debug "Trimmed command";
+          None
+        | s -> Some s)
+  in
+  let unique = make_uniq without_lr in
+  (* If there is the same number of element, each one is present only once. *)
+  if List.(length unique = length without_lr) then
+    begin
+      Messages.debug "No duplicate found";
+      unique
+    end
+  else
+    begin
+      Messages.debug "Duplicate found, removed";
+      unique
+    end
+;;
+
