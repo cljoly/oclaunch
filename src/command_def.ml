@@ -273,7 +273,8 @@ let run ~version ~build_info () =
       ~summary:"OcLaunch program is published under CeCILL licence.\n \
       You may run the program with 'licence' command or see \
       http://cecill.info/licences/Licence_CeCILL_V2.1-en.html \
-      (http://huit.re/TmdOFmQT) for details."
+      (http://huit.re/TmdOFmQT) for details. More informations here: \
+      http://oclaunch.eu.org/floss-under-cecill (http://lnch.ml/l)."
       ~readme:(fun () -> "Use 'help' subcommand to get help (it works both \
       after the name of the software and with another subcommand). For \
       further help, see http://oclaunch.eu.org.")
