@@ -41,7 +41,7 @@
      number of launch when nothing is actually launched)
    + For the futur : Running infinite, daemon mode...
  + Improve release script, to enhance contributing experience (making easier to
-   release source-code, binaries, signing…).
+   release source-code, binaries, signing…). Add indentation script too.
 
 ## 0.2.x
 
