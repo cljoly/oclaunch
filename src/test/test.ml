@@ -39,6 +39,6 @@ open Core.Std;;
 (* A module launching all tests *)
 
 let () =
-    Alcotest.run "Test suite for the project"
-        (List.concat [ Ec_t.alco ; Exec_t.alco ; Edit_t.alco ; Unify_t.alco ])
+  Alcotest.run "Test suite for the project"
+    (List.concat [ Ec_t.alco ; Exec_t.alco ; Edit_t.alco ; Unify_t.alco ])
 ;;

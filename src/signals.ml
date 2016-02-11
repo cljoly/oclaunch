@@ -45,19 +45,19 @@ open Core.Std;;
 let handle_sigint () =
   let launch_next () =
     Messages.(confirm "Would you like to launch next command?"
-    |> function
-      | Yes -> (* Launch next *)
-        failwith "TODO Relaunch"
-      | No -> (* Quit *)
-        failwith "TODO Quit"
-    )
+              |> function
+              | Yes -> (* Launch next *)
+                failwith "TODO Relaunch"
+              | No -> (* Quit *)
+                failwith "TODO Quit"
+             )
   in
   let open Signal in
-  Expert.handle int (fun signal ->
-    if signal = int
-    then
-      launch_next ()
-    else ())
+    Expert.handle int (fun signal ->
+       if signal = int
+       then
+         launch_next ()
+       else ())
 ;;
 
 (* Called from external to activate signal handling *)

@@ -41,7 +41,7 @@ open Core.Std;;
 (* Function make_uniq ============================= *)
 let make_uniq test solution () =
   let actual = Unify.make_uniq test in
-  OUnit.assert_equal actual solution
+    OUnit.assert_equal actual solution
 ;;
 
 (* Big and sometimes strange list, to be used in test data set.
@@ -51,13 +51,13 @@ let make_uniq test solution () =
 let big_unique length = (* Long list of unique elements *)
   let message = "unique element" in
   let test_case = List.init ~f:(fun i -> Int.to_string i) length in
-  ( test_case, test_case, message )
+    ( test_case, test_case, message )
 ;;
 let big_same length = (* Long list of unique elements *)
   let message = "all the same element" in
   let same_element = "cmd1" in
   let test_case = List.init ~f:(fun i -> same_element) length in
-  ( test_case, [ same_element ], message )
+    ( test_case, [ same_element ], message )
 ;;
 let big_periodic length = (* Long list of unique elements *)
   let message = "periodically the same element" in
@@ -66,19 +66,19 @@ let big_periodic length = (* Long list of unique elements *)
   let dbl = length + 42 |> Int.to_string in
   let sol = ref [] in
   let test_case = List.init ~f:(fun i ->
-    if i mod periode = 0
-    then dbl
-    else Int.to_string i
-    (* Keep for the solution *)
-    |> (fun t -> sol := t :: !sol; t)) length
+     if i mod periode = 0
+     then dbl
+     else Int.to_string i
+          (* Keep for the solution *)
+          |> (fun t -> sol := t :: !sol; t)) length
   in
-  ( test_case, dbl :: !sol, message )
+    ( test_case, dbl :: !sol, message )
 ;;
 let big_long_entry length = (* Long list of unique elements *)
   let message = "long unique element" in
   let test_case = List.init ~f:(fun i -> "Longer entries, numbered thouth. This one is number \
-  is: " ^ (Int.to_string i)) length in
-  ( test_case, test_case, message )
+                                          is: " ^ (Int.to_string i)) length in
+    ( test_case, test_case, message )
 ;;
 (* Function packing the preceding *)
 let big_pack ~message length =
@@ -98,14 +98,14 @@ let make_uniq_data = [
   ( [ "cmd1" ; "cmd2"; "" ; "cmd1" ], [ "cmd1" ; "cmd2"; ""], "Canonical case" );
   (* Make sure no reordering is appening *)
   ( [ "cmd33" ; "cmd2" ; "" ; "" ; "cmd1"; "" ], [ "cmd33" ; "cmd2" ; "" ; "cmd1" ],
-  "Test order" );
+    "Test order" );
   ( [ "cmd1" ; "" ; "cmd2" ], [ "cmd1" ; "" ; "cmd2" ],
     "No duplicate" );
   ( [], [], "Empty list" );
 ]
-(* Speed is an important aspect, test it. *)
-@ (big_pack ~message:"Quite small list of " 10)
-@ (big_pack ~message:"Practically max length list of " 100)
+  (* Speed is an important aspect, test it. *)
+  @ (big_pack ~message:"Quite small list of " 10)
+  @ (big_pack ~message:"Practically max length list of " 100)
 ;;
 
 let t_set_fast =
@@ -116,7 +116,7 @@ let t_set_fast =
 let t_set_long =
   List.map
     ((big_pack ~message:"Much longer than real use case list of " 1_000)
-    @ (big_pack ~message:"Crazy long list of " 9_999))
+     @ (big_pack ~message:"Crazy long list of " 9_999))
     ~f:(fun (t, s, name) -> ( (make_uniq t s), name))
   |> List.map ~f:(fun ( f,name ) -> (name, `Slow, f))
 ;;

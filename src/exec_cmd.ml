@@ -39,10 +39,10 @@ open Core.Std;;
 (* Function allowing to set the title of the current terminal windows
  * XXX Maybe better in some lib *)
 let set_title new_title =
-    (* Use echo command to set term  title *)
-    Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-    |> function | 0 -> () | _ -> sprintf "Error while setting terminal title"
-    |> Messages.warning
+  (* Use echo command to set term  title *)
+  Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
+  |> function | 0 -> () | _ -> sprintf "Error while setting terminal title"
+                               |> Messages.warning
 ;;
 
 (* Function to return the less launched command, at least the first one *)
@@ -53,10 +53,10 @@ let less_launched (log : (string * int) list) =
   let entries_by_number = List.Assoc.inverse log  in
     List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
     |> (function Some (min,cmd) ->
-        if min < max
-        then Some cmd
-        else None
-      | None -> None)
+       if min < max
+       then Some cmd
+       else None
+               | None -> None)
 ;;
 
 (* Function to get the number corresponding to the next command to launch (less
@@ -69,20 +69,20 @@ let less_launched_num log =
   (* Function to return nothing (None) when max launch number is reached, Some
    * number otherwise *)
   |> List.filter_mapi ~f:(fun entry_number ( _, launch_number ) ->
-      if launch_number >= Const.default_launch
-      then None
-      else Some ( entry_number, launch_number ))
+     if launch_number >= Const.default_launch
+     then None
+     else Some ( entry_number, launch_number ))
   (* Find the less launched by sorting and taking the first *)
   |> List.sort ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) -> Int.compare launch_number1 launch_number2)
   |> List.hd
   |> function
-    | Some ( entry_number, launch_number) ->
-        launch_number |> sprintf "Launch number found: %i" |> Messages.debug;
-        Messages.debug "Return launch number (printed bellow):";
-        Some ( Tools.spy1_int entry_number )
-    | None ->
-        Messages.debug "No less launched cmd.";
-        None
+  | Some ( entry_number, launch_number) ->
+    launch_number |> sprintf "Launch number found: %i" |> Messages.debug;
+    Messages.debug "Return launch number (printed bellow):";
+    Some ( Tools.spy1_int entry_number )
+  | None ->
+    Messages.debug "No less launched cmd.";
+    None
 ;;
 
 (* Function to determinate what is the next command to
@@ -97,11 +97,11 @@ let what_next ~tmp =
  * if 0 status, do nothing
  * else display status number *)
 let display_result command status =
-    match status with
-    | 0 -> (* No problem, do nothing *) ()
-    | _ -> (* Problem occur,  display it *)
-            sprintf "Problem while running: '%s'\nExited with code: %i\n"
-            command status
+  match status with
+  | 0 -> (* No problem, do nothing *) ()
+  | _ -> (* Problem occur,  display it *)
+    sprintf "Problem while running: '%s'\nExited with code: %i\n"
+      command status
     |> Messages.warning
 ;;
 
@@ -109,11 +109,11 @@ let display_result command status =
 let execute ?(display=true) cmd =
   set_title cmd;
 
-    Tmp_file.log ~cmd ~func:((+) 1) ();
-    if display then
-        Messages.ok cmd;
-    (* We can remove lock file since number in tmp_file has been incremented *)
-    Lock.remove ();
-    Sys.command cmd
-    |> display_result cmd (* Make it settable in rc file *)
+  Tmp_file.log ~cmd ~func:((+) 1) ();
+  if display then
+    Messages.ok cmd;
+  (* We can remove lock file since number in tmp_file has been incremented *)
+  Lock.remove ();
+  Sys.command cmd
+  |> display_result cmd (* Make it settable in rc file *)
 ;;

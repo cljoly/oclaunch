@@ -50,21 +50,21 @@ let lock_name = "/tmp/.ocl.lock";;
 
 (* Create lock file *)
 let lock () =
-    try Out_channel.write_all lock_name ~data:"OcLaunch is running and did not finish."
-    with Sys_error msg -> Messages.debug "Couldn't write in lock file."
+  try Out_channel.write_all lock_name ~data:"OcLaunch is running and did not finish."
+  with Sys_error msg -> Messages.debug "Couldn't write in lock file."
 ;;
 
 (* To know if we are locked, return None if there is no locker,  *)
 let status () =
-    match Sys.file_exists lock_name with
-      `Yes -> Locked
-    | `No -> Free
-    | `Unknown -> Error
+  match Sys.file_exists lock_name with
+    `Yes -> Locked
+  | `No -> Free
+  | `Unknown -> Error
 ;;
 
 (* Remove the lock file *)
 let remove () =
-    Sys.remove lock_name
+  Sys.remove lock_name
 ;;
 
 (* Pause the program until lock file is removed, until argument is the second *)
@@ -74,27 +74,27 @@ let wait ?(until=10) ?(delay=1) () =
   let rec wait_loop loop =
     (* Actually wait, returning what has been done (Something or Nothing) *)
     sprintf "Waiting for locker, loop: %i" loop
-      |> Messages.debug;
+    |> Messages.debug;
     match status () with
       Locked ->
-        if loop < until; then (* < because we start from 0 *)
-          begin
-            Unix.sleep delay;
-            wait_loop (succ loop)
-          end
-        else
-          None
+      if loop < until; then (* < because we start from 0 *)
+        begin
+          Unix.sleep delay;
+          wait_loop (succ loop)
+        end
+      else
+        None
     | Free -> Some (lock ())
     | Error -> failwith "Problem with lock file"
   in
-  wait_loop 0
+    wait_loop 0
     |> (function
-       None ->
+         None ->
          Messages.warning "Removing lock file, ran out of patience";
          remove ();
          (* We need to lock back, since it's the purpose of this function *)
          lock ()
        | _ -> ()
-    )
+     )
 ;;
 

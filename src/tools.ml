@@ -55,10 +55,10 @@ let spy1_int i =
 ;;
 let spy1_int_option io =
   let i = io |> (function
-    None -> "None"
-    | Some i -> sprintf "Some %i" i)
+       None -> "None"
+     | Some i -> sprintf "Some %i" i)
   in
-  spy io i
+    spy io i
 ;;
 let spy1_string str =
   spy str str
@@ -69,19 +69,19 @@ let spy1_float f =
 ;;
 let spy1_list ~f list =
   let list_str = List.map list ~f:(fun element ->
-    sprintf "\"%s\"; " (f element))
+     sprintf "\"%s\"; " (f element))
   in
-  "[ " ^ (String.concat list_str) ^ " ]"
-  |> printing;
-  list
+    "[ " ^ (String.concat list_str) ^ " ]"
+    |> printing;
+    list
 ;;
 let spy1_log (log : (string * int) list) =
   let log_str = List.map log ~f:(fun (s, i) ->
-    sprintf "( \"%s\", %i ); " s i)
+     sprintf "( \"%s\", %i ); " s i)
   in
-  "[ " ^ (String.concat log_str) ^ " ]"
-  |> printing;
-  log
+    "[ " ^ (String.concat log_str) ^ " ]"
+    |> printing;
+    log
 ;;
 let spy1_rc rc =
   failwith "Not implemented"

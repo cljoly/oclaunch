@@ -48,46 +48,46 @@ type return_arg = {
 (* A set of default arguments, usable with most of the commands *)
 let shared_params =
   let open Param in
-  (* Way to treat common args *)
-  return (fun verbosity no_color rc_file_name handle_signal ->
-    (* Set the level of verbosity *)
-    Const.verbosity := verbosity;
-    (* Do not use color *)
-    Const.no_color := no_color;
-    (* Use given rc file, should run the nth argument if present *)
-    Const.rc_file := (Lazy.return rc_file_name);
-    (* Active signal handling *)
-    if handle_signal then
-      Signals.handle ();
+    (* Way to treat common args *)
+    return (fun verbosity no_color rc_file_name handle_signal ->
+       (* Set the level of verbosity *)
+       Const.verbosity := verbosity;
+       (* Do not use color *)
+       Const.no_color := no_color;
+       (* Use given rc file, should run the nth argument if present *)
+       Const.rc_file := (Lazy.return rc_file_name);
+       (* Active signal handling *)
+       if handle_signal then
+         Signals.handle ();
 
-    (* Debugging *)
-    Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
-    Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
-    Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
-    Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
+       (* Debugging *)
+       Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
+       Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
+       Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
+       Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
 
-    (* Obtain data from rc_file *)
-    let rc_content = File_com.init_rc () in
-    { rc = rc_content } (* We use type for futur use *)
-  )
-  (* Flag to set verbosity level *)
+       (* Obtain data from rc_file *)
+       let rc_content = File_com.init_rc () in
+         { rc = rc_content } (* We use type for futur use *)
+     )
+    (* Flag to set verbosity level *)
     <*> flag "-v" (optional_with_default !Const.verbosity int)
-      ~aliases:["--verbose" ; "-verbose"]
-      ~doc:"[n] Set verbosity level. \
-        The higher n is, the most verbose the program is."
+          ~aliases:["--verbose" ; "-verbose"]
+          ~doc:"[n] Set verbosity level. \
+                The higher n is, the most verbose the program is."
     (* Flag to set colors *)
     <*> flag "--no-color" no_arg
-        ~aliases:["-no-color"]
-        ~doc:" Use this flag to disable color usage."
+          ~aliases:["-no-color"]
+          ~doc:" Use this flag to disable color usage."
     (* Flag to use different rc file *)
     <*> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
-      ~aliases:["--rc" ; "-rc"]
-      ~doc:"file Read configuration from the given file and continue parsing."
+          ~aliases:["--rc" ; "-rc"]
+          ~doc:"file Read configuration from the given file and continue parsing."
     (* Flag to handle signals *)
     <*> flag "-s" no_arg
-      ~aliases:["--sinals" ; "-signals"]
-      ~doc:"Handle signals. Warning, this is not much tested and not \
-      implemented the best way."
+          ~aliases:["--sinals" ; "-signals"]
+          ~doc:"Handle signals. Warning, this is not much tested and not \
+                implemented the best way."
 ;;
 
 
@@ -97,25 +97,25 @@ let shared_params =
 let reset =
   basic
     ~summary:"Reinitialises launches for the command number [command] to [n]. \
-      With both the [command] and the [n] argumennt, the command number \
-      [command] is resetted to [n]. \
-      With only the [n] argument, every entry in current tmp file is resetted to [n]."
+              With both the [command] and the [n] argumennt, the command number \
+              [command] is resetted to [n]. \
+              With only the [n] argument, every entry in current tmp file is resetted to [n]."
     Spec.(
       empty
-       +> shared_params
-       +> anon ("target_number" %: int)
-       +> anon (maybe ("command_number" %: int))
+      +> shared_params
+      +> anon ("target_number" %: int)
+      +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } num cmd () ->
-      (* Call the right function, according to optionnal argument.
-       * Since it's arguments passed on command line, we can not have
-       * num = None
-       * cmd = Some n
-       * cmd: number of the command to be reseted
-       * num: number to reset *)
-        match ( num, cmd ) with
-        | ( num, Some cmd ) -> Tmp_file.reset_cmd ~rc num cmd
-        | ( num, None ) -> Tmp_file.reset2num ~rc num
+       (* Call the right function, according to optionnal argument.
+        * Since it's arguments passed on command line, we can not have
+        * num = None
+        * cmd = Some n
+        * cmd: number of the command to be reseted
+        * num: number to reset *)
+       match ( num, cmd ) with
+       | ( num, Some cmd ) -> Tmp_file.reset_cmd ~rc num cmd
+       | ( num, None ) -> Tmp_file.reset2num ~rc num
     )
 ;;
 let reset_all =
@@ -123,10 +123,10 @@ let reset_all =
     ~summary:" Reinitialises launches for everything."
     Spec.(
       empty
-       +> shared_params
+      +> shared_params
     )
     (fun { rc } () ->
-      Tmp_file.reset_all ()
+       Tmp_file.reset_all ()
     )
 ;;
 
@@ -134,26 +134,26 @@ let reset_all =
 let list =
   basic
     ~summary:"Print a list of all commands with their number. Useful to launch with number. \
-    Displays a star next to next command to launch."
+              Displays a star next to next command to launch."
     Spec.(
       empty
       +> shared_params
     )
     (fun { rc } () ->
-      List_rc.run ~rc ())
+       List_rc.run ~rc ())
 ;;
 
 (* To clean-up rc file *)
 let clean =
   basic
     ~summary:"Remove doubled entries, trailing spaces in them... \
-    Useful after manual editing or with rc file from old version."
+              Useful after manual editing or with rc file from old version."
     Spec.(
       empty
       +> shared_params
     )
     (fun { rc } () ->
-      Clean_command.run ~rc ()
+       Clean_command.run ~rc ()
     )
 ;;
 
@@ -161,14 +161,14 @@ let clean =
 let add =
   basic
     ~summary:"Add the command given on stdin to the configuration file at a \
-    given position ([NUMBER]). If nothing is given, append it."
+              given position ([NUMBER]). If nothing is given, append it."
     Spec.(
       empty
       +> shared_params
       +> anon  (maybe ("number" %: int))
     )
     (fun { rc } num_cmd () ->
-      Add_command.run ~rc num_cmd
+       Add_command.run ~rc num_cmd
     )
 ;;
 
@@ -176,15 +176,15 @@ let add =
 let delete =
   basic
     ~summary:"Remove the [COMMAND_NUMBER]th command from configuration file. \
-    If [COMMAND_NUMBER] is absent, remove last one."
+              If [COMMAND_NUMBER] is absent, remove last one."
     Spec.(
       empty
-       +> shared_params
-       +> anon (maybe ("command_number" %: int))
+      +> shared_params
+      +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } num_cmd () ->
-      (*Tmp_file.reset ~rc reset_cmd 0)*)
-      Remove_command.run ~rc num_cmd)
+       (*Tmp_file.reset ~rc reset_cmd 0)*)
+       Remove_command.run ~rc num_cmd)
 ;;
 
 (* To display current state *)
@@ -196,7 +196,7 @@ let state =
       +> shared_params
     )
     (fun { rc } () ->
-      State.print_current ~rc ())
+       State.print_current ~rc ())
 ;;
 
 
@@ -204,18 +204,18 @@ let state =
 let edit =
   basic
     ~summary:"Edit the [COMMAND_NUMBER]th command of the rc file in your \
-    $EDITOR. May be used to add new entries, without argument, one new \
-    command per line."
+              $EDITOR. May be used to add new entries, without argument, one new \
+              command per line."
     Spec.(
       empty
       +> shared_params
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } n () ->
-      let position = Option.value
-        ~default:(List.length (rc.Settings_t.progs) - 1) n
-      in
-      Edit_command.run ~rc position)
+       let position = Option.value
+                        ~default:(List.length (rc.Settings_t.progs) - 1) n
+       in
+         Edit_command.run ~rc position)
 ;;
 
 (* To display informations about the licence *)
@@ -224,13 +224,13 @@ let licence =
     ~summary:"Display the licence of the program"
     Spec.(
       empty
-       +> shared_params
-       +> flag "-header" no_arg
-        ~doc:" Display the header of the licence"
+      +> shared_params
+      +> flag "-header" no_arg
+           ~doc:" Display the header of the licence"
     )
     (fun _ header () ->
-      let cecill = not(header) in (* When cecill is false, it displays the header *)
-      Licencing.print ~cecill
+       let cecill = not(header) in (* When cecill is false, it displays the header *)
+         Licencing.print ~cecill
     )
 ;;
 
@@ -244,7 +244,7 @@ let default =
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } n () ->
-      Default.run ~rc n)
+       Default.run ~rc n)
 
 let run ~version ~build_info () =
   (* Store begin time *)
@@ -258,26 +258,26 @@ let run ~version ~build_info () =
       default
       |> run ~version ~build_info
     in
-    match Sys.argv with
-    | [| _ |] -> Result.Ok (run_default ()) (* Program called with nothing *)
-    | _ -> (* Program followed by a number *)
+      match Sys.argv with
+      | [| _ |] -> Result.Ok (run_default ()) (* Program called with nothing *)
+      | _ -> (* Program followed by a number *)
         Or_error.try_with (fun () ->
-          (* Verify the fist argument is a number, not a subcommand (string) *)
-          ignore (Int.of_string (Sys.argv.(1)));
-          run_default ())
+           (* Verify the fist argument is a number, not a subcommand (string) *)
+           ignore (Int.of_string (Sys.argv.(1)));
+           run_default ())
   in
 
   (* Parsing with subcommands *)
   let parse_sub () =
     group
       ~summary:"OcLaunch program is published under CeCILL licence.\n \
-      You may run the program with 'licence' command or see \
-      http://cecill.info/licences/Licence_CeCILL_V2.1-en.html \
-      (http://huit.re/TmdOFmQT) for details. More informations here: \
-      http://oclaunch.eu.org/floss-under-cecill (http://lnch.ml/l)."
+                You may run the program with 'licence' command or see \
+                http://cecill.info/licences/Licence_CeCILL_V2.1-en.html \
+                (http://huit.re/TmdOFmQT) for details. More informations here: \
+                http://oclaunch.eu.org/floss-under-cecill (http://lnch.ml/l)."
       ~readme:(fun () -> "Use 'help' subcommand to get help (it works both \
-      after the name of the software and with another subcommand). For \
-      further help, see http://oclaunch.eu.org.")
+                          after the name of the software and with another subcommand). For \
+                          further help, see http://oclaunch.eu.org.")
       ~preserve_subcommand_order:()
       [ ("run", default) ; ("licence", licence) ; ("add", add) ; ("edit", edit)
       ; ("list", list) ; ("cleanup", clean) ; ("delete", delete)
@@ -290,33 +290,33 @@ let run ~version ~build_info () =
     match
       hack_parse ()
       |> (function
-        Result.Ok () -> ()
-        | Error _ -> parse_sub ())
+           Result.Ok () -> ()
+         | Error _ -> parse_sub ())
     with
     | () -> `Exit 0
     | exception message ->
-        "Exception: " ^ (Exn.to_string message)
-        |> Messages.warning;
-        `Exit 20
+      "Exception: " ^ (Exn.to_string message)
+      |> Messages.warning;
+      `Exit 20
   in
 
-  (* Unlock, should be done before *)
-  Lock.(status ()
-    |> (function
-        Locked ->
-          Messages.warning "Removing lockfile, should be removed before. \
-          It's a bug!"; remove ()
-      | Free -> ()
-      | Error -> Messages.warning "Error with lockfile"
-  ));
+    (* Unlock, should be done before *)
+    Lock.(status ()
+          |> (function
+               Locked ->
+               Messages.warning "Removing lockfile, should be removed before. \
+                                 It's a bug!"; remove ()
+             | Free -> ()
+             | Error -> Messages.warning "Error with lockfile"
+           ));
 
-  (* Display total running time, pretty printing is handled by Time module *)
-  Messages.debug Time.(diff (now ()) start
-      |> Span.to_string_hum (* Round the value, 3 digits *)
-      |> sprintf "Duration: %s");
+    (* Display total running time, pretty printing is handled by Time module *)
+    Messages.debug Time.(diff (now ()) start
+                         |> Span.to_string_hum (* Round the value, 3 digits *)
+                         |> sprintf "Duration: %s");
 
-  (* Reset display *)
-  Messages.reset ();
+    (* Reset display *)
+    Messages.reset ();
 
-  exit_code
+    exit_code
 ;;

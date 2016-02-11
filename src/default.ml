@@ -50,21 +50,21 @@ let run ~rc cmd_number =
   Messages.debug "Locked";
 
   let tmp = Tmp_file.init () in
-  match cmd_number with
+    match cmd_number with
     | None -> begin
         (* Execute each item (one by one) in config file *)
         Exec_cmd.what_next ~tmp
-          |> function
-            | None -> (* If no command was found, all has been launched *)
-                Messages.ok "All has been launched!";
-                Messages.tips "You can reset with 'reset' subcommand";
-                Lock.remove ()
-            | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
+        |> function
+        | None -> (* If no command was found, all has been launched *)
+          Messages.ok "All has been launched!";
+          Messages.tips "You can reset with 'reset' subcommand";
+          Lock.remove ()
+        | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
       end
     | Some num -> begin
         File_com.num_cmd2cmd ~rc num
         |> function
-            | None -> Messages.warning "Your number is out of bound"
-            | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
+        | None -> Messages.warning "Your number is out of bound"
+        | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
       end
 ;;

@@ -41,23 +41,23 @@ open Core.Std;;
 (* Display current number *)
 let print_current ~rc () =
   Tmp_file.(init ()
-    |> (fun tmp -> get_accurate_log ~tmp ())
-    |> Exec_cmd.less_launched_num
-    |> Tools.spy1_int_option)
+            |> (fun tmp -> get_accurate_log ~tmp ())
+            |> Exec_cmd.less_launched_num
+            |> Tools.spy1_int_option)
   |> Option.value_map
-    ~default:"Nothing next"
-    ~f:(fun ( num : int ) ->
+       ~default:"Nothing next"
+       ~f:(fun ( num : int ) ->
 
-      (* XXX Debug *)
-      sprintf "Num: %i" num |> Messages.debug;
+          (* XXX Debug *)
+          sprintf "Num: %i" num |> Messages.debug;
 
-      File_com.num_cmd2cmd ~rc num
-      |> (function
-        | Some cmd -> cmd
-        | None -> Messages.warning "Error, should not append, this is a bug";
-          assert false)
-      |> (fun ( cmd : string ) ->
-          Messages.debug cmd; (* TODO Use tools.spy1 *)
-          sprintf "Next: command %i, '%s'" num cmd))
+          File_com.num_cmd2cmd ~rc num
+          |> (function
+             | Some cmd -> cmd
+             | None -> Messages.warning "Error, should not append, this is a bug";
+               assert false)
+          |> (fun ( cmd : string ) ->
+             Messages.debug cmd; (* TODO Use tools.spy1 *)
+             sprintf "Next: command %i, '%s'" num cmd))
   |> Messages.ok
 ;;

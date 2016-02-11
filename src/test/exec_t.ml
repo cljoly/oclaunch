@@ -41,13 +41,13 @@ open Core.Std;;
 (* Function less_launched *)
 let less_launched test solution () =
   let actual = Exec_cmd.less_launched test in
-  OUnit.assert_equal actual solution
+    OUnit.assert_equal actual solution
 ;;
 
 (* Function less_launched_num *)
 let less_launched_num test solution () =
   let actual = Exec_cmd.less_launched_num test in
-  OUnit.assert_equal actual solution
+    OUnit.assert_equal actual solution
 ;;
 
 (* Maximum number of launch *)
@@ -67,21 +67,21 @@ let common_data =
       "Everything (strictly) superior to maximum" );
     (* To prevent >= and > misuse in code *)
     ( [ ( "cmd1", max - 1 ) ; ( "cmd2", max ) ; ( "cmd3", max + 1 ) ;
-      ( "cmd3", max + 2) ], "Around maximum (ordered)" );
+        ( "cmd3", max + 2) ], "Around maximum (ordered)" );
     ( [ ( "cmd1", max + 1 ) ; ( "cmd2", max ) ; ( "cmd3", max - 1 ) ;
-      ( "cmd3", max + 2) ], "Around maximum (disordered)" )
+        ( "cmd3", max + 2) ], "Around maximum (disordered)" )
   ]
 ;;
 (* Add expected result to corresponding to the data provided common set *)
 let add_solutions data expected =
   List.map2_exn data expected ~f:(fun ( log, name ) solution ->
-    ( log, solution, name ))
+     ( log, solution, name ))
 ;;
 
 (* Data customized for the tests *)
 let ll_data =
   add_solutions common_data
-  [
+    [
       Some "cmd2";
       Some "cmd1";
       None;
@@ -91,41 +91,41 @@ let ll_data =
       None;
       Some "cmd1";
       Some "cmd3"
-  ]
+    ]
 ;;
 let ll_data2 =
   add_solutions common_data
-  [
-    Some 1;
-    Some 0;
-    None;
-    Some 0;
-    Some 0;
-    None;
-    None;
-    Some 0;
-    Some 2
-  ]
+    [
+      Some 1;
+      Some 0;
+      None;
+      Some 0;
+      Some 0;
+      None;
+      None;
+      Some 0;
+      Some 2
+    ]
 ;;
 
 let llt_l =
   let less_launched_suit =
     List.map ll_data ~f:(fun (t, s, name) -> ( (less_launched t s), name))
   in
-  less_launched_suit
-  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
+    less_launched_suit
+    |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
 ;;
 
 let llt_l2 =
   let less_launched_num_suit =
     List.map ll_data2 ~f:(fun (t, s, name) -> ( (less_launched_num t s), name))
   in
-  less_launched_num_suit
-  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
+    less_launched_num_suit
+    |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
 ;;
 
 (* To be used in test.ml *)
 let alco = [( "Exec_cmd.ml.less_launched", llt_l ) ;
-  ( "Exec_cmd.ml.less_launched_num", llt_l2 )];;
+            ( "Exec_cmd.ml.less_launched_num", llt_l2 )];;
 
 
