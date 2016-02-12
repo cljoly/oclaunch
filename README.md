@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: a582ff5eef328f0f8ccffbe2c68e80aa) --->
+<!--- DO NOT EDIT (digest: c3305a624f799eb22bd709594c61132a) --->
 
 OcLaunch - Launch commands automagically
 ========================================
@@ -17,7 +17,7 @@ instructions.
 Copyright and license
 ---------------------
 
-(C) 2014-2015 Joly Clément
+(C) 2014-2016 Joly Clément
 
 OcLaunch is distributed under the terms of the CEA-CNRS-INRIA Logiciel Libre.
 

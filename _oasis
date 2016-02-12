@@ -6,7 +6,7 @@ Authors:     Joly Clément <leowzukw@vmail.me>
 Maintainers: Joly Clément <leowzukw@vmail.me>
 License:     CeCILL
 LicenseFile: LICENSE
-Copyrights: (C) 2014,2015,2016 Joly Clément
+Copyrights: (C) 2014-2016 Joly Clément
 Homepage: http://www.oclaunch.tuxfamily.org
 BuildTools: ocamlbuild, camlp4o
 Plugins: StdFiles (0.4), DevFiles (0.4)
