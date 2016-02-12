@@ -25,6 +25,8 @@
  + Code clean up
  + Add unit tests and clean them up
  + Add licence warning
+ + Remove core\_extended dependency, incorporating some code from the library
+   directly in the program, and using Textutils and Re2 library instead.
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
    ctrl-C. See issue #14 for known problems
  + Changed tmp file format, the new one would allow to do more things:
