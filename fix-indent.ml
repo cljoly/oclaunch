@@ -37,13 +37,27 @@
 
 open Core.Std;;
 (* TODO:
-  * Improve file selection (regexp and links problems, things like a.ml -> b.ml
-  * would pass)
   * Tidy exit codes *)
+
+let ignored = (* File (space separated) to be ignored, regexp passed to tree command *)
+  "src/third-part/ src/color_print.ml \
+  src/settings_j.ml src/settings_t.ml src/settings_v.ml \
+  src/settings_j.mli src/settings_t.mli src/settings_v.mli \
+  src/tmp_biniou_b.ml src/tmp_biniou_t.ml src/tmp_biniou_v.ml \
+  src/tmp_biniou_b.mli src/tmp_biniou_t.mli src/tmp_biniou_v.mli \
+  " (* The following code prevent strange filename to appear *)
+  |> String.split ~on:' '
+  |> List.filter_map ~f:(function
+    | "" | " " | "  " | "   " | "    " -> None
+    | path -> Some ("-e " ^ path ^ " "))
+  |> String.concat
+;;
 
 (* List ml files, basic regexp, should be enough *)
 let list_mlfiles path =
-  sprintf "tree -if %s | grep -e '.*\\.ml$'" path
+  (* 1st grep: select ocaml files, 2nd grep: remove symlinks and ignored files *)
+  sprintf "tree -if %s | grep -e '.*\\.ml$' | grep -v -e '.* -> .*' %s" path ignored
+  |> (fun cmd -> print_endline cmd; cmd)
   |> Unix.open_process_in
   |> In_channel.input_all
   |> String.split ~on:'\n'
