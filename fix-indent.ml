@@ -37,26 +37,29 @@
 
 open Core.Std;;
 (* TODO:
-  * Tidy exit codes *)
+ * - Tidy exit codes *)
 
-let ignored = (* File (space separated) to be ignored, regexp passed to tree command *)
+let ignored =
+  (* File (space separated) to be ignored, regexp passed to tree command *)
   "src/third-part/ src/color_print.ml \
-  src/settings_j.ml src/settings_t.ml src/settings_v.ml \
-  src/settings_j.mli src/settings_t.mli src/settings_v.mli \
-  src/tmp_biniou_b.ml src/tmp_biniou_t.ml src/tmp_biniou_v.ml \
-  src/tmp_biniou_b.mli src/tmp_biniou_t.mli src/tmp_biniou_v.mli \
+   src/settings_j.ml src/settings_t.ml src/settings_v.ml \
+   src/settings_j.mli src/settings_t.mli src/settings_v.mli \
+   src/tmp_biniou_b.ml src/tmp_biniou_t.ml src/tmp_biniou_v.ml \
+   src/tmp_biniou_b.mli src/tmp_biniou_t.mli src/tmp_biniou_v.mli \
   " (* The following code prevent strange filename to appear *)
   |> String.split ~on:' '
   |> List.filter_map ~f:(function
-    | "" | " " | "  " | "   " | "    " -> None
-    | path -> Some ("-e " ^ path ^ " "))
+     | "" | " " | "  " | "   " | "    " -> None
+     | path -> Some ("-e " ^ path ^ " "))
   |> String.concat
 ;;
 
 (* List ml files, basic regexp, should be enough *)
 let list_mlfiles path =
-  (* 1st grep: select ocaml files, 2nd grep: remove symlinks and ignored files *)
-  sprintf "tree -if %s | grep -e '.*\\.ml$' | grep -v -e '.* -> .*' %s" path ignored
+  (* 1st grep: select ocaml files,
+   * 2nd grep: remove symlinks and ignored files *)
+  sprintf "tree -if %s | grep -e '.*\\.ml$' | grep -v -e '.* -> .*' %s"
+    path ignored
   |> (fun cmd -> print_endline cmd; cmd)
   |> Unix.open_process_in
   |> In_channel.input_all
@@ -70,18 +73,18 @@ let ocp_indent file =
     String.concat [ "ocp-indent "; args; " "; file]
     |> Sys.command
     |> function
-      | 0 -> printf "File: '%s' ok\n" file
-      | error -> printf "Error with file: '%s'; code: %i\n%!" file error; exit 3
+    | 0 -> printf "File: '%s' ok\n" file
+    | error -> printf "Error with file: '%s'; code: %i\n%!" file error; exit 3
 ;;
 
 let () =
   Sys.argv |> function
     [| _; path |] ->
-      list_mlfiles path |> List.iter ~f:ocp_indent;
-      printf "Done\n%!";
-      exit 0
+    list_mlfiles path |> List.iter ~f:ocp_indent;
+    printf "Done\n%!";
+    exit 0
   | _ -> printf "Usage: %s [directory containing file to indent]\n"
-    Sys.executable_name;
+           Sys.executable_name;
     exit 1
 ;;
 
