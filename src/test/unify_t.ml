@@ -41,7 +41,7 @@ open Core.Std;;
 (* Function make_uniq ============================= *)
 let make_uniq test solution () =
   let actual = Unify.make_uniq test in
-    OUnit.assert_equal actual solution
+  OUnit.assert_equal actual solution
 ;;
 
 (* Big and sometimes strange list, to be used in test data set.
@@ -51,13 +51,13 @@ let make_uniq test solution () =
 let big_unique length = (* Long list of unique elements *)
   let message = "unique element" in
   let test_case = List.init ~f:(fun i -> Int.to_string i) length in
-    ( test_case, test_case, message )
+  ( test_case, test_case, message )
 ;;
 let big_same length = (* Long list of unique elements *)
   let message = "all the same element" in
   let same_element = "cmd1" in
   let test_case = List.init ~f:(fun i -> same_element) length in
-    ( test_case, [ same_element ], message )
+  ( test_case, [ same_element ], message )
 ;;
 let big_periodic length = (* Long list of unique elements *)
   let message = "periodically the same element" in
@@ -66,19 +66,19 @@ let big_periodic length = (* Long list of unique elements *)
   let dbl = length + 42 |> Int.to_string in
   let sol = ref [] in
   let test_case = List.init ~f:(fun i ->
-     if i mod periode = 0
-     then dbl
-     else Int.to_string i
-          (* Keep for the solution *)
-          |> (fun t -> sol := t :: !sol; t)) length
+         if i mod periode = 0
+         then dbl
+         else Int.to_string i
+              (* Keep for the solution *)
+              |> (fun t -> sol := t :: !sol; t)) length
   in
-    ( test_case, dbl :: !sol, message )
+  ( test_case, dbl :: !sol, message )
 ;;
 let big_long_entry length = (* Long list of unique elements *)
   let message = "long unique element" in
   let test_case = List.init ~f:(fun i -> "Longer entries, numbered thouth. This one is number \
                                           is: " ^ (Int.to_string i)) length in
-    ( test_case, test_case, message )
+  ( test_case, test_case, message )
 ;;
 (* Function packing the preceding *)
 let big_pack ~message length =

@@ -47,12 +47,12 @@ open Core.Std;;
  * internally *)
 let make_uniq dubbled_entries =
   let seen = ref [] in (* Entries already added *)
-    List.(filter dubbled_entries ~f:(fun entry ->
-       (exists !seen ~f:(fun in_seen -> in_seen = entry)) |> function
-       | false -> (* Entry not already seen, keep it *)
-         seen := (entry :: !seen); true
-       (* Already kept, discard *)
-       | true -> false))
+  List.(filter dubbled_entries ~f:(fun entry ->
+         (exists !seen ~f:(fun in_seen -> in_seen = entry)) |> function
+         | false -> (* Entry not already seen, keep it *)
+           seen := (entry :: !seen); true
+         (* Already kept, discard *)
+         | true -> false))
 ;;
 
 (* Remove doubled or void entries in a list. Commands are cleanup (removing
@@ -63,23 +63,23 @@ let prettify_cmd cmds =
     (* Removing line return, and trailing spaces, at the end or
        at the start of a command *)
     List.filter_map cmds ~f:(fun str ->
-       trim str |> function
-       | "" ->
-         Messages.debug "Trimmed command";
-         None
-       | s -> Some s)
+           trim str |> function
+           | "" ->
+             Messages.debug "Trimmed command";
+             None
+           | s -> Some s)
   in
 
   (* Remove doubled entries *)
   let unified_rc = make_uniq without_lr in
 
-    (* Display whether duplicates were found *)
-    if List.(length unified_rc = length without_lr) then
-      Messages.debug "No duplicate found"
-    else
-      Messages.debug "Duplicate found, removed";
+  (* Display whether duplicates were found *)
+  if List.(length unified_rc = length without_lr) then
+    Messages.debug "No duplicate found"
+  else
+    Messages.debug "Duplicate found, removed";
 
-    unified_rc
+  unified_rc
 ;;
 
 (* Removing doubled entries (cmds). We need to remove carriage return before
@@ -88,7 +88,7 @@ let prettify_cmd cmds =
 let prettify rc_file =
   let cmds = rc_file.Settings_v.progs in
   let unique = prettify_cmd cmds in
-    (* Store the deduplicated list in new rc_file *)
-    {rc_file with Settings_v.progs = unique}
+  (* Store the deduplicated list in new rc_file *)
+  {rc_file with Settings_v.progs = unique}
 ;;
 

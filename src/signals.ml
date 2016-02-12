@@ -53,11 +53,11 @@ let handle_sigint () =
              )
   in
   let open Signal in
-    Expert.handle int (fun signal ->
-       if signal = int
-       then
-         launch_next ()
-       else ())
+  Expert.handle int (fun signal ->
+         if signal = int
+         then
+           launch_next ()
+         else ())
 ;;
 
 (* Called from external to activate signal handling *)

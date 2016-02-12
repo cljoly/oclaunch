@@ -42,20 +42,20 @@ open Core.Std;;
 let epur () =
   let current = Edit_command.epur [ "qw" ; "" ; "erty" ; "a" ; "" ; "zerty"] in
   let expected = [ "qw" ; "erty" ; "a" ; "zerty" ] in
-    OUnit.assert_equal current expected
+  OUnit.assert_equal current expected
 ;;
 
 (* Function gen_modification *)
 let gm1 () =
   let current = Edit_command.gen_modification [ "qw" ] in
   let expected = "qw" in
-    OUnit.assert_equal current expected
+  OUnit.assert_equal current expected
 ;;
 
 let gm2 () =
   let current = Edit_command.gen_modification [ "qw" ; "erty" ; "a" ; "zerty"] in
   let expected = "\nqw\nerty\na\nzerty\n" in
-    OUnit.assert_equal current expected
+  OUnit.assert_equal current expected
 ;;
 
 let n_l =

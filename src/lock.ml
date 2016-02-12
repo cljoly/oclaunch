@@ -87,8 +87,8 @@ let wait ?(until=10) ?(delay=1) () =
     | Free -> Some (lock ())
     | Error -> failwith "Problem with lock file"
   in
-    wait_loop 0
-    |> (function
+  wait_loop 0
+  |> (function
          None ->
          Messages.warning "Removing lock file, ran out of patience";
          remove ();

@@ -52,7 +52,7 @@ let new_list current_list position new_items =
    * # List.split_n l1 2;;
    * - : int list * int list = ([1; 2], [3; 4; 5; 6]) *)
   let l_begin,l_end = List.split_n current_list position in
-    List.concat [ l_begin ; new_items ; l_end ]
+  List.concat [ l_begin ; new_items ; l_end ]
 ;;
 
 
@@ -61,15 +61,15 @@ let new_list current_list position new_items =
  * If more than one "\nelt1\nelt2\nelt3\n" *)
 let gen_modification items =
   let r = "\n" in
-    epur items
-    |> (function
+  epur items
+  |> (function
        | [] -> ""
        (* Only one element *)
        | element :: [] -> element
        (* The list as more than two elements *)
        | items ->
          let msg = String.concat ~sep:r items in
-           String.concat [ r ; msg ; r ])
+         String.concat [ r ; msg ; r ])
 ;;
 
 (* Function which get the nth element, put it in a file, let the user edit it,
@@ -89,43 +89,43 @@ let rec run ~(rc:File_com.t) position =
   let original_command,shorter_list =
     Remove_command.remove current_list position
   in
-    Out_channel.write_all tmp_edit original_command;
+  Out_channel.write_all tmp_edit original_command;
 
 
-    (* Edit file *)
-    let edit = String.concat [ Lazy.force Const.editor ; " " ; tmp_edit ] in
-      Messages.debug edit;
-      Sys.command edit
-      |> (function
-           0 -> ()
-         | n -> sprintf "Error while running %s: error code %i" edit n
-                |> Messages.warning);
+  (* Edit file *)
+  let edit = String.concat [ Lazy.force Const.editor ; " " ; tmp_edit ] in
+  Messages.debug edit;
+  Sys.command edit
+  |> (function
+         0 -> ()
+       | n -> sprintf "Error while running %s: error code %i" edit n
+              |> Messages.warning);
 
-      (* Reading and applying the result *)
-      let new_commands = In_channel.read_lines tmp_edit |> epur in
-      let cmd_list = new_list shorter_list position new_commands in
-      let updated_rc = { rc with Settings_t.progs = cmd_list} in
-        File_com.write updated_rc;
-        (* Display the result, only if modified *)
-        let new_cmd_mod = gen_modification new_commands in
-          (* We are doing things in this order to avoid multiple listing of rc file
-           * when reediting. *)
-          if ( original_command = new_cmd_mod )
-          then (* Nothing change, try reediting *)
-            begin
-              let open Messages in
-                warning "Nothing changed.";
-                confirm "Do you want to reedit?"
-                |> function
-                | Yes -> run ~rc position
-                | No -> ()
-            end
+  (* Reading and applying the result *)
+  let new_commands = In_channel.read_lines tmp_edit |> epur in
+  let cmd_list = new_list shorter_list position new_commands in
+  let updated_rc = { rc with Settings_t.progs = cmd_list} in
+  File_com.write updated_rc;
+  (* Display the result, only if modified *)
+  let new_cmd_mod = gen_modification new_commands in
+  (* We are doing things in this order to avoid multiple listing of rc file
+   * when reediting. *)
+  if ( original_command = new_cmd_mod )
+  then (* Nothing change, try reediting *)
+    begin
+      let open Messages in
+      warning "Nothing changed.";
+      confirm "Do you want to reedit?"
+      |> function
+      | Yes -> run ~rc position
+      | No -> ()
+    end
 
-          else (* Display summary of changes *)
-            begin
-              sprintf "'%s' -> '%s'\n" original_command new_cmd_mod |> Messages.ok;
-              (* Display new rc file *)
-              let reread_rc = File_com.init_rc () in
-                List_rc.run ~rc:reread_rc ()
-            end;
+  else (* Display summary of changes *)
+    begin
+      sprintf "'%s' -> '%s'\n" original_command new_cmd_mod |> Messages.ok;
+      (* Display new rc file *)
+      let reread_rc = File_com.init_rc () in
+      List_rc.run ~rc:reread_rc ()
+    end;
 ;;

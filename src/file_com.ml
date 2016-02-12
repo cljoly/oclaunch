@@ -49,7 +49,7 @@ let write (rc_file:t) =
    * newlines) *)
   let data = (Unify.prettify rc_file |> Settings_j.string_of_rc_file
               |> Yojson.Basic.prettify ~std:true) in
-    Out_channel.write_all (Lazy.force name) ~data
+  Out_channel.write_all (Lazy.force name) ~data
 ;;
 
 (* Return the configuration file template *)
@@ -70,23 +70,23 @@ let create_rc_file ~name =
   let compact_rc_file = Settings_j.string_of_rc_file (rc_template () ()) in
   let readable_rc_file = Yojson.Basic.prettify compact_rc_file in (* Create human readable string for rc file *)
   let out_file = Out_channel.create name in
-    Out_channel.output_string out_file readable_rc_file;
-    Out_channel.close out_file
+  Out_channel.output_string out_file readable_rc_file;
+  Out_channel.close out_file
 ;;
 
 (* Function to read the rc file *)
 let rec init_rc ?(rc=(!Const.rc_file)) () =
   let rc' = Lazy.force rc in
-    (* Verify that file exist *)
-    match (Sys.file_exists rc') with
-    | `No -> create_rc_file ~name:rc'; init_rc ~rc ();
-    | `Unknown -> failwith "Error reading configuration file";
-    | `Yes -> (* Try to read, if there is an error, reset file *)
-      try
-        In_channel.read_all rc' |> Settings_j.rc_file_of_string
-      with
-      | Yojson.Json_error _ -> (* Invalid file, delete, so that it will be reseted
-                                  on next call *) Sys.remove rc'; init_rc ~rc ()
+  (* Verify that file exist *)
+  match (Sys.file_exists rc') with
+  | `No -> create_rc_file ~name:rc'; init_rc ~rc ();
+  | `Unknown -> failwith "Error reading configuration file";
+  | `Yes -> (* Try to read, if there is an error, reset file *)
+    try
+      In_channel.read_all rc' |> Settings_j.rc_file_of_string
+    with
+    | Yojson.Json_error _ -> (* Invalid file, delete, so that it will be reseted
+                                on next call *) Sys.remove rc'; init_rc ~rc ()
 ;;
 
 (* Get the command corresponding to a number *)

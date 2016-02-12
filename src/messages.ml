@@ -73,29 +73,29 @@ type style =
 let print ~color ~style message =
   (* Alias *)
   let cpcolor = Color_print.color in
-    match !Const.no_color with
-    | true -> printf "%s" message
-    | false -> begin (* Use colors *)
-        (* Log that we used colored messages *)
-        log_already ();
-        (* This code create proper escapement to display text with bold/color... *)
-        color |>
-        (function
-          | Green -> cpcolor ~color:`Green message
-          | Red -> cpcolor ~color:`Red message
-          | Yellow -> cpcolor ~color:`Yellow message
-          | White -> cpcolor ~color:`White message
-          | Plum -> cpcolor ~color:`Plum message
-          | Cyan -> cpcolor ~color:`Cyan message
-        ) |> (* Finaly print escaped string *)
-        (fun colored_msg ->
-           let open Color_print in
-             match style with
-             | Bold -> bold_printf "%s" colored_msg
-             | Underline -> underline_printf "%s" colored_msg
-             | Normal -> printf "%s" colored_msg
-        )
-      end
+  match !Const.no_color with
+  | true -> printf "%s" message
+  | false -> begin (* Use colors *)
+      (* Log that we used colored messages *)
+      log_already ();
+      (* This code create proper escapement to display text with bold/color... *)
+      color |>
+      (function
+        | Green -> cpcolor ~color:`Green message
+        | Red -> cpcolor ~color:`Red message
+        | Yellow -> cpcolor ~color:`Yellow message
+        | White -> cpcolor ~color:`White message
+        | Plum -> cpcolor ~color:`Plum message
+        | Cyan -> cpcolor ~color:`Cyan message
+      ) |> (* Finaly print escaped string *)
+      (fun colored_msg ->
+         let open Color_print in
+         match style with
+         | Bold -> bold_printf "%s" colored_msg
+         | Underline -> underline_printf "%s" colored_msg
+         | Normal -> printf "%s" colored_msg
+      )
+    end
 ;;
 
 (* Behave in a conform way to verbosity
@@ -112,23 +112,23 @@ let check_verbosity ~f function_number =
 (* Print debugging, information, important... messages *)
 let debug message =
   check_verbosity ~f:(fun () ->
-     let mess = (Time.now() |> Time.to_string) ^ " " ^ message ^ "\n" in
-       print ~color:Plum ~style:Underline mess
-   ) 5
+         let mess = (Time.now() |> Time.to_string) ^ " " ^ message ^ "\n" in
+         print ~color:Plum ~style:Underline mess
+       ) 5
 ;;
 
 let info message =
   check_verbosity ~f:(fun () ->
-     let mess = message ^ "\n" in
-       print ~color:White ~style:Normal mess
-   ) 3
+         let mess = message ^ "\n" in
+         print ~color:White ~style:Normal mess
+       ) 3
 ;;
 
 let warning message =
   check_verbosity ~f:(fun () ->
-     let mess = message ^ "\n" in
-       print ~color:Red ~style:Bold mess
-   ) 1
+         let mess = message ^ "\n" in
+         print ~color:Red ~style:Bold mess
+       ) 1
 ;;
 
 (* Type for the answers *)
@@ -155,40 +155,40 @@ let check_assume_yes ~f =
  * test it (display, line return, etc...) *)
 let rec confirm info =
   check_assume_yes ~f:(fun () ->
-     print ~color:Cyan ~style:Normal info;
-     print ~color:Cyan ~style:Normal "\n(Yes/No): ";
-     (* XXX Be sure to show the message *)
-     Out_channel.(flush stdout);
-     let str_answer = In_channel.(input_line ~fix_win_eol:true stdin) in
-       str_answer |> (function
-          | Some "Y" | Some "y" | Some "Yes" | Some "YES" | Some "yes" -> Yes
-          | Some "N" | Some "n" | Some "No" | Some "NO" | Some "no" -> No
-          | Some _ | None ->
-            warning "Please enter 'yes' or 'no' or 'y' or 'n'.";
-            confirm info)
-   )
+         print ~color:Cyan ~style:Normal info;
+         print ~color:Cyan ~style:Normal "\n(Yes/No): ";
+         (* XXX Be sure to show the message *)
+         Out_channel.(flush stdout);
+         let str_answer = In_channel.(input_line ~fix_win_eol:true stdin) in
+         str_answer |> (function
+                | Some "Y" | Some "y" | Some "Yes" | Some "YES" | Some "yes" -> Yes
+                | Some "N" | Some "n" | Some "No" | Some "NO" | Some "no" -> No
+                | Some _ | None ->
+                  warning "Please enter 'yes' or 'no' or 'y' or 'n'.";
+                  confirm info)
+       )
 ;;
 
 let ok message =
   check_verbosity ~f:(fun () ->
-     let mess = message ^ "\n" in
-       print ~color:Green ~style:Bold mess
-   ) 2
+         let mess = message ^ "\n" in
+         print ~color:Green ~style:Bold mess
+       ) 2
 ;;
 
 let tips message =
   check_verbosity ~f:(fun () ->
-     let mess = message ^ "\n" in
-       print ~color:Yellow ~style:Normal mess
-   ) 4
+         let mess = message ^ "\n" in
+         print ~color:Yellow ~style:Normal mess
+       ) 4
 ;;
 
 
 (* Reset printing, to avoid color problem on some terminal (Konsole), the  *)
 let reset () =
   let open Color_print in
-    match !already with
-    | true -> debug "Reseted colors";
-      normal "" |> printf "%s\n"
-    | false -> debug "Not resetted"; ()
+  match !already with
+  | true -> debug "Reseted colors";
+    normal "" |> printf "%s\n"
+  | false -> debug "Not resetted"; ()
 ;;

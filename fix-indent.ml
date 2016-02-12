@@ -49,8 +49,8 @@ let ignored =
   " (* The following code prevent strange filename to appear *)
   |> String.split ~on:' '
   |> List.filter_map ~f:(function
-     | "" | " " | "  " | "   " | "    " -> None
-     | path -> Some ("-e " ^ path ^ " "))
+         | "" | " " | "  " | "   " | "    " -> None
+         | path -> Some ("-e " ^ path ^ " "))
   |> String.concat
 ;;
 
@@ -70,11 +70,11 @@ let list_mlfiles path =
 (* Call ocp-indent for indentation *)
 let ocp_indent file =
   let args = "--inplace" in
-    String.concat [ "ocp-indent "; args; " "; file]
-    |> Sys.command
-    |> function
-    | 0 -> printf "File: '%s' ok\n" file
-    | error -> printf "Error with file: '%s'; code: %i\n%!" file error; exit 3
+  String.concat [ "ocp-indent "; args; " "; file]
+  |> Sys.command
+  |> function
+  | 0 -> printf "File: '%s' ok\n" file
+  | error -> printf "Error with file: '%s'; code: %i\n%!" file error; exit 3
 ;;
 
 let () =

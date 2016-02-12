@@ -51,12 +51,12 @@ let less_launched (log : (string * int) list) =
   let max = Const.default_launch in (* Number of launch, maximum *)
   (* Return smallest, n is the smaller key *)
   let entries_by_number = List.Assoc.inverse log  in
-    List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
-    |> (function Some (min,cmd) ->
+  List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
+  |> (function Some (min,cmd) ->
        if min < max
        then Some cmd
        else None
-               | None -> None)
+             | None -> None)
 ;;
 
 (* Function to get the number corresponding to the next command to launch (less
@@ -69,9 +69,9 @@ let less_launched_num log =
   (* Function to return nothing (None) when max launch number is reached, Some
    * number otherwise *)
   |> List.filter_mapi ~f:(fun entry_number ( _, launch_number ) ->
-     if launch_number >= Const.default_launch
-     then None
-     else Some ( entry_number, launch_number ))
+         if launch_number >= Const.default_launch
+         then None
+         else Some ( entry_number, launch_number ))
   (* Find the less launched by sorting and taking the first *)
   |> List.sort ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) -> Int.compare launch_number1 launch_number2)
   |> List.hd

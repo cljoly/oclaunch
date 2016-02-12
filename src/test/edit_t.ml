@@ -41,7 +41,7 @@ open Core.Std;;
 (* Function epur ============================= *)
 let epur test solution () =
   let actual = Edit_command.epur test in
-    OUnit.assert_equal actual solution
+  OUnit.assert_equal actual solution
 ;;
 
 (* Data for above test *)
@@ -65,7 +65,7 @@ let llt_l =
 (* Function new_list ========================= *)
 let n_list ( current_list, position, new_items ) solution () =
   let actual = Edit_command.new_list current_list position new_items in
-    OUnit.assert_equal actual solution
+  OUnit.assert_equal actual solution
 ;;
 
 (* Data for above test *)
@@ -96,7 +96,7 @@ let big =
          ((List.nth_exn li pos) = -2) &&
          ((List.nth_exn li (succ pos)) = -1)
        in
-         OUnit.assert_bool "My test" (conformity actual)
+       OUnit.assert_bool "My test" (conformity actual)
     )
   )
 ;;
@@ -110,7 +110,7 @@ let lt_l =
 (* Function gen_modification ================ *)
 let gen_mod test solution () =
   let actual = Edit_command.gen_modification test in
-    OUnit.assert_equal actual solution
+  OUnit.assert_equal actual solution
 ;;
 
 (* Data for above test *)

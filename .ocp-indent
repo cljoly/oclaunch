@@ -1,11 +1,11 @@
 JaneStreet
 base = 2
 type = 2
-in = 2
+in = 0
 with = 0
 match_clause = 2
 ppx_stritem_ext = 2
-max_indent = 3
+max_indent = 7
 strict_with = auto
 strict_else = always
 strict_comments = true

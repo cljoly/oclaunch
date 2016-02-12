@@ -48,46 +48,46 @@ type return_arg = {
 (* A set of default arguments, usable with most of the commands *)
 let shared_params =
   let open Param in
-    (* Way to treat common args *)
-    return (fun verbosity no_color rc_file_name handle_signal ->
-       (* Set the level of verbosity *)
-       Const.verbosity := verbosity;
-       (* Do not use color *)
-       Const.no_color := no_color;
-       (* Use given rc file, should run the nth argument if present *)
-       Const.rc_file := (Lazy.return rc_file_name);
-       (* Active signal handling *)
-       if handle_signal then
-         Signals.handle ();
+  (* Way to treat common args *)
+  return (fun verbosity no_color rc_file_name handle_signal ->
+         (* Set the level of verbosity *)
+         Const.verbosity := verbosity;
+         (* Do not use color *)
+         Const.no_color := no_color;
+         (* Use given rc file, should run the nth argument if present *)
+         Const.rc_file := (Lazy.return rc_file_name);
+         (* Active signal handling *)
+         if handle_signal then
+           Signals.handle ();
 
-       (* Debugging *)
-       Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
-       Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
-       Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
-       Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
+         (* Debugging *)
+         Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
+         Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
+         Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
+         Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
 
-       (* Obtain data from rc_file *)
-       let rc_content = File_com.init_rc () in
+         (* Obtain data from rc_file *)
+         let rc_content = File_com.init_rc () in
          { rc = rc_content } (* We use type for futur use *)
-     )
-    (* Flag to set verbosity level *)
-    <*> flag "-v" (optional_with_default !Const.verbosity int)
-          ~aliases:["--verbose" ; "-verbose"]
-          ~doc:"[n] Set verbosity level. \
-                The higher n is, the most verbose the program is."
-    (* Flag to set colors *)
-    <*> flag "--no-color" no_arg
-          ~aliases:["-no-color"]
-          ~doc:" Use this flag to disable color usage."
-    (* Flag to use different rc file *)
-    <*> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
-          ~aliases:["--rc" ; "-rc"]
-          ~doc:"file Read configuration from the given file and continue parsing."
-    (* Flag to handle signals *)
-    <*> flag "-s" no_arg
-          ~aliases:["--sinals" ; "-signals"]
-          ~doc:"Handle signals. Warning, this is not much tested and not \
-                implemented the best way."
+       )
+  (* Flag to set verbosity level *)
+  <*> flag "-v" (optional_with_default !Const.verbosity int)
+        ~aliases:["--verbose" ; "-verbose"]
+        ~doc:"[n] Set verbosity level. \
+              The higher n is, the most verbose the program is."
+  (* Flag to set colors *)
+  <*> flag "--no-color" no_arg
+        ~aliases:["-no-color"]
+        ~doc:" Use this flag to disable color usage."
+  (* Flag to use different rc file *)
+  <*> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
+        ~aliases:["--rc" ; "-rc"]
+        ~doc:"file Read configuration from the given file and continue parsing."
+  (* Flag to handle signals *)
+  <*> flag "-s" no_arg
+        ~aliases:["--sinals" ; "-signals"]
+        ~doc:"Handle signals. Warning, this is not much tested and not \
+              implemented the best way."
 ;;
 
 
@@ -215,7 +215,7 @@ let edit =
        let position = Option.value
                         ~default:(List.length (rc.Settings_t.progs) - 1) n
        in
-         Edit_command.run ~rc position)
+       Edit_command.run ~rc position)
 ;;
 
 (* To display informations about the licence *)
@@ -230,7 +230,7 @@ let licence =
     )
     (fun _ header () ->
        let cecill = not(header) in (* When cecill is false, it displays the header *)
-         Licencing.print ~cecill
+       Licencing.print ~cecill
     )
 ;;
 
@@ -258,13 +258,13 @@ let run ~version ~build_info () =
       default
       |> run ~version ~build_info
     in
-      match Sys.argv with
-      | [| _ |] -> Result.Ok (run_default ()) (* Program called with nothing *)
-      | _ -> (* Program followed by a number *)
-        Or_error.try_with (fun () ->
-           (* Verify the fist argument is a number, not a subcommand (string) *)
-           ignore (Int.of_string (Sys.argv.(1)));
-           run_default ())
+    match Sys.argv with
+    | [| _ |] -> Result.Ok (run_default ()) (* Program called with nothing *)
+    | _ -> (* Program followed by a number *)
+      Or_error.try_with (fun () ->
+             (* Verify the fist argument is a number, not a subcommand (string) *)
+             ignore (Int.of_string (Sys.argv.(1)));
+             run_default ())
   in
 
   (* Parsing with subcommands *)
@@ -290,8 +290,8 @@ let run ~version ~build_info () =
     match
       hack_parse ()
       |> (function
-           Result.Ok () -> ()
-         | Error _ -> parse_sub ())
+             Result.Ok () -> ()
+           | Error _ -> parse_sub ())
     with
     | () -> `Exit 0
     | exception message ->
@@ -300,9 +300,9 @@ let run ~version ~build_info () =
       `Exit 20
   in
 
-    (* Unlock, should be done before *)
-    Lock.(status ()
-          |> (function
+  (* Unlock, should be done before *)
+  Lock.(status ()
+        |> (function
                Locked ->
                Messages.warning "Removing lockfile, should be removed before. \
                                  It's a bug!"; remove ()
@@ -310,13 +310,13 @@ let run ~version ~build_info () =
              | Error -> Messages.warning "Error with lockfile"
            ));
 
-    (* Display total running time, pretty printing is handled by Time module *)
-    Messages.debug Time.(diff (now ()) start
-                         |> Span.to_string_hum (* Round the value, 3 digits *)
-                         |> sprintf "Duration: %s");
+  (* Display total running time, pretty printing is handled by Time module *)
+  Messages.debug Time.(diff (now ()) start
+                       |> Span.to_string_hum (* Round the value, 3 digits *)
+                       |> sprintf "Duration: %s");
 
-    (* Reset display *)
-    Messages.reset ();
+  (* Reset display *)
+  Messages.reset ();
 
-    exit_code
+  exit_code
 ;;

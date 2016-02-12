@@ -44,7 +44,7 @@ let write (tmp_file:t) =
   (* Short name *)
   let name = Const.tmp_file in
   let biniou_tmp = Tmp_biniou_b.string_of_tmp_file tmp_file in
-    Out_channel.write_all name ~data:biniou_tmp
+  Out_channel.write_all name ~data:biniou_tmp
 ;;
 
 (* XXX Using and keyword because each function can call each other *)
@@ -54,18 +54,18 @@ let rec read () =
   let name = Const.tmp_file in
   (* Get the string corresponding to the file *)
   let file_content = In_channel.read_all name in
-    try
-      Tmp_biniou_b.tmp_file_of_string file_content
-    (* In previous version, the JSON format was used, otherwise the file can
-     * have a bad format. In this case, the Ag_ob_run.Error("Read error (1)")
-     * exeption is throw. We catch it here *)
-    with _ ->
-      (* If file is not in the right format, delete it and create a new one.
-       * Then, read it *)
-      Messages.ok "Reinitialises tmp file\n";
-      Sys.remove name;
-      create_tmp_file ();
-      read ()
+  try
+    Tmp_biniou_b.tmp_file_of_string file_content
+  (* In previous version, the JSON format was used, otherwise the file can
+   * have a bad format. In this case, the Ag_ob_run.Error("Read error (1)")
+   * exeption is throw. We catch it here *)
+  with _ ->
+    (* If file is not in the right format, delete it and create a new one.
+     * Then, read it *)
+    Messages.ok "Reinitialises tmp file\n";
+    Sys.remove name;
+    create_tmp_file ();
+    read ()
 
 (* Function to create the tmp file *)
 and create_tmp_file () =
@@ -79,21 +79,21 @@ and create_tmp_file () =
 let rec init () =
   (* If file do not exists, create it *)
   let file_exists = Sys.file_exists Const.tmp_file in
-    match file_exists with
-    | `No -> create_tmp_file ();
+  match file_exists with
+  | `No -> create_tmp_file ();
+    init ()
+  | `Unknown -> begin
+      Sys.remove Const.tmp_file;
       init ()
-    | `Unknown -> begin
-        Sys.remove Const.tmp_file;
-        init ()
-      end
-    | `Yes -> read ()
+    end
+  | `Yes -> read ()
 ;;
 
 (* Get a log of values from the tmp file, like this
  * (cmd,number of launch) list *)
 let get_log ~rc_tmp =
   List.map ~f:(fun { Tmp_biniou_t.commands = (cmd,number) } ->
-     (cmd,number)) rc_tmp
+         (cmd,number)) rc_tmp
 ;;
 
 (* Verify that the value exist *)
@@ -125,9 +125,9 @@ let log ~cmd ?(func= (+) 1 ) () =
     let open List.Assoc in
     (* Only number of launch associated with commands *)
     let l = get_log ~rc_tmp:li in
-      find l cmd
-      |> (function None -> add l cmd Const.default_launch | Some n -> add l cmd (func n))
-      |> List.map ~f:(fun e -> { Tmp_biniou_t.commands = e})
+    find l cmd
+    |> (function None -> add l cmd Const.default_launch | Some n -> add l cmd (func n))
+    |> List.map ~f:(fun e -> { Tmp_biniou_t.commands = e})
   in
   (* Write the file with the new value *)
   let updated_li =
@@ -135,8 +135,8 @@ let log ~cmd ?(func= (+) 1 ) () =
     |> Option.value ~default:[]
     |> new_li
   in
-    write Tmp_biniou_t.{ file with rc = List.Assoc.add file.rc name
-                                          updated_li }
+  write Tmp_biniou_t.{ file with rc = List.Assoc.add file.rc name
+                                        updated_li }
 ;;
 
 (* Return current number *)
@@ -159,10 +159,10 @@ let get_accurate_log ?rc_name ~tmp () =
   let rc_in_tmp = get_log ~rc_tmp:(Assoc.find tmp.Tmp_biniou_t.rc name
                                    |> Option.value ~default:[])
   in
-    map rc.Settings_t.progs ~f:(fun key ->
-       Assoc.find rc_in_tmp key
-       |> Option.value ~default:0
-       |> (function number -> (key,number)))
+  map rc.Settings_t.progs ~f:(fun key ->
+         Assoc.find rc_in_tmp key
+         |> Option.value ~default:0
+         |> (function number -> (key,number)))
 ;;
 
 (* Reset number of launch for a given command
@@ -185,16 +185,16 @@ let reset_cmd ~rc num cmd =
 
   (* Current number of launch for that cmd *)
   let i = List.Assoc.find_exn ac_log cmd_str in
-    sprintf  "Last N for command '%s' was %i"
-      cmd_str
-      i
-    |> Messages.info;
-    sprintf  "Restore with 'oclaunch reset %i %i'" i cmd
-    |> Messages.tips;
+  sprintf  "Last N for command '%s' was %i"
+    cmd_str
+    i
+  |> Messages.info;
+  sprintf  "Restore with 'oclaunch reset %i %i'" i cmd
+  |> Messages.tips;
 
-    (* Do the work, set the number *)
-    log ~func:(fun _ -> num) ~cmd:cmd_str ();
-    sprintf "Reseted command '%s' to %i successfully" cmd_str num |> Messages.ok
+  (* Do the work, set the number *)
+  log ~func:(fun _ -> num) ~cmd:cmd_str ();
+  sprintf "Reseted command '%s' to %i successfully" cmd_str num |> Messages.ok
 ;;
 
 (* Reset all commands to a number
@@ -206,9 +206,9 @@ let reset2num ~rc num =
 
   let ac_log = get_accurate_log ~tmp:(init ()) () in
 
-    (* Erase number of launch for each command *)
-    List.iter ac_log ~f:(fun ( cmd, _ ) ->
-       log ~func:(fun _ -> num) ~cmd ())
+  (* Erase number of launch for each command *)
+  List.iter ac_log ~f:(fun ( cmd, _ ) ->
+         log ~func:(fun _ -> num) ~cmd ())
 ;;
 
 (* Reset all command *)
@@ -219,14 +219,14 @@ let reset_all () =
     let tmp = init () in
     (* Get rc_file name *)
     let name = Lazy.force !Const.rc_file in
-      write Tmp_biniou_t.{ tmp with rc = List.Assoc.add tmp.rc name [] }
+    write Tmp_biniou_t.{ tmp with rc = List.Assoc.add tmp.rc name [] }
   in
-    Messages.debug "Asking question";
-    Messages.confirm "You will lose number of launch for every command.\
-                      Are you sure?"
-    |> (fun answer -> sprintf "Answer %s" (Messages.answer2str answer) |> Messages.debug; answer) (* Spy *)
-    |> function
-      Messages.Yes -> reset_without_ask ()
-    | Messages.No -> ()
+  Messages.debug "Asking question";
+  Messages.confirm "You will lose number of launch for every command.\
+                    Are you sure?"
+  |> (fun answer -> sprintf "Answer %s" (Messages.answer2str answer) |> Messages.debug; answer) (* Spy *)
+  |> function
+    Messages.Yes -> reset_without_ask ()
+  | Messages.No -> ()
 ;;
 

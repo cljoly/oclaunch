@@ -1206,31 +1206,31 @@ let print ~cecill =
 
       (* Spying expression *)
       |> (fun str ->
-         Option.value ~default:"" str |> Messages.debug;
-         str)
+           Option.value ~default:"" str |> Messages.debug;
+           str)
 
       |> (function
-         | Some "en" | Some "En" | Some "EN" -> `En
-         | Some "fr" | Some "Fr" | Some "FR"-> `Fr
-         | None | Some _ -> Messages.warning "Please enter 'Fr' or 'En'"; def_lang ()
-       ))
+           | Some "en" | Some "En" | Some "EN" -> `En
+           | Some "fr" | Some "Fr" | Some "FR"-> `Fr
+           | None | Some _ -> Messages.warning "Please enter 'Fr' or 'En'"; def_lang ()
+         ))
   in
 
-    Messages.info "Choose your language 'Fr' or 'En': ";
-    (* XXX Be sure to show the message *)
-    Out_channel.(flush stdout);
+  Messages.info "Choose your language 'Fr' or 'En': ";
+  (* XXX Be sure to show the message *)
+  Out_channel.(flush stdout);
 
-    let ( warn, licence ) =
-      def_lang ()
-      |> function
-      | `En -> ( en_header, en_licence )
-      | `Fr -> ( fr_header, fr_licence )
-    in
-      begin
-        match cecill with
-        | false -> Messages.debug "Choosing warn"; warn
-        | true -> Messages.debug "Choosing licence"; licence
-      end
-      |> print_endline (* XXX Using print_endline to ensure we can't avoid printing
-                          with verbosity parameter *)
+  let ( warn, licence ) =
+    def_lang ()
+    |> function
+    | `En -> ( en_header, en_licence )
+    | `Fr -> ( fr_header, fr_licence )
+  in
+  begin
+    match cecill with
+    | false -> Messages.debug "Choosing warn"; warn
+    | true -> Messages.debug "Choosing licence"; licence
+  end
+  |> print_endline (* XXX Using print_endline to ensure we can't avoid printing
+                      with verbosity parameter *)
 ;;

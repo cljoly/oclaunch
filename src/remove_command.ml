@@ -44,18 +44,18 @@ let remove current_list n =
   let removed = ref "" in
   (* The list without the nth item *)
   let new_list = List.filteri current_list ~f:(fun i _ ->
-     if i <> n then
-       (* If it is not nth, return true *)
-       true
-     else
-       begin
-         (* If it is nth, ie the command to be removed, store it and return
-          * false, to remove the corresponding item *)
-         removed := List.nth_exn current_list i;
-         false
-       end
-   ) in
-    ( !removed, new_list )
+         if i <> n then
+           (* If it is not nth, return true *)
+           true
+         else
+           begin
+             (* If it is nth, ie the command to be removed, store it and return
+              * false, to remove the corresponding item *)
+             removed := List.nth_exn current_list i;
+             false
+           end
+       ) in
+  ( !removed, new_list )
 ;;
 
 (* Function which add the commands (one per line) ridden on stdin to the rc
@@ -68,12 +68,12 @@ let run ~(rc:File_com.t) n_to_remove =
               ~default:((List.length actual_list) - 1) in
   (* Remove the nth command, after display it *)
   let removed,new_list = remove actual_list nth in
-    sprintf "Removing: %s\n" removed
-    |> Messages.warning;
-    (* Write new list to rc file *)
-    let updated_rc = { rc with Settings_t.progs = new_list } in
-      File_com.write updated_rc;
-      (* Display the result *)
-      let reread_rc = File_com.init_rc () in
-        List_rc.run ~rc:reread_rc ()
+  sprintf "Removing: %s\n" removed
+  |> Messages.warning;
+  (* Write new list to rc file *)
+  let updated_rc = { rc with Settings_t.progs = new_list } in
+  File_com.write updated_rc;
+  (* Display the result *)
+  let reread_rc = File_com.init_rc () in
+  List_rc.run ~rc:reread_rc ()
 ;;

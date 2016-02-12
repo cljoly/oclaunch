@@ -50,9 +50,9 @@ let get_var ?(exp=false) ?default name =
     | true -> failwith (Lazy.force msg)
     | false -> print_endline (Lazy.force msg); ""
   in
-    (* Get the var *)
-    Sys.getenv name
-    |> (function
+  (* Get the var *)
+  Sys.getenv name
+  |> (function
        | Some x -> x
        | None ->
          match default with

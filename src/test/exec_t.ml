@@ -41,13 +41,13 @@ open Core.Std;;
 (* Function less_launched *)
 let less_launched test solution () =
   let actual = Exec_cmd.less_launched test in
-    OUnit.assert_equal actual solution
+  OUnit.assert_equal actual solution
 ;;
 
 (* Function less_launched_num *)
 let less_launched_num test solution () =
   let actual = Exec_cmd.less_launched_num test in
-    OUnit.assert_equal actual solution
+  OUnit.assert_equal actual solution
 ;;
 
 (* Maximum number of launch *)
@@ -75,7 +75,7 @@ let common_data =
 (* Add expected result to corresponding to the data provided common set *)
 let add_solutions data expected =
   List.map2_exn data expected ~f:(fun ( log, name ) solution ->
-     ( log, solution, name ))
+         ( log, solution, name ))
 ;;
 
 (* Data customized for the tests *)
@@ -112,16 +112,16 @@ let llt_l =
   let less_launched_suit =
     List.map ll_data ~f:(fun (t, s, name) -> ( (less_launched t s), name))
   in
-    less_launched_suit
-    |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
+  less_launched_suit
+  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
 ;;
 
 let llt_l2 =
   let less_launched_num_suit =
     List.map ll_data2 ~f:(fun (t, s, name) -> ( (less_launched_num t s), name))
   in
-    less_launched_num_suit
-    |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
+  less_launched_num_suit
+  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
 ;;
 
 (* To be used in test.ml *)

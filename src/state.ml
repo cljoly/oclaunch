@@ -48,16 +48,16 @@ let print_current ~rc () =
        ~default:"Nothing next"
        ~f:(fun ( num : int ) ->
 
-          (* XXX Debug *)
-          sprintf "Num: %i" num |> Messages.debug;
+            (* XXX Debug *)
+            sprintf "Num: %i" num |> Messages.debug;
 
-          File_com.num_cmd2cmd ~rc num
-          |> (function
-             | Some cmd -> cmd
-             | None -> Messages.warning "Error, should not append, this is a bug";
-               assert false)
-          |> (fun ( cmd : string ) ->
-             Messages.debug cmd; (* TODO Use tools.spy1 *)
-             sprintf "Next: command %i, '%s'" num cmd))
+            File_com.num_cmd2cmd ~rc num
+            |> (function
+                 | Some cmd -> cmd
+                 | None -> Messages.warning "Error, should not append, this is a bug";
+                   assert false)
+            |> (fun ( cmd : string ) ->
+                 Messages.debug cmd; (* TODO Use tools.spy1 *)
+                 sprintf "Next: command %i, '%s'" num cmd))
   |> Messages.ok
 ;;
