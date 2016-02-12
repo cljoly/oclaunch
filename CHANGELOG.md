@@ -17,8 +17,11 @@
  + Fix bug: in special circumstances, it was not possible to write in lock file.
    The program was crashing.
  + To limit future problem with lockers, two things were done:
-   + Remove automatically lock file at the end of the program (See commit 075c5b7074ea62ec337fe45309fbc3d808ad74fc)
-   + Add delay when waiting for locker, to avoid endless loop (See commit cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and bd712c97c788922aabdda15f75e78cb05882c53f)
+   + Remove automatically lock file at the end of the program (See commit
+     075c5b7074ea62ec337fe45309fbc3d808ad74fc)
+   + Add delay when waiting for locker, to avoid endless loop (See commit
+     cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and
+     bd712c97c788922aabdda15f75e78cb05882c53f)
  + Rewrite command line parsing, in a cleaner and safer way. It now handles
    `exit`, would be able to deal with auto completion and display more accurate
    help messages. Though, for backward compatibility reasons, a hack has been
