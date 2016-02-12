@@ -29,7 +29,8 @@
  + Improve list subcommand, now using Textutils library, displaying in an array
  + Improve editing command (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
- + Code clean up, messages improvement
+ + Code clean up (especially indentation, thanks to ocp-indent), messages
+   improvement
  + Add unit tests and clean them up
  + Add licence warning
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
