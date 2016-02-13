@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 492a7db71356143ab62e76a69bbdfea8) --->
+<!--- DO NOT EDIT (digest: 1ed46bd916ebb5846d3ecb6819284358) --->
 
 OcLaunch - Launch commands automagically
 ========================================
@@ -11,7 +11,7 @@ line](https://img.shields.io/badge/command-line-lightgrey.svg)](http://oclaunch.
 [![platform UNIX (esp.
 LINUX)](https://img.shields.io/badge/platform-UNIX_\(esp._LINUX\)-lightgrey.svg)](http://download.tuxfamily.org/oclaunch/oclaunch.xml)
 [![language
-OCaml](https://img.shields.io/badge/language-OCaml-orange.svg)](http://www.oclaunch.eu.org/)
+OCaml](https://img.shields.io/badge/language-OCaml-orange.svg)](http://www.ocaml.org/)
 [![opam
 oclaunch](https://img.shields.io/badge/opam-oclaunch-red.svg)](http://opam.ocaml.org/packages/oclaunch/oclaunch.0.2.2/)
 [![Getting
