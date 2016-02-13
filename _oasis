@@ -14,7 +14,7 @@ XStdFilesREADME: true
 XStdFilesINSTALL: true
 XStdFilesAUTHORS: true
 AlphaFeatures: stdfiles_markdown, compiled_setup_ml
-Description: OcLaunch is a command-line tool to launch successively (each time the program is called) commands. It is designed to be used with any program, interactive or not. Feedback is welcome at leowzukw@vmail.me. Help at http://oclaunch.eu.org. Try it, it works automagically!
+Description: OcLaunch is a command-line tool to launch successively (each time the program is called) commands. It is designed to be used with any program, interactive or not. Feedback is welcome at contact@oclaunch.eu.org.<br/> Detailed presentation at http://ocla.ml. Try it, it works automagically!
 
 PreBuildCommand: atdgen -t ./src/settings.atd
 PreBuildCommand: atdgen -j ./src/settings.atd
