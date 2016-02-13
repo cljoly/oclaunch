@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 7c337803d7b15ee289bbc9bb075ec2b4) --->
+<!--- DO NOT EDIT (digest: b6d19a91e3e8d4a3e6805c8debeee04b) --->
 
 OcLaunch - Launch commands automagically
 ========================================
@@ -16,10 +16,10 @@ OCaml](https://img.shields.io/badge/language-OCaml-orange.svg)](http://www.oclau
 oclaunch](https://img.shields.io/badge/opam-oclaunch-red.svg)](http://opam.ocaml.org/packages/oclaunch/oclaunch.0.2.2/)
 [![Getting
 help](https://img.shields.io/badge/Get-Help!-orange.svg)](http://www.oclaunch.eu.org/help.html)
-<br/>OcLaunch is a command-line tool to launch successively (each time the
+<p>OcLaunch is a command-line tool to launch successively (each time the
 program is called) commands. It is designed to be used with any program,
 interactive or not. Feedback is welcome at contact@oclaunch.eu.org.<br/>
-Detailed presentation at http://ocla.ml. Try it, it works automagically!
+Detailed presentation at http://ocla.ml. Try it, it works automagically!</p>
 
 See the file [INSTALL.md](INSTALL.md) for building and installation
 instructions.
