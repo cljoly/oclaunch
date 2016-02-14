@@ -12,18 +12,18 @@ This version introduce major changes in the tmp and rc file.
 #### Major
 
  + Changed tmp file format, the new one would allow to do more things: (See #6)
-   + Restart edited command (reset number of launch)
-   + Support multiple configuration file
-   + More natural behavior when starting from an empty file. (Don't increment
+    + Restart edited command (reset number of launch)
+    + Support multiple configuration file
+    + More natural behavior when starting from an empty file. (Don't increment
      number of launch when nothing is actually launched)
-   + For the future : Running infinite, daemon mode...
+    + For the future : Running infinite, daemon mode...
  + Beautified rc file:
-  + Remove doubled entries before each write of the rc file. Trailing spaces
-    are remove too. Empty entries are dropped.
-  + This fixes #12
-  + A **new clean command** has been added, to clean up a manually edited or old
-    rc file.
-  + Summary of edit command was improved.
+    + Remove doubled entries before each write of the rc file. Trailing spaces
+      are remove too. Empty entries are dropped.
+    + This fixes #12
+    + A **new clean command** has been added, to clean up a manually edited or old
+      rc file.
+    + Summary of edit command was improved.
  + Rewrite command line parsing, in a cleaner and safer way. It now handles
    `exit`, would be able to deal with auto completion and display more accurate
    help messages. Though, for backward compatibility reasons, a hack has been
@@ -40,11 +40,11 @@ This version introduce major changes in the tmp and rc file.
  + Fix bug: in special circumstances, it was not possible to write in lock file.
    The program was crashing.
  + To limit future problem with lockers, two things were done:
-   + Remove automatically lock file at the end of the program (See commit
-     075c5b7074ea62ec337fe45309fbc3d808ad74fc)
-   + Add delay when waiting for locker, to avoid endless loop (See commit
-     cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and
-     bd712c97c788922aabdda15f75e78cb05882c53f)
+    + Remove automatically lock file at the end of the program (See commit
+      075c5b7074ea62ec337fe45309fbc3d808ad74fc)
+    + Add delay when waiting for locker, to avoid endless loop (See commit
+      cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and
+      bd712c97c788922aabdda15f75e78cb05882c53f)
  + Code clean up (especially indentation, thanks to ocp-indent), messages
    improvement
  + Add unit tests and clean them up
