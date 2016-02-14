@@ -12,15 +12,15 @@ This version introduce major changes in the tmp and rc file.
 #### Major
 
  + Changed tmp file format, the new one would allow to do more things: (See #6)
-    + Restart edited command (reset number of launch)
-    + Support multiple configuration file
+    + Restart edited command (reset number of launch).
+    + Support multiple configuration file.
     + More natural behavior when starting from an empty file. (Don't increment
-     number of launch when nothing is actually launched)
+     number of launch when nothing is actually launched).
     + For the future : Running infinite, daemon mode...
  + Beautified rc file:
     + Remove doubled entries before each write of the rc file. Trailing spaces
       are remove too. Empty entries are dropped.
-    + This fixes #12
+    + This fixes #12.
     + A **new clean command** has been added, to clean up a manually edited or old
       rc file.
     + Summary of edit command was improved.
@@ -31,7 +31,7 @@ This version introduce major changes in the tmp and rc file.
    without any argument. This way, the program tries to launch the corresponding
    command or the next one. The problem is that you can't call it with an
    option. To do this, use the `run` subcommand.
- + Improve list subcommand, now using Textutils library, displaying in an array
+ + Improve list subcommand, now using Textutils library, displaying in an array.
  + Improve editing command (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
 
@@ -41,18 +41,18 @@ This version introduce major changes in the tmp and rc file.
    The program was crashing.
  + To limit future problem with lockers, two things were done:
     + Remove automatically lock file at the end of the program (See commit
-      075c5b7074ea62ec337fe45309fbc3d808ad74fc)
+      075c5b7074ea62ec337fe45309fbc3d808ad74fc).
     + Add delay when waiting for locker, to avoid endless loop (See commit
       cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and
-      bd712c97c788922aabdda15f75e78cb05882c53f)
+      bd712c97c788922aabdda15f75e78cb05882c53f).
  + Code clean up (especially indentation, thanks to ocp-indent), messages
-   improvement
- + Add unit tests and clean them up
- + Add licence warning
+   improvement.
+ + Add unit tests and clean them up.
+ + Add licence warning.
  + Remove core\_extended dependency, incorporating some code from the library
    directly in the program, and using Textutils and Re2 library instead.
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
-   ctrl-C. See issue #14 for known problems
+   ctrl-C. See issue #14 for known problems.
 
 #### Community
 
