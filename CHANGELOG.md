@@ -7,6 +7,14 @@
 
 ### 0.3.0
 
+#### Major
+
+ + Changed tmp file format, the new one would allow to do more things:
+   + Restart edited command (reset number of launch)
+   + Support multiple configuration file
+   + More natural behavior when starting from an empty file. (Don't increment
+     number of launch when nothing is actually launched)
+   + For the futur : Running infinite, daemon mode...
  + Beautified rc file:
   + Remove doubled entries before each write of the rc file. Trailling spaces
     are remove too. Empty entries are dropped.
@@ -14,14 +22,6 @@
   + A **new clean command** has been added, to clean up a manually edited or old
     rc file.
   + Summary of edit command was improved.
- + Fix bug: in special circumstances, it was not possible to write in lock file.
-   The program was crashing.
- + To limit future problem with lockers, two things were done:
-   + Remove automatically lock file at the end of the program (See commit
-     075c5b7074ea62ec337fe45309fbc3d808ad74fc)
-   + Add delay when waiting for locker, to avoid endless loop (See commit
-     cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and
-     bd712c97c788922aabdda15f75e78cb05882c53f)
  + Rewrite command line parsing, in a cleaner and safer way. It now handles
    `exit`, would be able to deal with auto completion and display more accurate
    help messages. Though, for backward compatibility reasons, a hack has been
@@ -32,6 +32,17 @@
  + Improve list subcommand, now using Textutils library, displaying in an array
  + Improve editing command (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
+
+#### Minor
+
+ + Fix bug: in special circumstances, it was not possible to write in lock file.
+   The program was crashing.
+ + To limit future problem with lockers, two things were done:
+   + Remove automatically lock file at the end of the program (See commit
+     075c5b7074ea62ec337fe45309fbc3d808ad74fc)
+   + Add delay when waiting for locker, to avoid endless loop (See commit
+     cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and
+     bd712c97c788922aabdda15f75e78cb05882c53f)
  + Code clean up (especially indentation, thanks to ocp-indent), messages
    improvement
  + Add unit tests and clean them up
@@ -40,12 +51,9 @@
    directly in the program, and using Textutils and Re2 library instead.
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
    ctrl-C. See issue #14 for known problems
- + Changed tmp file format, the new one would allow to do more things:
-   + Restart edited command (reset number of launch)
-   + Support multiple configuration file
-   + More natural behavior when starting from an empty file. (Don't increment
-     number of launch when nothing is actually launched)
-   + For the futur : Running infinite, daemon mode...
+
+#### Community
+
  + Improve release script, to enhance contributing experience (making easier to
    release source-code, binaries, signing…). Add indentation script too.
  + Improve README.md file, using special code in \_oasis Description field.
