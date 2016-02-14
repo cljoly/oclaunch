@@ -48,6 +48,7 @@
    + For the futur : Running infinite, daemon mode...
  + Improve release script, to enhance contributing experience (making easier to
    release source-code, binaries, signing…). Add indentation script too.
+ + Improve README.md file, using special code in \_oasis Description field.
 
 ## 0.2.x
 
