@@ -7,6 +7,8 @@
 
 ### 0.3.0
 
+This version introduce major changes in the tmp and rc file.
+
 #### Major
 
  + Changed tmp file format, the new one would allow to do more things:
@@ -14,9 +16,9 @@
    + Support multiple configuration file
    + More natural behavior when starting from an empty file. (Don't increment
      number of launch when nothing is actually launched)
-   + For the futur : Running infinite, daemon mode...
+   + For the future : Running infinite, daemon mode...
  + Beautified rc file:
-  + Remove doubled entries before each write of the rc file. Trailling spaces
+  + Remove doubled entries before each write of the rc file. Trailing spaces
     are remove too. Empty entries are dropped.
   + This fixes #12
   + A **new clean command** has been added, to clean up a manually edited or old
