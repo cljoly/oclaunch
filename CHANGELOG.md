@@ -1,5 +1,11 @@
 # Changelog of OcLaunch
 
+## 0.3.x
+
+### 0.3.0
+
+ + Improve README.md file, using special code in \_oasis Description field.
+
 ## 0.2.x
 
 ### v0.2.2
