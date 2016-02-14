@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 1ed46bd916ebb5846d3ecb6819284358) --->
+<!--- DO NOT EDIT (digest: 178029013bc216fe89eca49e09efae36) --->
 
 OcLaunch - Launch commands automagically
 ========================================
@@ -18,8 +18,8 @@ oclaunch](https://img.shields.io/badge/opam-oclaunch-red.svg)](http://opam.ocaml
 help](https://img.shields.io/badge/Get-Help!-orange.svg)](http://www.oclaunch.eu.org/help.html)
 <hr/><p>OcLaunch is a command-line tool to launch successively (each time the
 program is called) commands. It is designed to be used with any program,
-interactive or not. Feedback is welcome at contact@oclaunch.eu.org.<br/>
-Detailed presentation at http://ocla.ml. Try it, it works
+interactive or not. Feedback is welcome at *contact@oclaunch.eu.org*.
+Detailed presentation at http://ocla.ml.<br/> Try it, it works
 automagically!</p><p>For example, here is a typical session (you open a
 terminal emulator between each item): <ul> <li>You open your first terminal,
 your chat client is opened,</li> <li>On second launch of a terminal, your
