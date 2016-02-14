@@ -8,7 +8,7 @@ fi
 cd dist
 # File to signed
 # MEMO: -e: regexp, -v: not matched
-tobe_sig=$(ls | grep -e ".tar" -e ".zip" -v ".sig")
+tobe_sig=$(ls | grep -e ".tar" -e ".zip" | grep -v ".sig")
 
 for element in ${tobe_sig}
 do
