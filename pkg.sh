@@ -9,7 +9,7 @@ if ! [ -e dist ]; then
 fi
 
 # If no tag, use commit SHA1
-id=`git describe --abbrev=40 --candidates=50 HEAD`
+id=`git describe --abbrev=10 --candidates=50 HEAD`
 name=oclaunch_${id}_src # _src emphasis the difference with binary tarballs
 
 echo "Writing in" $name".*"
