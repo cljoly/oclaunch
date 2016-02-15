@@ -18,6 +18,7 @@ depends: [
   "atdgen"
   "base-threads"
   "core"
-  "core_extended"
+  "textutils"
+  "re2"
   "ocamlfind" {build}
 ]
