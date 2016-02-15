@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: e39b2a56b1c8d15b002c554e90d54359) --->
+<!--- DO NOT EDIT (digest: 82837b65c0730b7a1c78065ed839afd8) --->
 
 This is the INSTALL file for the OcLaunch distribution.
 
@@ -16,7 +16,7 @@ In order to compile this package, you will need:
 * core
 * textutils
 * atdgen
-* re2 for executable oclaunch
+* re2
 * alcotest for executable run_test
 * oUnit for executable run_test
 
