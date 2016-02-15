@@ -57,7 +57,8 @@ This version introduce major changes in the tmp and rc file.
 #### Community
 
  + Improve *release script*, to enhance contributing experience (making easier to
-   release source-code, binaries, signing…). Add *indentation script* too.
+   release source-code, binaries, signing, run test…). Stripped (and thus smaller)
+   binaries are being tested too. Add *indentation script* too.
  + Improve README.md file, using special code in \_oasis Description field.
 
 ## 0.2.x
