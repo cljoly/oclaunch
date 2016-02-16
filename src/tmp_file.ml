@@ -226,7 +226,7 @@ let reset_all () =
                     Are you sure?"
   |> (fun answer -> sprintf "Answer %s" (Messages.answer2str answer) |> Messages.debug; answer) (* Spy *)
   |> function
-    Messages.Yes -> reset_without_ask ()
+    Messages.Yes -> reset_without_ask (); Messages.ok "Successfully reseted!"
   | Messages.No -> ()
 ;;
 
