@@ -44,10 +44,10 @@ binary=../oclaunch.native
 env -i $binary
 
 # An exception with $EDITOR
-env -u EDITOR $binary -m 0
+env -u EDITOR $binary edit 0
 
 # Should throw no blocking error (2)
 env -u EDITOR $binary
 # No exception
-env -u EDITOR $binary -l
+env -u EDITOR $binary list
 
