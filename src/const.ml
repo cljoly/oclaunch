@@ -38,36 +38,34 @@
 
 open Core.Std;;
 
+(* We need to be as lazy as possible, since sometimes, some varible are not
+ * needed and thus, it's useless the raise an exception. *)
+
 (* General function to get environment variables
- * exp: exception*)
-let get_var ?(exp=false) ?default name =
+ * default: default value for the variable, if not set *)
+let get_var: ?default:(string lazy_t) -> string lazy_t -> string lazy_t =
+  fun ?default name ->
+  let open Lazy in
   let msg =
-    lazy (sprintf "ERROR: Couldn't get %s. Please consider setting it." name)
-  in
-  (* Return value or exception *)
-  let run_exn () =
-    match exp with
-    | true -> failwith (Lazy.force msg)
-    | false -> print_endline (Lazy.force msg); ""
+    name >>| fun name ->
+    sprintf "ERROR: Couldn't get %s. Please consider setting it." name
   in
   (* Get the var *)
+  name >>= fun name ->
   Sys.getenv name
   |> (function
-       | Some x -> x
-       | None ->
-         match default with
-         | None -> run_exn ()
-         | Some default -> default)
+       | Some x -> lazy x
+       | None -> Option.value_exn ~message:(Lazy.force msg) default)
 ;;
 
 (* Get current home *)
 let home =
-  lazy (get_var ~exp:true "HOME")
+  get_var (lazy "HOME")
 ;;
 
 (* Get default editor *)
 let editor = (* If editor is not set, it gets "", but an exception is raised *)
-  lazy (get_var ~exp:true "EDITOR")
+  get_var (lazy "EDITOR")
 ;;
 
 (* Level of verbosity, used by Messages module *)
@@ -81,6 +79,9 @@ let rc_file_default = Lazy.(home >>| (fun home -> home ^ "/" ^
 (* Current place to read settings, maybe modified from command line argument *)
 let rc_file = ref rc_file_default;;
 (* Set tmp file, in witch stock launches, in biniou format *)
-let tmp_file = get_var ~default:"/tmp/.oclaunch_trace.dat" "OC_TMP";; (* File where launch are logged *)
+let tmp_file =
+  get_var ~default:(lazy ("/tmp/.oclaunch_trace.dat")) (lazy "OC_TMP")
+  |> Lazy.force
+;;
 (* Default number for launch *)
 let default_launch = 1;; (* TODO set it in rc file *)
