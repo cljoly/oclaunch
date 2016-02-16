@@ -120,7 +120,7 @@ let debug message =
 let info message =
   check_verbosity ~f:(fun () ->
          let mess = message ^ "\n" in
-         print ~color:White ~style:Normal mess
+         print ~color:White ~style:Bold mess
        ) 3
 ;;
 
