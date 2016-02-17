@@ -85,7 +85,7 @@ let shared_params =
         ~doc:"file Read configuration from the given file and continue parsing."
   (* Flag to handle signals *)
   <*> flag "-s" no_arg
-        ~aliases:["--sinals" ; "-signals"]
+        ~aliases:["--signals" ; "-signals"]
         ~doc:"Handle signals. Warning, this is not much tested and not \
               implemented the best way."
 ;;
