@@ -53,7 +53,7 @@ let shared_params =
          (* Set the level of verbosity *)
          Const.verbosity := verbosity;
          (* Do not use color *)
-         Const.no_color := no_color;
+         Const.no_color := no_color || !Const.no_color;
          (* Use given rc file, should run the nth argument if present *)
          Const.rc_file := (Lazy.return rc_file_name);
          (* Active signal handling *)

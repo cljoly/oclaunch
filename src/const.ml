@@ -75,7 +75,7 @@ let verbosity =
        |> Int.of_string);;
 (* Use do not use colors, 0 -> false, anything -> true *)
 let no_color =
-  ref (get_var ~default:(lazy "1") (lazy "OC_COLOR")
+  ref (get_var ~default:(lazy "0") (lazy "OC_NOCOLOR")
        |> Lazy.force
        |> (function "0" -> false | _ -> true)
       )
