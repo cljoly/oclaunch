@@ -24,13 +24,15 @@ This version introduce major changes in the tmp and rc file.
     + A **new clean command** has been added, to clean up a manually edited or old
       rc file.
     + Summary of edit command was improved.
- + Rewrite command line parsing, in a cleaner and safer way. It now handles
-   `exit`, would be able to deal with *auto completion* and display more accurate
-   help messages. Though, for backward compatibility reasons, a hack has been
-   setted up, allowing to call the program with a number as first argument or
-   without any argument. This way, the program tries to launch the corresponding
-   command or the next one. The problem is that you can't call it with an
-   option. To do this, use the **`run` subcommand**.
+ + Rewrite command line parsing, in a cleaner and safer way.
+    + It now handles `exit`, would be able to deal with *auto completion* and
+      display more accurate help messages. Further more, *partial commands* are
+      supported, such as `lis` for `list`
+    + However, for backward compatibility reasons, a hack has been set up,
+      allowing to call the program with a number as first argument or without
+      any argument. This way, the program tries to launch the corresponding
+      command or the next one. The problem is that you can't call it with an
+      option. To do this, use the **`run` subcommand**.
  + Improve **list subcommand**, now using Textutils library, displaying in an array.
  + Improve **edit subcommand** (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
