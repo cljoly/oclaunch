@@ -45,17 +45,17 @@ open Core.Std;;
  * default: default value for the variable, if not set *)
 let get_var: ?default:(string lazy_t) -> string lazy_t -> string lazy_t =
   fun ?default name ->
-  let open Lazy in
-  let msg =
-    name >>| fun name ->
-    sprintf "ERROR: Couldn't get %s. Please consider setting it." name
-  in
-  (* Get the var *)
-  name >>= fun name ->
-  Sys.getenv name
-  |> (function
-       | Some x -> lazy x
-       | None -> Option.value_exn ~message:(Lazy.force msg) default)
+    let open Lazy in
+    let msg =
+      name >>| fun name ->
+      sprintf "ERROR: Couldn't get %s. Please consider setting it." name
+    in
+    (* Get the var *)
+    name >>= fun name ->
+    Sys.getenv name
+    |> (function
+         | Some x -> lazy x
+         | None -> Option.value_exn ~message:(Lazy.force msg) default)
 ;;
 
 (* Get current home *)
@@ -78,14 +78,14 @@ let no_color =
   ref (get_var ~default:(lazy "0") (lazy "OC_COLOR")
        |> Lazy.force
        |> (function "0" -> false | _ -> true)
-       )
+      )
 ;;
 
 (* Default place to read settings *)
 let rc_file_default =
   let internal_default : string lazy_t =
     (* Default value, if no value is given (for instance as
-    command line argument), or no environnement variable is set *)
+       command line argument), or no environnement variable is set *)
     Lazy.(home >>| fun home -> home ^ "/" ^ ".oclaunch_rc.json")
   in
   get_var ~default:internal_default (lazy "OC_RC")
