@@ -47,6 +47,8 @@ This version introduce major changes in the tmp and rc file.
       bd712c97c788922aabdda15f75e78cb05882c53f).
  + Code clean up (especially indentation, thanks to ocp-indent), messages
    improvement.
+ + Allow to set parameters with environment variable, such as `OC_RC, `OC_VERB`,
+   `OC_NOCOLOR`. This is added to the previous variable `OC_TMP`. See #20.
  + Add unit tests and clean them up.
  + Add licence warning.
  + Remove core\_extended dependency, incorporating some code from the library
