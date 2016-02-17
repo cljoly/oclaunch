@@ -69,13 +69,27 @@ let editor = (* If editor is not set, it gets "", but an exception is raised *)
 ;;
 
 (* Level of verbosity, used by Messages module *)
-let verbosity = ref 4;;
-(* Use do not use colors *)
-let no_color = ref false;;
+let verbosity =
+  ref (get_var ~default:(lazy "4") (lazy "OC_VERB")
+       |> Lazy.force
+       |> Int.of_string);;
+(* Use do not use colors, 0 -> false, anything -> true *)
+let no_color =
+  ref (get_var ~default:(lazy "0") (lazy "OC_COLOR")
+       |> Lazy.force
+       |> (function "0" -> false | _ -> true)
+       )
+;;
 
 (* Default place to read settings *)
-let rc_file_default = Lazy.(home >>| (fun home -> home ^ "/" ^
-                                                  ".oclaunch_rc.json"));;
+let rc_file_default =
+  let internal_default : string lazy_t =
+    (* Default value, if no value is given (for instance as
+    command line argument), or no environnement variable is set *)
+    Lazy.(home >>| fun home -> home ^ "/" ^ ".oclaunch_rc.json")
+  in
+  get_var ~default:internal_default (lazy "OC_RC")
+;;
 (* Current place to read settings, maybe modified from command line argument *)
 let rc_file = ref rc_file_default;;
 (* Set tmp file, in witch stock launches, in biniou format *)
