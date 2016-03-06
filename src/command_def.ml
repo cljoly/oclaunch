@@ -86,7 +86,7 @@ let shared_params =
   (* Flag to handle signals *)
   <*> flag "-s" no_arg
         ~aliases:["--signals" ; "-signals"]
-        ~doc:"Handle signals. Warning, this is not much tested and not \
+        ~doc:" Handle signals. Warning, this is not much tested and not \
               implemented the best way."
 ;;
 
