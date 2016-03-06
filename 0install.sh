@@ -36,17 +36,20 @@ mv $final_binary_name $build_log $name
 tree > $dbg_log
 
 # Create archive, building the two in parallel, to speed up the process
-# WARNING the script may exit while the first compression didn't end.
 echo "========= Creating base archive ========="
 tar_name=${name}.tar
 tar -cvaf ${tar_name} $name >> $dbg_log
 
 echo "========= Creating first archive ========="
-lzma -f -9 ${tar_name} >> $dbg_log &
+coproc lzma -f -9 ${tar_name} >> $dbg_log
 
 # Create stripped archive
 tar_name_stripped=${name}_stripped.tar
 strip $final_binary_path
 tar -cvaf ${tar_name_stripped} $name >> $dbg_log
 echo "========= Creating second (stripped) archive ========="
-lzma -f -9 ${tar_name_stripped} >> $dbg_log
+coproc lzma -f -9 ${tar_name_stripped} >> $dbg_log
+
+# Wait for the detached compression process  to finish
+# (see lines starting with 'coproc')
+wait
