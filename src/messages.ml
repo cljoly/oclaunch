@@ -166,12 +166,14 @@ let rec confirm info =
          (* XXX Be sure to show the message *)
          Out_channel.(flush stdout);
          let str_answer = In_channel.(input_line ~fix_win_eol:true stdin) in
-         str_answer |> (function
-                | Some "Y" | Some "y" | Some "Yes" | Some "YES" | Some "yes" -> Yes
-                | Some "N" | Some "n" | Some "No" | Some "NO" | Some "no" -> No
-                | Some _ | None ->
-                  warning "Please enter 'yes' or 'no' or 'y' or 'n'.";
-                  confirm info)
+         str_answer |> Option.map ~f:String.lowercase
+         |> (function
+              | Some "y" | Some "ye" | Some "yes" -> Yes
+              | Some "n" | Some "no" -> No
+              | Some _ | None ->
+                warning "Please enter 'yes' or 'no', or 'y' or 'n' (case \
+                doesn't matter).";
+                confirm info)
        )
 ;;
 
