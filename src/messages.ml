@@ -101,7 +101,13 @@ let print ~color ~style message =
 (* Behave in a conform way to verbosity
  * The higher is the number, the more important the message is, the lower
  * verbosity value display it *)
-let check_verbosity ~f function_number =
+(* f: function to show the message
+ * debug: fonction to call before f, for instance a debugging function displaying
+ * date and time *)
+let check_verbosity ?debug ~f function_number =
+  (* Debugging function *)
+  debug |> (function None -> () | Some debug_fonction -> debug_fonction "");
+
   match function_number <= !Const.verbosity with
     true -> (* Display the message *)
     f ()
@@ -118,14 +124,14 @@ let debug message =
 ;;
 
 let info message =
-  check_verbosity ~f:(fun () ->
+  check_verbosity ~debug ~f:(fun () ->
          let mess = message ^ "\n" in
          print ~color:White ~style:Bold mess
        ) 3
 ;;
 
 let warning message =
-  check_verbosity ~f:(fun () ->
+  check_verbosity ~debug ~f:(fun () ->
          let mess = message ^ "\n" in
          print ~color:Red ~style:Bold mess
        ) 1
@@ -170,14 +176,14 @@ let rec confirm info =
 ;;
 
 let ok message =
-  check_verbosity ~f:(fun () ->
+  check_verbosity ~debug ~f:(fun () ->
          let mess = message ^ "\n" in
          print ~color:Green ~style:Bold mess
        ) 2
 ;;
 
 let tips message =
-  check_verbosity ~f:(fun () ->
+  check_verbosity ~debug ~f:(fun () ->
          let mess = message ^ "\n" in
          print ~color:Yellow ~style:Normal mess
        ) 4
