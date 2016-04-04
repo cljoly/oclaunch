@@ -1211,9 +1211,10 @@ let print ~cecill =
            Option.value ~default:"" str |> Messages.debug;
            str)
 
+      |> Option.map ~f:String.lowercase
       |> (function
-           | Some "en" | Some "En" | Some "EN" -> `En
-           | Some "fr" | Some "Fr" | Some "FR"-> `Fr
+           | Some "en" -> `En
+           | Some "fr" -> `Fr
            | None | Some _ -> Messages.warning "Please enter 'Fr' or 'En'"; def_lang ()
          ))
   in
