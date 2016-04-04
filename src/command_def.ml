@@ -229,7 +229,8 @@ let licence =
            ~doc:" Display the header of the licence"
     )
     (fun _ header () ->
-       let cecill = not(header) in (* When cecill is false, it displays the header *)
+       (* When cecill is false, it displays the header *)
+       let cecill = not(header) in
        Licencing.print ~cecill
     )
 ;;
