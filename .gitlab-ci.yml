@@ -1,0 +1,10 @@
+before_script:
+  - apt-get update -qq && apt-get install -y -qq opam
+  - opam --version
+
+# OCaml version 4.02
+ocaml402:
+  - opam init --comp 4.02.3
+  - ./configure --enable-tests
+  - make test
+  - opam pin add oclaunch .
