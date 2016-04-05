@@ -4,7 +4,4 @@ before_script:
 
 # OCaml version 4.02
 ocaml402:
-  - opam init --comp 4.02.3
-  - ./configure --enable-tests
-  - make test
-  - opam pin add oclaunch .
+  script: "opam init --comp 4.02.3;./configure --enable-tests;make test;opam pin add oclaunch ."
