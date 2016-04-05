@@ -4,7 +4,7 @@ before_script:
 
 # OCaml version of the ci runner, i.e. from the system
 ocaml_sys:
-  script: "opam init;eval `opam config env`;./configure --enable-tests;make test;opam pin add oclaunch ."
+  script: "opam init;eval `opam config env`;echo 'let ()=try Topdirs.dir_directory (Sys.getenv \"OCAML_TOPLEVEL_PATH\") with Not_found -> ();;' >  ~/.ocamlinit;./configure --enable-tests;make test;opam pin add oclaunch ."
 
 # OCaml version 4.02
 ocaml_402:
