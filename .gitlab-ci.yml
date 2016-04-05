@@ -1,5 +1,5 @@
 before_script:
-  - apt-get update -qq && apt-get install -y -qq opam
+  - apt-get update -qq && apt-get install -y -qq opam ocaml ocaml-native-compilers
   - opam --version
 
 # OCaml version of the ci runner, i.e. from the system
