@@ -61,8 +61,12 @@ let rc_template () =
  * exist *)
 let create_rc_file ~name =
   (* Notify that we initialise config file *)
-  sprintf "Initializing empty configuration file in %s\n" name |> Messages.warning;
-  Messages.tips "Feedback is welcomed at leowzukw@vmail.me\n";
+  sprintf "Initializing empty configuration file in %s." name |> Messages.warning;
+  (* Final \n to display newline before showing the licence. *)
+  Messages.tips "Feedback is welcome at feedback@oclaunch.eu.org.\n\
+  To get remind for new stable versions, subscribe to our low-traffic (up to 6 \
+  mail per year) mailing list: announce@oclaunch.eu.org.\n\
+  See you soon!\n";
 
   (* Display licence information *)
   Licencing.print ~cecill:false;
