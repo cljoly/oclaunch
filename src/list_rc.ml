@@ -38,31 +38,34 @@ open Core.Std;;
 
 (* This modules contains function to list the content of the rc file *)
 
-(* Characters to add to show a command was truncated *)
+(* Characters to append to show a command was truncated *)
 let trunc_indicator = "...";;
 
-(* Truncate to elength, and add … after entries longer than elength or let them going
- * through unmodified. Special case when elength < length(trunc_indicator),
- * nothing is done *)
+(* Truncate to elength, and add [trunc_indicator] after entries longer than
+ * elength or let them going through unmodified. *)
+(* Special case when elength < length(trunc_indicator), nothing is done *)
 let truncate ?elength str =
-  (* Characters appended to show we have truncated *)
   let trunc_ind_l = String.length trunc_indicator in
   let elength =
-    (* TODO Set it in Const *)
+    (* TODO Set 80 in Const *)
     Option.value ~default:80 elength
-    |> fun l -> l - trunc_ind_l
   in
-  (* We add a character, so we truncate on the length +1, to avoid making
-   * short enough entry appearing to be truncated *)
-  (* For instance, with elength=4
-   * task -> task, tas -> tas and task1 -> task...*)
-   if (elength <= trunc_ind_l) || (String.length str) > (elength + trunc_ind_l)
-  (* Keep only elengthth chars (String.prefix is inclusive but incompatible with
-   * 0 to keep whole string) *)
-   then String.prefix str elength
-    |> (* To show we truncate, using '...' instead of '…' to limit display
-    problems *) fun short_entry ->
-        String.concat [ short_entry ; "..." ]
+
+  (* Cache it, to debug and for the condition later *)
+  let str_length = String.length str in
+  sprintf "Length of the command: %i" str_length |> Messages.debug;
+  sprintf "Elength: %i" elength |> Messages.debug;
+
+  (* We test separately, before truncating, that:
+   * - elength is not <= to the length of the indicator, otherwise the command
+   * should pass untouched
+   * - the command is longer than elength *)
+   if not(elength <= trunc_ind_l) && str_length > elength
+  (* String.prefix is inclusive but incompatible with
+   * 0 to keep whole string. Truncate to elength - trunc_ind_l since we add the
+   * trunc_indicator (we need to cut a bit more) *)
+   then String.prefix str (elength - trunc_ind_l) |> fun short_entry ->
+        String.concat [ short_entry ; trunc_indicator ]
    else str
 ;;
 
