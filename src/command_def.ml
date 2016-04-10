@@ -138,9 +138,14 @@ let list =
     Spec.(
       empty
       +> shared_params
-    )
-    (fun { rc } () ->
-       List_rc.run ~rc ())
+    +> flag "--el" (optional int)
+         ~doc:" Max length of displayed entries, 0 keeps as-is"
+  )
+  (fun { rc } length () ->
+    (* XXX A match case to deal with optionnal argument is tricky *)
+    match length with
+    | None -> List_rc.run ~rc ()
+    | Some l -> List_rc.run ~rc ~elength:l ())
 ;;
 
 (* To clean-up rc file *)
@@ -226,7 +231,7 @@ let licence =
       empty
       +> shared_params
       +> flag "-header" no_arg
-           ~doc:" Display the header of the licence"
+           ~doc:" Display the header associated to the licence"
     )
     (fun _ header () ->
        let cecill = not(header) in (* When cecill is false, it displays the header *)

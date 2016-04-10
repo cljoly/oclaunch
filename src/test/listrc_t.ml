@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2016                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -36,66 +36,37 @@
 
 open Core.Std;;
 
-(* This modules contains function to list the content of the rc file *)
+(* A module containing tests for src/edit_command.ml *)
 
-(* Characters to add to show a command was truncated *)
-let trunc_indicator = "...";;
-
-(* Truncate to elength, and add … after entries longer than elength or let them going
- * through unmodified. Special case when elength < length(trunc_indicator),
- * nothing is done *)
-let truncate ?elength str =
-  (* Characters appended to show we have truncated *)
-  let trunc_ind_l = String.length trunc_indicator in
-  let elength =
-    (* TODO Set it in Const *)
-    Option.value ~default:80 elength
-    |> fun l -> l - trunc_ind_l
-  in
-  (* We add a character, so we truncate on the length +1, to avoid making
-   * short enough entry appearing to be truncated *)
-  (* For instance, with elength=4
-   * task -> task, tas -> tas and task1 -> task...*)
-   if (elength <= trunc_ind_l) || (String.length str) > (elength + trunc_ind_l)
-  (* Keep only elengthth chars (String.prefix is inclusive but incompatible with
-   * 0 to keep whole string) *)
-   then String.prefix str elength
-    |> (* To show we truncate, using '...' instead of '…' to limit display
-    problems *) fun short_entry ->
-        String.concat [ short_entry ; "..." ]
-   else str
+(* Function truncate *)
+let trunc (str, elength, expected) () =
+  let current = List_rc.truncate ~elength str in
+  OUnit.assert_equal current expected
 ;;
 
-(* Function which list, rc would be automatically reread, this optional
- * argument is kept for backward compatibility
- * elength: truncate entries to length (0 does nothing)*)
-(* FIXME Remove ?rc or use it *)
-(* TODO:
- * - Test it, esp. ordering
- * - Allow to set form of the table, multiple rc file, display next to be
- * launched… *)
-let run ?rc ?elength () =
-  let rc_numbered =
-    File_com.init_rc ()
-    |> fun rc -> rc.Settings_t.progs
-                 |> List.mapi ~f:(fun i item -> ( item, i ))
-  in
-  let tmp : Tmp_file.t = Tmp_file.init () in
-  Tmp_file.get_accurate_log ~tmp ()
-  (* Generate list to feed the table,
-   * XXX assuming all will be in the right order *)
-  |> List.map ~f:(function
-           ( cmd, number ) ->
-           [ (* Number of a command in rc file, command, number of launch *)
-             (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
-             (* Limit length, to get better display with long command. A default
-              * length is involved when no length is specified *)
-             elength |> (function None -> truncate cmd
-                 | Some elength -> truncate ~elength cmd);
-             (Int.to_string number)
-           ])
-  |> Textutils.Ascii_table.simple_list_table
-       ~display:Textutils.Ascii_table.Display.column_titles
-       [ "Id" ; "Command" ; "Number of launch" ]
+let data = [
+  ( ("", 4, ""), "Empty string" );
+
+  ( ("cmd1", 4, "cmd1"), "Right length" );
+  ( ("cmd11", 4, "c..."), "A bit longer" );
+  ( ("cmdddd1", 4, "c..."), "Much too long" );
+
+  ( ("cmd", 3, "cmd"), "Short command" );
+  ( ("cm", 3, "cm"), "Shorter command" );
+  ( ("c", 3, "c"), "Tiny command" );
+
+  ( ("cmd1", 0, "cmd1"), "Keep as-is" );
+  ( ("cmd1", -5, "cmd1"), "Negative figure, keep as-is" );
+  ( ("cmd1", (String.length List_rc.trunc_indicator) - 1, "cmd1"), "Under \
+  indicator, keep as-is" );
+];;
+
+let tests =
+  List.map data ~f:(fun (t, name) ->
+    (name, `Quick, (trunc t))
+  )
 ;;
+
+(* To be used in test.ml *)
+let alco = [( "List_rc.ml", tests );];;
 

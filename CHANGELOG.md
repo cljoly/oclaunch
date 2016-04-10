@@ -33,7 +33,8 @@ This version introduce major changes in the tmp and rc file.
       any argument. This way, the program tries to launch the corresponding
       command or the next one. The problem is that you can't call it with an
       option. To do this, use the **`run` subcommand**.
- + Improve **list subcommand**, now using Textutils library, displaying in an array.
+ + Improve **list subcommand**, now using Textutils library, displaying in an
+   array. Add `--el` argument to limit the length of displayed entries.
  + Improve **edit subcommand** (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
 
