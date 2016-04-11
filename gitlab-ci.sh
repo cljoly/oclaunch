@@ -12,7 +12,7 @@ opam --git-version
 ocaml -version
 
 # ocamlfind is mandatory to build
-opam install ocamlfind
+opam install -y ocamlfind
 
 # Building OcLaunch and running tests
 ./configure --enable-tests
