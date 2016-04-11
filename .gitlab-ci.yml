@@ -9,3 +9,7 @@ ocaml_sys:
 # OCaml version 4.02
 ocaml_402:
   script: "opam init --comp 4.02.3;eval `opam config env`;./configure --enable-tests;make test;opam pin add oclaunch ."
+
+# A script to test
+ocaml_script:
+  script: "./gitlab-ci.sh"
