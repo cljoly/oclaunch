@@ -5,7 +5,7 @@
 # Inspired by https://github.com/ocaml/ocaml-ci-scripts
 
 # Use -y with evry opam command
-OPAMYES=true
+export OPAMYES=true
 # Installing opam
 opam init --comp="$1"
 eval `opam config env`
