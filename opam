@@ -3,15 +3,14 @@ name: "oclaunch"
 version: "0.3.1"
 maintainer: "Leo <leowzukw@vmail.me>"
 authors: "Leo <leowzukw@vmail.me>"
-license: "CeCILL"
 homepage: "http://www.oclaunch.eu.org"
 bug-reports: "https://gitlab.com/WzukW/oclaunch/issues/new"
+license: "CeCILL"
 dev-repo: "git@gitlab.com:WzukW/oclaunch.git"
 build: [
   ["./configure" "--prefix=%{prefix}%"]
   [make]
 ]
-available: [ ocaml-version >= "4.02.0"]
 install: [make "install"]
 remove: ["ocamlfind" "remove" "ocl"]
 depends: [
@@ -22,3 +21,4 @@ depends: [
   "re2"
   "ocamlfind" {build}
 ]
+available: [ocaml-version >= "4.02.0"]
