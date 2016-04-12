@@ -11,13 +11,18 @@ opam init --comp="$1"
 eval `opam config env`
 
 # Versions
+echo "= Versions ="
+echo "opam --version"
 opam --version
+echo "opam --git-version"
 opam --git-version
+echo "ocaml -version"
 ocaml -version
+echo "============"
 
 # ocamlfind is mandatory to build
 opam install ocamlfind
-# XXX Manualy install development dependancies, not yet supported (ait opam 1.3)
+# XXX Manually install development dependancies, not yet supported (ait opam 1.3)
 opam install alcotest oUnit
 
 # Installing dependancies and testing installation
