@@ -17,6 +17,8 @@ ocaml -version
 
 # ocamlfind is mandatory to build
 opam install ocamlfind
+# XXX Manualy install development dependancies, not yet supported (ait opam 1.3)
+opam install alcotest oUnit
 
 # Installing dependancies and testing installation
 opam pin add oclaunch-ci .
