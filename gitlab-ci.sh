@@ -4,8 +4,10 @@
 
 # Inspired by https://github.com/ocaml/ocaml-ci-scripts
 
+# Use -y with evry opam command
+export OPAMYES=true
 # Installing opam
-opam init -y --comp="$1"
+opam init --comp="$1"
 eval `opam config env`
 
 # Versions
@@ -14,10 +16,10 @@ opam --git-version
 ocaml -version
 
 # ocamlfind is mandatory to build
-opam install -y ocamlfind
+opam install ocamlfind
 
 # Installing dependancies and testing installation
-opam pin add -y oclaunch-ci .
+opam pin add oclaunch-ci .
 # Building OcLaunch and running tests
 ./configure --enable-tests
 make test
