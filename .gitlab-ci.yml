@@ -9,3 +9,7 @@ ocaml_sys:
 # OCaml version 4.02
 ocaml_402:
   script: "./gitlab-ci.sh 4.02.3"
+
+# OCaml version 4.03
+ocaml_403:
+  script: "./gitlab-ci.sh 4.03.0+beta2"
