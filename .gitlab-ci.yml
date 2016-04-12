@@ -3,8 +3,8 @@ before_script:
   - opam --version
 
 # OCaml version of the ci runner, i.e. from the system
-ocaml_sys:
-  script: "./gitlab-ci.sh system"
+#ocaml_sys:
+#  script: "./gitlab-ci.sh system"
 
 # OCaml version 4.02
 ocaml_402:
