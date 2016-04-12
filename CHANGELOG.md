@@ -65,7 +65,7 @@ This version introduce major changes in the tmp and rc file.
    release source-code, binaries, signing, run test…). Stripped (and thus smaller)
    binaries are being tested too. Add *indentation script* too.
  + Improve README.md file, using special code in \_oasis Description field.
- + Using Gitlab CI to build with several version of the compiler.
+ + Using Gitlab CI to build with several versions of the compiler.
 
 ## 0.2.x
 
