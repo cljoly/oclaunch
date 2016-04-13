@@ -38,7 +38,7 @@ open Core.Std;;
 
 (* Variable to store version number *)
 (* TODO Get value from file *)
-let version_number = "0.3.0-pre2";;
+let version_number = "0.3.0";;
 
 (* Variable store building information *)
 (* XXX This is fake value, it corresponds to the running
