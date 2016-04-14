@@ -41,7 +41,8 @@ open Core.Std;;
 (* French version *)
 let fr_header =
   "\
-  Copyright © Joly Clément, 2014-2015 \
+
+  Copyright © Joly Clément, 2014-2016 \
 
  leowzukw@vmail.me \
 
@@ -80,7 +81,8 @@ let fr_header =
 (* English version *)
 let en_header =
   "\
-  Copyright © Joly Clément, 2015 \
+
+  Copyright © Joly Clément, 2014-2016 \
 
  leowzukw@vmail.me \
 
@@ -1209,9 +1211,10 @@ let print ~cecill =
            Option.value ~default:"" str |> Messages.debug;
            str)
 
+      |> Option.map ~f:String.lowercase
       |> (function
-           | Some "en" | Some "En" | Some "EN" -> `En
-           | Some "fr" | Some "Fr" | Some "FR"-> `Fr
+           | Some "en" -> `En
+           | Some "fr" -> `Fr
            | None | Some _ -> Messages.warning "Please enter 'Fr' or 'En'"; def_lang ()
          ))
   in

@@ -8,7 +8,7 @@ setup.log
 setup.exe
 # Tests
 _tests
-# # pkg.sh
+# pkg.sh
 dist
 # Misc
 .paths

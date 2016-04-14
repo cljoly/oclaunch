@@ -17,6 +17,6 @@ do
   sha256sum ${element} > ${element}.sha256
 
   echo "Signing" ${element}
-  gpg2 --detach-sign ${element}
+  gpg2 --armor --detach-sign ${element}
 done
 

@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2016                                             *)
 (*                                                                            *)
 (*  leowzukw@vmail.me                                                         *)
 (*                                                                            *)
@@ -34,68 +34,41 @@
 (*  termes.                                                                   *)
 (******************************************************************************)
 
-(* File to stock configuration variables *)
-
 open Core.Std;;
 
-(* We need to be as lazy as possible, since sometimes, some varible are not
- * needed and thus, it's useless the raise an exception. *)
+(* A module containing tests for src/edit_command.ml *)
 
-(* General function to get environment variables
- * default: default value for the variable, if not set *)
-let get_var: ?default:(string lazy_t) -> string lazy_t -> string lazy_t =
-  fun ?default name ->
-    let open Lazy in
-    let msg =
-      name >>| fun name ->
-      sprintf "ERROR: Couldn't get %s. Please consider setting it." name
-    in
-    (* Get the var *)
-    name >>= fun name ->
-    Sys.getenv name
-    |> (function
-         | Some x -> lazy x
-         | None -> Option.value_exn ~message:(Lazy.force msg) default)
+(* Function truncate *)
+let trunc (str, elength, expected) () =
+  let current = List_rc.truncate ~elength str in
+  OUnit.assert_equal current expected
 ;;
 
-(* Get current home *)
-let home =
-  get_var (lazy "HOME")
+let data = [
+  ( ("", 4, ""), "Empty string" );
+
+  ( ("cmd1", 4, "cmd1"), "Right length" );
+  ( ("cmd11", 4, "c..."), "A bit longer" );
+  ( ("cmdddd1", 4, "c..."), "Much too long" );
+
+  ( ("cmd", 3, "cmd"), "Short command" );
+  ( ("cm", 3, "cm"), "Shorter command" );
+  ( ("c", 3, "c"), "Tiny command" );
+
+  ( ("cmd1", 0, "cmd1"), "Keep as-is" );
+  ( ("cmd1", -5, "cmd1"), "Negative figure, keep as-is" );
+  ( ("cmd1", (String.length List_rc.trunc_indicator), "cmd1"), "On the \
+  indicator, keep as-is" );
+  ( ("cmd1", (String.length List_rc.trunc_indicator) - 1, "cmd1"), "Under \
+  indicator, keep as-is" );
+];;
+
+let tests =
+  List.map data ~f:(fun (t, name) ->
+    (name, `Quick, (trunc t))
+  )
 ;;
 
-(* Get default editor *)
-let editor = (* If editor is not set, it gets "", but an exception is raised *)
-  get_var (lazy "EDITOR")
-;;
+(* To be used in test.ml *)
+let alco = [( "List_rc.ml", tests );];;
 
-(* Level of verbosity, used by Messages module *)
-let verbosity =
-  ref (get_var ~default:(lazy "4") (lazy "OC_VERB")
-       |> Lazy.force
-       |> Int.of_string);;
-(* Use do not use colors, 0 -> false, anything -> true *)
-let no_color =
-  ref (get_var ~default:(lazy "0") (lazy "OC_NOCOLOR")
-       |> Lazy.force
-       |> (function "0" -> false | _ -> true)
-      )
-;;
-
-(* Default place to read settings *)
-let rc_file_default =
-  let internal_default : string lazy_t =
-    (* Default value, if no value is given (for instance as
-       command line argument), or no environnement variable is set *)
-    Lazy.(home >>| fun home -> home ^ "/" ^ ".oclaunch_rc.json")
-  in
-  get_var ~default:internal_default (lazy "OC_RC")
-;;
-(* Current place to read settings, maybe modified from command line argument *)
-let rc_file = ref rc_file_default;;
-(* Set tmp file, in witch stock launches, in biniou format *)
-let tmp_file =
-  get_var ~default:(lazy ("/tmp/.oclaunch_trace.dat")) (lazy "OC_TMP")
-  |> Lazy.force
-;;
-(* Default number for launch *)
-let default_launch = 1;; (* TODO set it in rc file *)

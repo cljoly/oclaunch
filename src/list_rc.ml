@@ -38,14 +38,46 @@ open Core.Std;;
 
 (* This modules contains function to list the content of the rc file *)
 
+(* Characters to append to show a command was truncated *)
+let trunc_indicator = "...";;
+
+(* Truncate to elength, and add [trunc_indicator] after entries longer than
+ * elength or let them going through unmodified. *)
+(* Special case when elength < length(trunc_indicator), nothing is done *)
+let truncate ?elength str =
+  let trunc_ind_l = String.length trunc_indicator in
+  let elength =
+    (* TODO Set 80 in Const *)
+    Option.value ~default:80 elength
+  in
+
+  (* Cache it, to debug and for the condition later *)
+  let str_length = String.length str in
+  sprintf "Length of the command: %i" str_length |> Messages.debug;
+  sprintf "Elength: %i" elength |> Messages.debug;
+
+  (* We test separately, before truncating, that:
+   * - elength is not <= to the length of the indicator, otherwise the command
+   * should pass untouched
+   * - the command is longer than elength *)
+   if not(elength <= trunc_ind_l) && str_length > elength
+  (* String.prefix is inclusive but incompatible with
+   * 0 to keep whole string. Truncate to elength - trunc_ind_l since we add the
+   * trunc_indicator (we need to cut a bit more) *)
+   then String.prefix str (elength - trunc_ind_l) |> fun short_entry ->
+        String.concat [ short_entry ; trunc_indicator ]
+   else str
+;;
+
 (* Function which list, rc would be automatically reread, this optional
- * argument is kept for backward compatibility *)
+ * argument is kept for backward compatibility
+ * elength: truncate entries to length (0 does nothing)*)
 (* FIXME Remove ?rc or use it *)
 (* TODO:
  * - Test it, esp. ordering
  * - Allow to set form of the table, multiple rc file, display next to be
  * launched… *)
-let run ?rc () =
+let run ?rc ?elength () =
   let rc_numbered =
     File_com.init_rc ()
     |> fun rc -> rc.Settings_t.progs
@@ -59,7 +91,10 @@ let run ?rc () =
            ( cmd, number ) ->
            [ (* Number of a command in rc file, command, number of launch *)
              (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
-             cmd;
+             (* Limit length, to get better display with long command. A default
+              * length is involved when no length is specified *)
+             elength |> (function None -> truncate cmd
+                 | Some elength -> truncate ~elength cmd);
              (Int.to_string number)
            ])
   |> Textutils.Ascii_table.simple_list_table

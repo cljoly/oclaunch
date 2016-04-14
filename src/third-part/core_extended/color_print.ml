@@ -1,3 +1,4 @@
+(* Copyright Jane Street Group, LLC 2012- 2016 *)
 open Core.Std
 
 let ansi_regexp = Memo.unit (fun () -> Re2.Std.Re2.create_exn "\027\\[.*?m")

@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: e83e83ffeca91f64ced159dafe6e0f0c)
+# DO NOT EDIT (digest: db4bdd27155ce9d25c2a54aac4c69750)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -20,24 +20,26 @@ true: annot, bin_annot
 <src/oclaunch.{native,byte}>: pkg_re2
 <src/oclaunch.{native,byte}>: pkg_textutils
 <src/oclaunch.{native,byte}>: pkg_threads
-<src/*.ml{,i,y}>: pkg_re2
 # Executable run_test
 <src/test/test.{native,byte}>: pkg_alcotest
 <src/test/test.{native,byte}>: pkg_atdgen
 <src/test/test.{native,byte}>: pkg_core
 <src/test/test.{native,byte}>: pkg_oUnit
+<src/test/test.{native,byte}>: pkg_re2
 <src/test/test.{native,byte}>: pkg_textutils
 <src/test/test.{native,byte}>: pkg_threads
 <src/*.ml{,i,y}>: pkg_alcotest
 <src/*.ml{,i,y}>: pkg_atdgen
 <src/*.ml{,i,y}>: pkg_core
 <src/*.ml{,i,y}>: pkg_oUnit
+<src/*.ml{,i,y}>: pkg_re2
 <src/*.ml{,i,y}>: pkg_textutils
 <src/*.ml{,i,y}>: pkg_threads
 <src/test/*.ml{,i,y}>: pkg_alcotest
 <src/test/*.ml{,i,y}>: pkg_atdgen
 <src/test/*.ml{,i,y}>: pkg_core
 <src/test/*.ml{,i,y}>: pkg_oUnit
+<src/test/*.ml{,i,y}>: pkg_re2
 <src/test/*.ml{,i,y}>: pkg_textutils
 <src/test/*.ml{,i,y}>: pkg_threads
 # OASIS_STOP

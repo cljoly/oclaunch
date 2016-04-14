@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        OcLaunch
-Version:     0.3.0-pre1
+Version:     0.3.0-pre2
 Synopsis:    Launch commands automagically
 Authors:     Joly Clément <leowzukw@vmail.me>
 Maintainers: Joly Clément <leowzukw@vmail.me>
@@ -34,13 +34,11 @@ Executable oclaunch
 Executable "run_test"
   Path: src
   MainIs: test/test.ml
-  Build$: flag(tests)
   CompiledObject: best
   Install: false
-  BuildDepends: alcotest, oUnit, core, threads, textutils, atdgen
+  BuildDepends: alcotest, oUnit, core, textutils, atdgen, threads, re2
 
-Test "tests"
-  Run$: flag(tests)
+Test tests
   Command: $run_test -q
   WorkingDirectory: src/test
 

@@ -40,5 +40,6 @@ open Core.Std;;
 
 let () =
   Alcotest.run "Test suite for the project"
-    (List.concat [ Ec_t.alco ; Exec_t.alco ; Edit_t.alco ; Unify_t.alco ])
+    (List.concat [ Ec_t.alco ; Exec_t.alco ; Edit_t.alco ; Unify_t.alco ;
+    Listrc_t.alco ])
 ;;

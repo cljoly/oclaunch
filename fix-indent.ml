@@ -36,8 +36,11 @@
 (******************************************************************************)
 
 open Core.Std;;
-(* TODO:
- * - Tidy exit codes *)
+
+(* Exit codes *)
+let exit_ok () = exit 0;;
+let exit_arg_lack () = exit 1;;
+let exit_ocp_indent_error () = exit 2;;
 
 let ignored =
   (* File (space separated) to be ignored, regexp passed to tree command *)
@@ -74,7 +77,8 @@ let ocp_indent file =
   |> Sys.command
   |> function
   | 0 -> printf "File: '%s' ok\n" file
-  | error -> printf "Error with file: '%s'; code: %i\n%!" file error; exit 3
+  | error -> printf "Error with file: '%s'; code: %i\n%!" file error;
+      exit_ocp_indent_error ()
 ;;
 
 let () =
@@ -82,9 +86,9 @@ let () =
     [| _; path |] ->
     list_mlfiles path |> List.iter ~f:ocp_indent;
     printf "Done\n%!";
-    exit 0
+    exit_ok ()
   | _ -> printf "Usage: %s [directory containing file to indent]\n"
            Sys.executable_name;
-    exit 1
+    exit_arg_lack ()
 ;;
 

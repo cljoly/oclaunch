@@ -24,14 +24,17 @@ This version introduce major changes in the tmp and rc file.
     + A **new clean command** has been added, to clean up a manually edited or old
       rc file.
     + Summary of edit command was improved.
- + Rewrite command line parsing, in a cleaner and safer way. It now handles
-   `exit`, would be able to deal with *auto completion* and display more accurate
-   help messages. Though, for backward compatibility reasons, a hack has been
-   setted up, allowing to call the program with a number as first argument or
-   without any argument. This way, the program tries to launch the corresponding
-   command or the next one. The problem is that you can't call it with an
-   option. To do this, use the **`run` subcommand**.
- + Improve **list subcommand**, now using Textutils library, displaying in an array.
+ + Rewrite command line parsing, in a cleaner and safer way.
+    + It now handles `exit`, would be able to deal with *auto completion* and
+      display more accurate help messages. Further more, *partial commands* are
+      supported, such as `lis` for `list`
+    + However, for backward compatibility reasons, a hack has been set up,
+      allowing to call the program with a number as first argument or without
+      any argument. This way, the program tries to launch the corresponding
+      command or the next one. The problem is that you can't call it with an
+      option. To do this, use the **`run` subcommand**.
+ + Improve **list subcommand**, now using Textutils library, displaying in an
+   array. Add `--el` argument to limit the length of displayed entries.
  + Improve **edit subcommand** (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
 
@@ -47,18 +50,23 @@ This version introduce major changes in the tmp and rc file.
       bd712c97c788922aabdda15f75e78cb05882c53f).
  + Code clean up (especially indentation, thanks to ocp-indent), messages
    improvement.
+ + Allow to set parameters with environment variable, such as `OC_RC, `OC_VERB`,
+   `OC_NOCOLOR`. This is added to the previous variable `OC_TMP`. See #20.
  + Add unit tests and clean them up.
  + Add licence warning.
  + Remove core\_extended dependency, incorporating some code from the library
    directly in the program, and using Textutils and Re2 library instead.
+ + Display debugging information before each message.
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
    ctrl-C. See issue #14 for known problems.
 
 #### Community
 
  + Improve *release script*, to enhance contributing experience (making easier to
-   release source-code, binaries, signing…). Add *indentation script* too.
+   release source-code, binaries, signing, run test…). Stripped (and thus smaller)
+   binaries are being tested too. Add *indentation script* too.
  + Improve README.md file, using special code in \_oasis Description field.
+ + Using Gitlab CI to build with several versions of the compiler.
 
 ## 0.2.x
 

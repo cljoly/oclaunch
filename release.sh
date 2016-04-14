@@ -2,6 +2,18 @@
 
 # Script to realise easily new version
 
+# Run test, long form
+./configure --enable-tests
+make test
+./test.native
+
+if [ $? -ne 0 ]; then
+  echo "Test failed!"
+  exit 2
+else
+  echo "All test passed!"
+fi
+
 # Set version
 ./version_set.sh $1
 
