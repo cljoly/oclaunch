@@ -1,17 +1,17 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: aa0b230bc61e32c4a92b1f461b88f498) --->
+<!--- DO NOT EDIT (digest: 216bf3685ec72278bfa95a92e9ad6c66) --->
 
 OcLaunch - Launch commands automagically
 ========================================
 
-[![licence
-CeCILL](https://img.shields.io/badge/licence-CeCILL-blue.svg)](http://oclaunch.eu.org/floss-under-cecill)
-[![command
-line](https://img.shields.io/badge/command-line-lightgrey.svg)](http://oclaunch.eu.org/videos)
-[![platform UNIX (esp.
-LINUX)](https://img.shields.io/badge/platform-UNIX_\(esp._LINUX\)-lightgrey.svg)](http://download.tuxfamily.org/oclaunch/oclaunch.xml)
+[![Gitlab
+CI](https://gitlab.com/WzukW/oclaunch/badges/dev/build.svg)](https://gitlab.com/WzukW/oclaunch/builds)
+[![platform
+LINUX](https://img.shields.io/badge/platform-LINUX-lightgrey.svg)](http://download.tuxfamily.org/oclaunch/oclaunch.xml)
 [![language
 OCaml](https://img.shields.io/badge/language-OCaml-orange.svg)](http://www.ocaml.org/)
+[![licence
+CeCILL](https://img.shields.io/badge/licence-CeCILL-blue.svg)](http://oclaunch.eu.org/floss-under-cecill)
 [![opam
 oclaunch](https://img.shields.io/badge/opam-oclaunch-red.svg)](http://opam.ocaml.org/packages/oclaunch/oclaunch.0.2.2/)
 [![Getting
