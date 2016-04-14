@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 216bf3685ec72278bfa95a92e9ad6c66) --->
+<!--- DO NOT EDIT (digest: bb1a2659cf85c6b63c792f893b6264c7) --->
 
 OcLaunch - Launch commands automagically
 ========================================
@@ -15,7 +15,7 @@ CeCILL](https://img.shields.io/badge/licence-CeCILL-blue.svg)](http://oclaunch.e
 [![opam
 oclaunch](https://img.shields.io/badge/opam-oclaunch-red.svg)](http://opam.ocaml.org/packages/oclaunch/oclaunch.0.2.2/)
 [![Getting
-help](https://img.shields.io/badge/Get-Help!-orange.svg)](http://www.oclaunch.eu.org/help.html)
+help](https://img.shields.io/badge/Get-Help!-yellow.svg)](http://www.oclaunch.eu.org/help.html)
 <hr/><p>OcLaunch is a command-line tool to launch successively (each time the
 program is called) commands. It is designed to be used with any program,
 interactive or not. Feedback is welcome at *contact@oclaunch.eu.org*.
