@@ -106,7 +106,7 @@ let print ~color ~style message =
  * date and time *)
 let check_verbosity ?debug ~f function_number =
   (* Debugging function *)
-  debug |> (function None -> () | Some debug_fonction -> debug_fonction "");
+  debug |> (function None -> () | Some debug_fonction -> debug_fonction ":");
 
   match function_number <= !Const.verbosity with
     true -> (* Display the message *)
