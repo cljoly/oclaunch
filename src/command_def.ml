@@ -138,7 +138,8 @@ let list =
     Spec.(
       empty
       +> shared_params
-    +> flag "--el" (optional int)
+    +> flag "-l" (optional int)
+    ~aliases:[ "--length" ; "-length" ; "--elength" ; "-elength" ]
          ~doc:" Max length of displayed entries, 0 keeps as-is"
   )
   (fun { rc } length () ->
