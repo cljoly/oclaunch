@@ -56,7 +56,9 @@ This version introduce major changes in the tmp and rc file.
  + Add licence warning.
  + Remove core\_extended dependency, incorporating some code from the library
    directly in the program, and using Textutils and Re2 library instead.
- + Display debugging information before each message.
+ + Display debugging information before each message. Flush stdout on each
+   message.
+ + Adapt code a bit for OCaml 4.03.
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
    ctrl-C. See issue #14 for known problems.
 
