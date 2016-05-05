@@ -95,7 +95,9 @@ let print ~color ~style message =
          | Underline -> underline_printf "%s" colored_msg
          | Normal -> printf "%s" colored_msg
       )
-    end
+    end;
+    (* Be sure to show the message *)
+    Out_channel.(flush stdout);
 ;;
 
 (* Behave in a conform way to verbosity
@@ -163,8 +165,6 @@ let rec confirm info =
   check_assume_yes ~f:(fun () ->
          print ~color:Cyan ~style:Normal info;
          print ~color:Cyan ~style:Normal "\n(Yes/No): ";
-         (* XXX Be sure to show the message *)
-         Out_channel.(flush stdout);
          let str_answer = In_channel.(input_line ~fix_win_eol:true stdin) in
          str_answer |> Option.map ~f:String.lowercase
          |> (function

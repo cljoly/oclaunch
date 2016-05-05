@@ -1220,8 +1220,6 @@ let print ~cecill =
   in
 
   Messages.info "Choose your language 'Fr' or 'En': ";
-  (* XXX Be sure to show the message *)
-  Out_channel.(flush stdout);
 
   let ( warn, licence ) =
     def_lang ()
