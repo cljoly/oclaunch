@@ -30,3 +30,7 @@ opam pin add oclaunch-ci .
 # Building OcLaunch and running tests
 ./configure --enable-tests
 make test
+
+# Test the produced binary
+oclaunch -version
+oclaunch
