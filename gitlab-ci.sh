@@ -33,4 +33,4 @@ make test
 
 # Test the produced binary
 oclaunch -version
-oclaunch
+echo "En" | oclaunch
