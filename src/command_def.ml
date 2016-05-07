@@ -142,11 +142,8 @@ let list =
     ~aliases:[ "--length" ; "-length" ; "--elength" ; "-elength" ]
          ~doc:" Max length of displayed entries, 0 keeps as-is"
   )
-  (fun { rc } length () ->
-    (* XXX A match case to deal with optionnal argument is tricky *)
-    match length with
-    | None -> List_rc.run ~rc ()
-    | Some l -> List_rc.run ~rc ~elength:l ())
+  (fun { rc } elength () ->
+    List_rc.run ~rc ?elength ())
 ;;
 
 (* To clean-up rc file *)

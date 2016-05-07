@@ -94,9 +94,7 @@ let run ?rc ?elength () =
 
            (* Limit length, to get better display with long command. A default
             * length is involved when no length is specified *)
-           elength
-           |> (function None -> truncate cmd
-                      | Some elength -> truncate ~elength cmd);
+           truncate ?elength cmd;
 
            (Int.to_string number)
          ])
