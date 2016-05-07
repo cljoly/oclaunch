@@ -42,7 +42,7 @@ open Command;;
 
 (* Type to return result of the work with common arguments *)
 type return_arg = {
-  rc : Settings_t.rc_file;
+  rc : Settings_t.rc_file Lazy.t;
 }
 
 (* A set of default arguments, usable with most of the commands *)
@@ -54,8 +54,12 @@ let shared_params =
          Const.verbosity := verbosity;
          (* Do not use color *)
          Const.no_color := no_color || !Const.no_color;
-         (* Use given rc file, should run the nth argument if present *)
-         Const.rc_file := (Lazy.return rc_file_name);
+         (* Use given rc file, preserving lazyness, since Const.rc_file is not
+          * yet evaluated *)
+         Const.rc_file :=
+           Option.value_map ~f:(fun rfn -> Lazy.return rfn)
+             ~default:!Const.rc_file rc_file_name
+         ;
          (* Active signal handling *)
          if handle_signal then
            Signals.handle ();
@@ -63,11 +67,18 @@ let shared_params =
          (* Debugging *)
          Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
          Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
-         Messages.debug (sprintf "Configuration file is %s" (Lazy.force !Const.rc_file));
+         begin
+         match Lazy.is_val !Const.rc_file with
+         | false -> Messages.debug "RC file will fail";
+         | true -> Messages.debug (sprintf "Configuration file is %s"
+           (Lazy.force !Const.rc_file));
+         end;
          Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
 
          (* Obtain data from rc_file *)
-         let rc_content = File_com.init_rc () in
+         Messages.debug "Reading rc_file...";
+         let rc_content = lazy (File_com.init_rc ()) in
+         Messages.debug "Read rc_file";
          { rc = rc_content } (* We use type for futur use *)
        )
   (* Flag to set verbosity level *)
@@ -80,7 +91,7 @@ let shared_params =
         ~aliases:["-no-color"]
         ~doc:" Use this flag to disable color usage."
   (* Flag to use different rc file *)
-  <*> flag "-c" (optional_with_default (Lazy.force !Const.rc_file) file)
+  <*> flag "-c" (optional file)
         ~aliases:["--rc" ; "-rc"]
         ~doc:"file Read configuration from the given file and continue parsing."
   (* Flag to handle signals *)
@@ -113,6 +124,7 @@ let reset =
         * cmd = Some n
         * cmd: number of the command to be reseted
         * num: number to reset *)
+       let rc = Lazy.force rc in
        match ( num, cmd ) with
        | ( num, Some cmd ) -> Tmp_file.reset_cmd ~rc num cmd
        | ( num, None ) -> Tmp_file.reset2num ~rc num
@@ -143,6 +155,7 @@ let list =
          ~doc:" Max length of displayed entries, 0 keeps as-is"
   )
   (fun { rc } elength () ->
+    let rc = Lazy.force rc in
     List_rc.run ~rc ?elength ())
 ;;
 
@@ -156,6 +169,7 @@ let clean =
       +> shared_params
     )
     (fun { rc } () ->
+      let rc = Lazy.force rc in
        Clean_command.run ~rc ()
     )
 ;;
@@ -171,6 +185,7 @@ let add =
       +> anon  (maybe ("number" %: int))
     )
     (fun { rc } num_cmd () ->
+      let rc = Lazy.force rc in
        Add_command.run ~rc num_cmd
     )
 ;;
@@ -186,6 +201,7 @@ let delete =
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } num_cmd () ->
+      let rc = Lazy.force rc in
        (*Tmp_file.reset ~rc reset_cmd 0)*)
        Remove_command.run ~rc num_cmd)
 ;;
@@ -199,6 +215,7 @@ let state =
       +> shared_params
     )
     (fun { rc } () ->
+      let rc = Lazy.force rc in
        State.print_current ~rc ())
 ;;
 
@@ -215,6 +232,7 @@ let edit =
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } n () ->
+      let rc = Lazy.force rc in
        let position = Option.value
                         ~default:(List.length (rc.Settings_t.progs) - 1) n
        in
@@ -248,6 +266,7 @@ let default =
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } n () ->
+      let rc = Lazy.force rc in
        Default.run ~rc n)
 
 let run ~version ~build_info () =
