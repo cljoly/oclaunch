@@ -65,20 +65,21 @@ let shared_params =
            Signals.handle ();
 
          (* Debugging *)
-         Messages.debug (sprintf "Verbosity set to %i" !Const.verbosity);
-         Messages.debug (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
+         let d = Messages.debug in
+         d (sprintf "Verbosity set to %i" !Const.verbosity);
+         d (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
          begin
          match Lazy.is_val !Const.rc_file with
-         | false -> Messages.debug "RC file will fail";
-         | true -> Messages.debug (sprintf "Configuration file is %s"
+         | false -> d "RC file will fail";
+         | true -> d (sprintf "Configuration file is %s"
            (Lazy.force !Const.rc_file));
          end;
-         Messages.debug (sprintf "Tmp file is %s" Const.tmp_file);
+         d (sprintf "Tmp file is %s" Const.tmp_file);
 
          (* Obtain data from rc_file *)
-         Messages.debug "Reading rc_file...";
+         d "Reading rc_file...";
          let rc_content = lazy (File_com.init_rc ()) in
-         Messages.debug "Read rc_file";
+         d "Read rc_file";
          { rc = rc_content } (* We use type for futur use *)
        )
   (* Flag to set verbosity level *)
