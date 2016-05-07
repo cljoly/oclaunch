@@ -34,7 +34,7 @@
 (*  termes.                                                                   *)
 (******************************************************************************)
 
-(* File to stock configuration variables *)
+(* File to store configuration variables *)
 
 open Core.Std;;
 

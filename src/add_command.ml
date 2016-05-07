@@ -42,16 +42,15 @@ open Core.Std;;
 let new_list current_list position new_items =
   match position with
   | None -> List.append current_list new_items
-  | Some n -> (* If a number is given, add commands after position n by
-                 splitting the list and concatenating all. List.split_n works like this :
-               * #let l1 = [1;2;3;4;5;6] in
-               * # List.split_n l1 2;;
-               * - : int list * int list = ([1; 2], [3; 4; 5; 6]) *)
+  | Some n ->
+    (* If a number is given, add commands after position n by
+       splitting the list and concatenating all. List.split_n works like this:
+     * #let l1 = [1;2;3;4;5;6] in
+     * # List.split_n l1 2;;
+     * - : int list * int list = ([1; 2], [3; 4; 5; 6]) *)
     let l_begin,l_end = List.split_n current_list n in
     List.concat [ l_begin ; new_items ; l_end ]
 ;;
-
-
 
 (* Function which add the commands (one per line) ridden on stdin to the rc
  * file, and then display th new configuration *)
@@ -59,7 +58,11 @@ let run ~(rc:File_com.t) position =
   (* Read command from stdin, as a list. fix_win_eol removes \r\n *)
   let cmd_list = In_channel.input_lines ~fix_win_eol:true In_channel.stdin in
   (* Create an updated rc file *)
-  let updated_rc = { rc with Settings_t.progs = (new_list rc.Settings_t.progs position cmd_list)} in
+  let updated_rc =
+    { rc with
+      Settings_t.progs = (new_list rc.Settings_t.progs position cmd_list)
+    }
+  in
   File_com.write updated_rc;
   (* Display the result *)
   let reread_rc = File_com.init_rc () in

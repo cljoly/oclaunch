@@ -73,7 +73,7 @@ let gen_modification items =
 ;;
 
 (* Function which get the nth element, put it in a file, let the user edit it,
- * and then remplace with the new result *)
+ * and then replace with the result *)
 let rec run ~(rc:File_com.t) position =
   (* Current list of commands *)
   let current_list = rc.Settings_t.progs in
@@ -83,26 +83,27 @@ let rec run ~(rc:File_com.t) position =
     "/tmp/oc_edit_" ;
     (Int.to_string (Random.int 100_000)) ;
     ".txt" ;
-  ] in
-  let tmp_edit = String.concat tmp_filename in
+  ]
+  |> String.concat
+  in
   (* Remove item to be edited *)
   let original_command,shorter_list =
     Remove_command.remove current_list position
   in
-  Out_channel.write_all tmp_edit original_command;
+  Out_channel.write_all tmp_filename original_command;
 
 
   (* Edit file *)
-  let edit = String.concat [ Lazy.force Const.editor ; " " ; tmp_edit ] in
+  let edit = String.concat [ Lazy.force Const.editor ; " " ; tmp_filename ] in
   Messages.debug edit;
   Sys.command edit
   |> (function
          0 -> ()
-       | n -> sprintf "Error while running %s: error code %i" edit n
-              |> Messages.warning);
+       | n -> sprintf
+         "Error while running %s: error code %i" edit n |> Messages.warning);
 
   (* Reading and applying the result *)
-  let new_commands = In_channel.read_lines tmp_edit |> epur in
+  let new_commands = In_channel.read_lines tmp_filename |> epur in
   let cmd_list = new_list shorter_list position new_commands in
   let updated_rc = { rc with Settings_t.progs = cmd_list} in
   File_com.write updated_rc;
