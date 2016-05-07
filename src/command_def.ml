@@ -69,10 +69,9 @@ let shared_params =
          d (sprintf "Verbosity set to %i" !Const.verbosity);
          d (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
          begin
-         match Lazy.is_val !Const.rc_file with
-         | false -> d "RC file will fail";
-         | true -> d (sprintf "Configuration file is %s"
-           (Lazy.force !Const.rc_file));
+         match Option.try_with (fun () -> Lazy.force !Const.rc_file) with
+         | None -> d "Configuration file will fail if used";
+         | Some rc -> d (sprintf "Configuration file is %s" rc);
          end;
          d (sprintf "Tmp file is %s" Const.tmp_file);
 
