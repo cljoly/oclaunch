@@ -60,13 +60,13 @@ let truncate ?elength str =
    * - elength is not <= to the length of the indicator, otherwise the command
    * should pass untouched
    * - the command is longer than elength *)
-   if not(elength <= trunc_ind_l) && str_length > elength
+  if not(elength <= trunc_ind_l) && str_length > elength
   (* String.prefix is inclusive but incompatible with
    * 0 to keep whole string. Truncate to elength - trunc_ind_l since we add the
    * trunc_indicator (we need to cut a bit more) *)
-   then String.prefix str (elength - trunc_ind_l) |> fun short_entry ->
-        String.concat [ short_entry ; trunc_indicator ]
-   else str
+  then String.prefix str (elength - trunc_ind_l) |> fun short_entry ->
+       String.concat [ short_entry ; trunc_indicator ]
+  else str
 ;;
 
 (* Function which list, rc would be automatically reread, this optional
@@ -87,16 +87,19 @@ let run ?rc ?elength () =
   Tmp_file.get_accurate_log ~tmp ()
   (* Generate list to feed the table,
    * XXX assuming all will be in the right order *)
-  |> List.map ~f:(function
-           ( cmd, number ) ->
-           [ (* Number of a command in rc file, command, number of launch *)
-             (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
-             (* Limit length, to get better display with long command. A default
-              * length is involved when no length is specified *)
-             elength |> (function None -> truncate cmd
-                 | Some elength -> truncate ~elength cmd);
-             (Int.to_string number)
-           ])
+  |> List.map ~f:(function ( cmd, number ) ->
+         [ (* Number of a command in rc file, command, number of launch *)
+
+           (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
+
+           (* Limit length, to get better display with long command. A default
+            * length is involved when no length is specified *)
+           elength
+           |> (function None -> truncate cmd
+                      | Some elength -> truncate ~elength cmd);
+
+           (Int.to_string number)
+         ])
   |> Textutils.Ascii_table.simple_list_table
        ~display:Textutils.Ascii_table.Display.column_titles
        [ "Id" ; "Command" ; "Number of launch" ]
