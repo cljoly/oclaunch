@@ -38,8 +38,10 @@
 # are not set
 
 # Binary
-binary=../oclaunch.native
+binary=./oclaunch.native
 
+# Should run errorless
+env -i $binary licence
 # Should throw one error, about $HOME
 env -i $binary
 
