@@ -172,7 +172,7 @@ let rec confirm info =
               | Some "n" | Some "no" -> No
               | Some _ | None ->
                 warning "Please enter 'yes' or 'no', or 'y' or 'n' (case \
-                doesn't matter).";
+                         doesn't matter).";
                 confirm info)
        )
 ;;

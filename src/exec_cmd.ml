@@ -42,8 +42,8 @@ let set_title new_title =
   (* Use echo command to set term  title *)
   Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
   |> function
-    | 0 -> ()
-    | _ -> sprintf "Error while setting terminal title" |> Messages.warning
+  | 0 -> ()
+  | _ -> sprintf "Error while setting terminal title" |> Messages.warning
 ;;
 
 (* Function to return the less launched command, at least the first one *)
@@ -55,7 +55,7 @@ let less_launched (log : (string * int) list) =
   let entries_by_number = List.Assoc.inverse log in
   List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
   |> fun smallest ->
-      bind smallest (fun (min, cmd) -> some_if (min < max) cmd)
+  bind smallest (fun (min, cmd) -> some_if (min < max) cmd)
 ;;
 
 (* Function to get the number corresponding to the next command to launch (less
@@ -73,8 +73,8 @@ let less_launched_num log =
          else Some ( entry_number, launch_number ))
   (* Find the less launched by sorting and taking the first *)
   |> List.sort
-    ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) ->
-      Int.compare launch_number1 launch_number2)
+       ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) ->
+              Int.compare launch_number1 launch_number2)
   |> List.hd
   |> function
   | Some ( entry_number, launch_number ) ->

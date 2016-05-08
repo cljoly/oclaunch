@@ -84,7 +84,7 @@ let rec run ~(rc:File_com.t) position =
     (Int.to_string (Random.int 100_000)) ;
     ".txt" ;
   ]
-  |> String.concat
+    |> String.concat
   in
   (* Remove item to be edited *)
   let original_command,shorter_list =
@@ -99,8 +99,9 @@ let rec run ~(rc:File_com.t) position =
   Sys.command edit
   |> (function
          0 -> ()
-       | n -> sprintf
-         "Error while running %s: error code %i" edit n |> Messages.warning);
+       | n ->
+         sprintf "Error while running %s: error code %i" edit n
+         |> Messages.warning);
 
   (* Reading and applying the result *)
   let new_commands = In_channel.read_lines tmp_filename |> epur in

@@ -1233,6 +1233,6 @@ let print ~cecill =
     | true -> Messages.debug "Choosing licence"; licence
   end
   (* XXX Using print_endline, instead of a function from
-  Messages.ml to ensure we can't avoid printing with verbosity parameter *)
+     Messages.ml to ensure we can't avoid printing with verbosity parameter *)
   |> print_endline
 ;;

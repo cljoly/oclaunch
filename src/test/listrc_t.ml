@@ -57,16 +57,15 @@ let data = [
 
   ( ("cmd1", 0, "cmd1"), "Keep as-is" );
   ( ("cmd1", -5, "cmd1"), "Negative figure, keep as-is" );
-  ( ("cmd1", (String.length List_rc.trunc_indicator), "cmd1"), "On the \
-  indicator, keep as-is" );
-  ( ("cmd1", (String.length List_rc.trunc_indicator) - 1, "cmd1"), "Under \
-  indicator, keep as-is" );
+  ( ("cmd1", (String.length List_rc.trunc_indicator), "cmd1"),
+    "On the indicator, keep as-is" );
+  ( ("cmd1", (String.length List_rc.trunc_indicator) - 1, "cmd1"),
+    "Under indicator, keep as-is" );
 ];;
 
 let tests =
   List.map data ~f:(fun (t, name) ->
-    (name, `Quick, (trunc t))
-  )
+         (name, `Quick, (trunc t)))
 ;;
 
 (* To be used in test.ml *)

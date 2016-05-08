@@ -69,9 +69,9 @@ let shared_params =
          d (sprintf "Verbosity set to %i" !Const.verbosity);
          d (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
          begin
-         match Option.try_with (fun () -> Lazy.force !Const.rc_file) with
-         | None -> d "Configuration file will fail if used";
-         | Some rc -> d (sprintf "Configuration file is %s" rc);
+           match Option.try_with (fun () -> Lazy.force !Const.rc_file) with
+           | None -> d "Configuration file will fail if used";
+           | Some rc -> d (sprintf "Configuration file is %s" rc);
          end;
          d (sprintf "Tmp file is %s" Const.tmp_file);
 
@@ -150,13 +150,13 @@ let list =
     Spec.(
       empty
       +> shared_params
-    +> flag "-l" (optional int)
-    ~aliases:[ "--length" ; "-length" ; "--elength" ; "-elength" ]
-         ~doc:" Max length of displayed entries, 0 keeps as-is"
-  )
-  (fun { rc } elength () ->
-    let rc = Lazy.force rc in
-    List_rc.run ~rc ?elength ())
+      +> flag "-l" (optional int)
+           ~aliases:[ "--length" ; "-length" ; "--elength" ; "-elength" ]
+           ~doc:" Max length of displayed entries, 0 keeps as-is"
+    )
+    (fun { rc } elength () ->
+       let rc = Lazy.force rc in
+       List_rc.run ~rc ?elength ())
 ;;
 
 (* To clean-up rc file *)
@@ -169,7 +169,7 @@ let clean =
       +> shared_params
     )
     (fun { rc } () ->
-      let rc = Lazy.force rc in
+       let rc = Lazy.force rc in
        Clean_command.run ~rc ()
     )
 ;;
@@ -185,7 +185,7 @@ let add =
       +> anon  (maybe ("number" %: int))
     )
     (fun { rc } num_cmd () ->
-      let rc = Lazy.force rc in
+       let rc = Lazy.force rc in
        Add_command.run ~rc num_cmd
     )
 ;;
@@ -201,7 +201,7 @@ let delete =
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } num_cmd () ->
-      let rc = Lazy.force rc in
+       let rc = Lazy.force rc in
        (*Tmp_file.reset ~rc reset_cmd 0)*)
        Remove_command.run ~rc num_cmd)
 ;;
@@ -215,7 +215,7 @@ let state =
       +> shared_params
     )
     (fun { rc } () ->
-      let rc = Lazy.force rc in
+       let rc = Lazy.force rc in
        State.print_current ~rc ())
 ;;
 
@@ -232,7 +232,7 @@ let edit =
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } n () ->
-      let rc = Lazy.force rc in
+       let rc = Lazy.force rc in
        let position = Option.value
                         ~default:(List.length (rc.Settings_t.progs) - 1) n
        in
@@ -266,7 +266,7 @@ let default =
       +> anon (maybe ("command_number" %: int))
     )
     (fun { rc } n () ->
-      let rc = Lazy.force rc in
+       let rc = Lazy.force rc in
        Default.run ~rc n)
 
 let run ~version ~build_info () =
