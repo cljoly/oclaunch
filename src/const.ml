@@ -73,6 +73,22 @@ let verbosity =
   ref (get_var ~default:(lazy "4") (lazy "OC_VERB")
        |> Lazy.force
        |> Int.of_string);;
+(* Whether we ask for confirmation, used by Messages module *)
+(* None -> ask, no preference defined,
+ * Some true -> assume Yes
+ * Some false -> assume No *)
+let ask_unset = -1;; (* Constant to leave preference unset *)
+let ask =
+  ref (get_var ~default:(lazy (Int.to_string ask_unset)) (lazy "OC_YES")
+       |> Lazy.force
+       |> Int.of_string
+       (* XXX Hacking with get_var, using
+        * -1 for None, 0 for Some false and 1 for Some true *)
+       |> function
+         | unset when unset = ask_unset -> None | 0 -> Some false | 1 -> Some true
+         | _ -> None
+  )
+;;
 (* Use do not use colors, 0 -> false, anything -> true *)
 let no_color =
   ref (get_var ~default:(lazy "0") (lazy "OC_NOCOLOR")
@@ -97,5 +113,5 @@ let tmp_file =
   get_var ~default:(lazy ("/tmp/.oclaunch_trace.dat")) (lazy "OC_TMP")
   |> Lazy.force
 ;;
-(* Default number for launch *)
+(* Default max number for launch *)
 let default_launch = 1;; (* TODO set it in rc file *)

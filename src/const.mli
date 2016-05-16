@@ -40,6 +40,7 @@ val editor : string lazy_t
 
 (* Settings *)
 val verbosity : int ref
+val ask : bool option ref
 val no_color : bool ref
 
 (* Files *)
