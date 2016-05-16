@@ -68,7 +68,7 @@ let perform ~rc new_list =
 ;;
 
 (* Function which removes a command, after getting confirmation, and then
-  * display the new configuration *)
+ * display the new configuration *)
 let run ~(rc:File_com.t) n_to_remove =
   let actual_list = rc.Settings_t.progs in
   (* Get nth command, default last *)

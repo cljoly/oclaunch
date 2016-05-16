@@ -85,9 +85,9 @@ let ask =
        (* XXX Hacking with get_var, using
         * -1 for None, 0 for Some false and 1 for Some true *)
        |> function
-         | unset when unset = ask_unset -> None | 0 -> Some false | 1 -> Some true
-         | _ -> None
-  )
+       | unset when unset = ask_unset -> None | 0 -> Some false | 1 -> Some true
+       | _ -> None
+      )
 ;;
 (* Use do not use colors, 0 -> false, anything -> true *)
 let no_color =

@@ -54,11 +54,11 @@ let shared_params =
          Const.verbosity := verbosity;
          (* Ask question or not, see Const.ask for details *)
          Const.ask := Option.(
-           merge
-             (some_if assume_yes true)
-             !Const.ask
-             ~f:( || )
-         );
+                merge
+                  (some_if assume_yes true)
+                  !Const.ask
+                  ~f:( || )
+              );
          (* Do not use color *)
          Const.no_color := no_color || !Const.no_color;
          (* Use given rc file, preserving lazyness, since Const.rc_file is not
@@ -75,9 +75,9 @@ let shared_params =
          let d = Messages.debug in
          d (sprintf "Verbosity set to %i" !Const.verbosity);
          d (match !Const.ask with
-         | None -> "Assume nothing"
-         | Some false -> "Assume No"
-         | Some true -> "Assume Yes");
+             | None -> "Assume nothing"
+             | Some false -> "Assume No"
+             | Some true -> "Assume Yes");
          d (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
          begin
            match Option.try_with (fun () -> Lazy.force !Const.rc_file) with
@@ -101,8 +101,8 @@ let shared_params =
   <*> flag "-y" no_arg
         ~aliases:["--yes" ; "-yes"]
         ~doc:" Assume yes, never ask anything. \
-        Set OC_YES environment variable to '1' is the same. \
-        Set it to '0' to assume no.
+              Set OC_YES environment variable to '1' is the same. \
+              Set it to '0' to assume no.
         Set it to '-1' to be asked every time."
   (* Flag to set colors *)
   <*> flag "--no-color" no_arg
