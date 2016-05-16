@@ -147,19 +147,16 @@ let answer2str = function
 ;;
 (* State of the program, if you should always answer yes, no or ask to the user
  * (default)*)
-(* TODO Put it in Const *)
-let assume_yes = None;;
 (* Allow to assume yes or no like with a --yes option *)
 let check_assume_yes ~f =
-  match assume_yes with
-  | Some true -> Yes (* --yes *)
-  | Some false -> No (* --no *)
+  match !Const.ask with (* See Const.ask for details *)
+  | Some true -> Yes
+  | Some false -> No
   | None -> f ()
 ;;
 
 (* Get confirmation
  * TODO:
- * allow option like -y
  * test it (display, line return, etc...) *)
 let rec confirm info =
   check_assume_yes ~f:(fun () ->

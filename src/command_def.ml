@@ -49,9 +49,16 @@ type return_arg = {
 let shared_params =
   let open Param in
   (* Way to treat common args *)
-  return (fun verbosity no_color rc_file_name handle_signal ->
+  return (fun verbosity assume_yes no_color rc_file_name handle_signal ->
          (* Set the level of verbosity *)
          Const.verbosity := verbosity;
+         (* Ask question or not, see Const.ask for details *)
+         Const.ask := Option.(
+           merge
+             (some_if assume_yes true)
+             !Const.ask
+             ~f:( || )
+         );
          (* Do not use color *)
          Const.no_color := no_color || !Const.no_color;
          (* Use given rc file, preserving lazyness, since Const.rc_file is not
@@ -67,6 +74,10 @@ let shared_params =
          (* Debugging *)
          let d = Messages.debug in
          d (sprintf "Verbosity set to %i" !Const.verbosity);
+         d (match !Const.ask with
+         | None -> "Assume nothing"
+         | Some false -> "Assume No"
+         | Some true -> "Assume Yes");
          d (sprintf "Color %s" (match !Const.no_color with true -> "off" | false -> "on"));
          begin
          match Option.try_with (fun () -> Lazy.force !Const.rc_file) with
@@ -86,6 +97,13 @@ let shared_params =
         ~aliases:["--verbose" ; "-verbose"]
         ~doc:"[n] Set verbosity level. \
               The higher n is, the most verbose the program is."
+  (* Flag to assume yes *)
+  <*> flag "-y" no_arg
+        ~aliases:["--yes" ; "-yes"]
+        ~doc:" Assume yes, never ask anything. \
+        Set OC_YES environment variable to '1' is the same. \
+        Set it to '0' to assume no.
+        Set it to '-1' to be asked every time."
   (* Flag to set colors *)
   <*> flag "--no-color" no_arg
         ~aliases:["-no-color"]
