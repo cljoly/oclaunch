@@ -27,9 +27,9 @@ echo "Writing in" $name".*"
 git archive ${TCID} --prefix=${name}/ --format=zip -o dist/${name}.zip -9
 # Creating .xz .gz and .bz2 from tar archive
 tar_name=${name}.tar
-git archive ${TCID} --prefix=${name}/ --format=tar -o dist/${tar_name}
+git archive ${TCID} --prefix=${name}/ --format=tar \
+  | tee dist/${tar_name} \
+  | gzip -c9 >  dist/${tar_name}.gz
 cd dist
-gzip -c9 < ${tar_name} >  ${tar_name}.gz
 bzip2 -c9 < ${tar_name} >  ${tar_name}.bz2
 xz -c9 < ${tar_name} >  ${tar_name}.xz
-
