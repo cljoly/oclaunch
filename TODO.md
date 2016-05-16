@@ -2,7 +2,6 @@
 
 ## Users idees
 
- + Add confirmation on delete.
  + Add undo command ?
  + Show help in context
  + Allow to delete a command after a certain number of launch

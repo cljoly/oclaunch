@@ -58,22 +58,30 @@ let remove current_list n =
   ( !removed, new_list )
 ;;
 
-(* Function which add the commands (one per line) ridden on stdin to the rc
- * file, and then display th new configuration *)
+(* Perform removal *)
+let perform ~rc new_list =
+  let updated_rc = { rc with Settings_t.progs = new_list } in
+  File_com.write updated_rc;
+  (* Display the result, after rereading rc *)
+  let reread_rc = File_com.init_rc () in
+  List_rc.run ~rc:reread_rc ()
+;;
+
+(* Function which removes a command, after getting confirmation, and then
+  * display the new configuration *)
 let run ~(rc:File_com.t) n_to_remove =
-  (* Get actual list of commands *)
   let actual_list = rc.Settings_t.progs in
-  (* Get nth *)
-  let nth = Option.value n_to_remove
-              ~default:((List.length actual_list) - 1) in
-  (* Remove the nth command, after display it *)
+  (* Get nth command, default last *)
+  let nth =
+    Messages.debug "Will remove command number:";
+    Option.value n_to_remove ~default:((List.length actual_list) - 1)
+    |> Tools.spy1_int
+  in
+  (* Remove the nth command, after asking *)
   let removed,new_list = remove actual_list nth in
   sprintf "Removing: %s\n" removed
   |> Messages.warning;
-  (* Write new list to rc file *)
-  let updated_rc = { rc with Settings_t.progs = new_list } in
-  File_com.write updated_rc;
-  (* Display the result *)
-  let reread_rc = File_com.init_rc () in
-  List_rc.run ~rc:reread_rc ()
+  match Messages.confirm "Are you sure?" with
+  | Messages.Yes -> perform ~rc new_list
+  | Messages.No -> Messages.ok "Exiting, nothing done"; exit 0;
 ;;
