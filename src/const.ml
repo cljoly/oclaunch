@@ -97,5 +97,5 @@ let tmp_file =
   get_var ~default:(lazy ("/tmp/.oclaunch_trace.dat")) (lazy "OC_TMP")
   |> Lazy.force
 ;;
-(* Default number for launch *)
+(* Default max number for launch *)
 let default_launch = 1;; (* TODO set it in rc file *)
