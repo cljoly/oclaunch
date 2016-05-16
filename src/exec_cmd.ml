@@ -41,22 +41,21 @@ open Core.Std;;
 let set_title new_title =
   (* Use echo command to set term  title *)
   Sys.command (sprintf "echo -en \"\\033]0;%s\\a\"" new_title)
-  |> function | 0 -> () | _ -> sprintf "Error while setting terminal title"
-                               |> Messages.warning
+  |> function
+    | 0 -> ()
+    | _ -> sprintf "Error while setting terminal title" |> Messages.warning
 ;;
 
 (* Function to return the less launched command, at least the first one *)
 (* Log is a list of entry (commands) associated with numbers *)
 let less_launched (log : (string * int) list) =
+  let open Option in
   let max = Const.default_launch in (* Number of launch, maximum *)
   (* Return smallest, n is the smaller key *)
-  let entries_by_number = List.Assoc.inverse log  in
+  let entries_by_number = List.Assoc.inverse log in
   List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
-  |> (function Some (min,cmd) ->
-       if min < max
-       then Some cmd
-       else None
-             | None -> None)
+  |> fun smallest ->
+      bind smallest (fun (min, cmd) -> some_if (min < max) cmd)
 ;;
 
 (* Function to get the number corresponding to the next command to launch (less
@@ -73,10 +72,12 @@ let less_launched_num log =
          then None
          else Some ( entry_number, launch_number ))
   (* Find the less launched by sorting and taking the first *)
-  |> List.sort ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) -> Int.compare launch_number1 launch_number2)
+  |> List.sort
+    ~cmp:(fun ( _, launch_number1 ) ( _, launch_number2 ) ->
+      Int.compare launch_number1 launch_number2)
   |> List.hd
   |> function
-  | Some ( entry_number, launch_number) ->
+  | Some ( entry_number, launch_number ) ->
     launch_number |> sprintf "Launch number found: %i" |> Messages.debug;
     Messages.debug "Return launch number (printed bellow):";
     Some ( Tools.spy1_int entry_number )
@@ -99,7 +100,7 @@ let what_next ~tmp =
 let display_result command status =
   match status with
   | 0 -> (* No problem, do nothing *) ()
-  | _ -> (* Problem occur,  display it *)
+  | _ -> (* Problem occur, report it *)
     sprintf "Problem while running: '%s'\nExited with code: %i\n"
       command status
     |> Messages.warning

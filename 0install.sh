@@ -18,7 +18,7 @@ if [ ! -d $dist ]; then
   mkdir $dist
 fi
 # Archive name, _the bin emphasis the difference with source tarball
-id=`git describe --abbrev=40 --candidates=50 HEAD`
+id=`git describe --abbrev=10 --candidates=50 HEAD`
 name=oclaunch-${id}_$(arch)_bin
 final_binary_path=./$name/oclaunch
 final_binary_name=oclaunch
@@ -41,14 +41,16 @@ tar_name=${name}.tar
 tar -cvaf ${tar_name} $name >> $dbg_log
 
 echo "========= Creating first archive ========="
-coproc lzma -f -9 ${tar_name} >> $dbg_log
+coproc lzma -kf -9 ${tar_name} >> $dbg_log
+coproc gzip -kf -9 ${tar_name} >> $dbg_log
 
 # Create stripped archive
 tar_name_stripped=${name}_stripped.tar
 strip $final_binary_path
 tar -cvaf ${tar_name_stripped} $name >> $dbg_log
 echo "========= Creating second (stripped) archive ========="
-coproc lzma -f -9 ${tar_name_stripped} >> $dbg_log
+coproc lzma -kf -9 ${tar_name_stripped} >> $dbg_log
+coproc gzip -kf -9 ${tar_name_stripped} >> $dbg_log
 
 # Wait for the detached compression process  to finish
 # (see lines starting with 'coproc')

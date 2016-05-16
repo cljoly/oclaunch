@@ -34,7 +34,7 @@
 (*  termes.                                                                   *)
 (******************************************************************************)
 
-(* File to stock configuration variables *)
+(* File to store configuration variables *)
 
 open Core.Std;;
 
@@ -48,7 +48,7 @@ let get_var: ?default:(string lazy_t) -> string lazy_t -> string lazy_t =
     let open Lazy in
     let msg =
       name >>| fun name ->
-      sprintf "ERROR: Couldn't get %s. Please consider setting it." name
+      sprintf "ERROR: Could not get $%s. Please consider setting it." name
     in
     (* Get the var *)
     name >>= fun name ->

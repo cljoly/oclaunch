@@ -10,7 +10,7 @@ fi
 
 # If no tag, use commit SHA1
 id=`git describe --abbrev=10 --candidates=50 HEAD`
-name=oclaunch_${id}_src # _src emphasis the difference with binary tarballs
+name=oclaunch_${id}_source # _source emphasis the difference with binary tarballs
 
 echo "Writing in" $name".*"
 git archive HEAD --prefix=${name}/ --format=zip -o dist/${name}.zip -9
