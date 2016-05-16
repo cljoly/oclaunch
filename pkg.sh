@@ -29,7 +29,12 @@ git archive ${TCID} --prefix=${name}/ --format=zip -o dist/${name}.zip -9
 tar_name=${name}.tar
 git archive ${TCID} --prefix=${name}/ --format=tar \
   | tee dist/${tar_name} \
-  | gzip -c9 >  dist/${tar_name}.gz
+  | gzip -c9 > dist/${tar_name}.gz
 cd dist
 bzip2 -c9 < ${tar_name} >  ${tar_name}.bz2
 xz -c9 < ${tar_name} >  ${tar_name}.xz
+
+# Verification
+gzip -t < ${tar_name}.gz
+bzip2 -t <  ${tar_name}.bz2
+xz -t <  ${tar_name}.xz
