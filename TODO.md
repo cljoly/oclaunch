@@ -44,7 +44,7 @@
 
 ### Misc
  + Documentation ;-)
- + Handle errors in reading rc file
+ + Handle errors reading rc file
  + Return error code when necessary
  + Log duration of commands, ignore some return code
 
@@ -53,7 +53,6 @@
 
 ## Long term
  + Translate displayed messages.
- + Better command line interface by grouping commands.
  + Use Batteries instead of Core to improve apps size?
  + Be more carefull with file reading, lazy evaluation (especially in
    tmp_file.get_accurate_log)
