@@ -53,17 +53,18 @@ let run ~rc cmd_number =
   match cmd_number with
   | None -> begin
       (* Execute each item (one by one) in config file *)
-      Exec_cmd.what_next ~tmp
+      let open Exec_cmd in
+      what_next ~tmp
       |> function
-      | Exec_cmd.Empty -> (* Nothing in RC file *)
+      | Empty -> (* Nothing in RC file *)
         Messages.ok "There is nothing in your RC file!";
         Messages.tips "You can add entries with 'edit' or 'add' subcommand.";
         Lock.remove ()
-      | Exec_cmd.Finish -> (* If no command was found, all has been launched *)
+      | Finish -> (* If no command was found, all has been launched *)
         Messages.ok "All has been launched!";
         Messages.tips "You can reset with 'reset-all' subcommand";
         Lock.remove ()
-      | Exec_cmd.A cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
+      | A cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
     end
   | Some num -> begin
       (* Run given (num) item *)
