@@ -43,7 +43,7 @@ type t = Settings_v.rc_file;;
 
 (* Message to display on first use, i.e. on initialisation of rc file *)
 let welcome_msg =
-  "Nice to meet you! Here some tips to get started with OcLaunch.\n\
+  "Nice to meet you! Here is some tips to get started with OcLaunch.\n\
    Use 'help' subcommand to get help (it works both after the name of the \
    software and with another subcommand). For instance run\n\
    `oclaunch help add`\n\
