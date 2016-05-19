@@ -43,15 +43,18 @@ type t = Settings_v.rc_file;;
 
 (* Message to display on first use, i.e. on initialisation of rc file *)
 let welcome_msg =
-  "Use 'help' subcommand to get help (it works both \
-   after the name of the software and with another subcommand). For \
-   further help, see https://oclaunch.eu.org.\
-   \n" ;
-  "Feedback is welcome at feedback@oclaunch.eu.org.\n\
-   To get remind for new stable versions, subscribe to our low-traffic (up \
-   to 6 mail per year) mailing list: announce@oclaunch.eu.org. \
+  "Nice to meet you! Here some tips to get started with OcLaunch.\n\
+   Use 'help' subcommand to get help (it works both after the name of the \
+   software and with another subcommand). For instance run\n\
+   `oclaunch help add`\n\
+   For further help, see https://oclaunch.eu.org.\
+   \n\
+   \n\
+   Feedback is welcome at feedback@oclaunch.eu.org.\n\
+   To get remind for new stable versions, subscribe to our low-traffic mailing \
+   list: announce@oclaunch.eu.org. \
    More here: https://lnch.ml/ml\n\
-   See you soon! To keep in touch: https://lnch.ml/kit\n";
+   See you soon! To keep in touch: https://lnch.ml/kit\n"
 ;;
 
 (* Function to write the rc file *)
