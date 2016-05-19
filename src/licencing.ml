@@ -1,7 +1,7 @@
 (******************************************************************************)
 (* Copyright © Joly Clément, 2015                                             *)
 (*                                                                            *)
-(*  leowzukw@vmail.me                                                         *)
+(*  leowzukw@oclaunch.eu.org                                                  *)
 (*                                                                            *)
 (*  Ce logiciel est un programme informatique servant à exécuter              *)
 (*  automatiquement des programmes à l'ouverture du terminal.                 *)
@@ -44,7 +44,7 @@ let fr_header =
 
   Copyright © Joly Clément, 2014-2016 \
 
- leowzukw@vmail.me \
+ leowzukw@oclaunch.eu.org \
 
  Ce logiciel est un programme informatique servant à exécuter \
  automatiquement des programmes à l'ouverture du terminal.
@@ -84,7 +84,7 @@ let en_header =
 
   Copyright © Joly Clément, 2014-2016 \
 
- leowzukw@vmail.me \
+ leowzukw@oclaunch.eu.org \
 
 This software is a computer program whose purpose is to execute automatically \
 programs when opening a terminal.

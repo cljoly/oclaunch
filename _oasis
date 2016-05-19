@@ -2,8 +2,8 @@ OASISFormat: 0.4
 Name:        OcLaunch
 Version:     0.3.0
 Synopsis:    Launch commands automagically
-Authors:     Joly Clément <leowzukw@vmail.me>
-Maintainers: Joly Clément <leowzukw@vmail.me>
+Authors:     Joly Clément <leowzukw@oclaunch.eu.org>
+Maintainers: Joly Clément <leowzukw@oclaunch.eu.org>
 License:     CeCILL
 LicenseFile: LICENSE
 Copyrights: (C) 2014-2016 Joly Clément

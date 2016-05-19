@@ -1,12 +1,12 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 8b50d3b615117789414f2ad56e4f9d35) --->
+<!--- DO NOT EDIT (digest: 7d7e6e9b59529ebaf8057deb13b160d9) --->
 
 Authors of OcLaunch:
 
-* Joly Clément <leowzukw@vmail.me>
+* Joly Clément <leowzukw@oclaunch.eu.org>
 
 Current maintainers of OcLaunch:
 
-* Joly Clément <leowzukw@vmail.me>
+* Joly Clément <leowzukw@oclaunch.eu.org>
 
 <!--- OASIS_STOP --->

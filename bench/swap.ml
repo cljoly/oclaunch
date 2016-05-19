@@ -1,7 +1,7 @@
 (******************************************************************************)
 (* Copyright © Joly Clément, 2015                                        *)
 (*                                                                            *)
-(*  leowzukw@vmail.me                                                         *)
+(*  leowzukw@oclaunch.eu.org                                                  *)
 (*                                                                            *)
 (*  Ce logiciel est un programme informatique servant à exécuter              *)
 (*  automatiquement des programmes à l'ouverture du terminal.                 *)
