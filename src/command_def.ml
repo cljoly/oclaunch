@@ -101,9 +101,9 @@ let shared_params =
   <*> flag "-y" no_arg
         ~aliases:["--yes" ; "-yes"]
         ~doc:" Assume yes, never ask anything. \
-              Set OC_YES environment variable to '1' is the same. \
-              Set it to '0' to assume no.
-        Set it to '-1' to be asked every time."
+              Setting OC_YES environment variable to '1' is the same. \
+              Set it to '0' to assume no. \
+              Set it to '-1' to be asked every time."
   (* Flag to set colors *)
   <*> flag "--no-color" no_arg
         ~aliases:["-no-color"]
@@ -196,7 +196,8 @@ let clean =
 let add =
   basic
     ~summary:"Add the command given on stdin to the configuration file at a \
-              given position ([NUMBER]). If nothing is given, append it."
+              given position ([NUMBER]). If nothing is given, append it at the \
+              end."
     Spec.(
       empty
       +> shared_params
