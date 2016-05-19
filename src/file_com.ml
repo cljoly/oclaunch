@@ -41,6 +41,15 @@ open Core.Std;;
 (* Type of the values *)
 type t = Settings_v.rc_file;;
 
+(* Message to display on first use, i.e. on initialisation of rc file *)
+let welcome_msg =
+  "Feedback is welcome at feedback@oclaunch.eu.org.\n\
+   To get remind for new stable versions, subscribe to our low-traffic (up \
+   to 6 mail per year) mailing list: announce@oclaunch.eu.org. \
+   More here: https://lnch.ml/ml\n\
+   See you soon! To keep in touch: https://lnch.ml/kit\n";
+;;
+
 (* Function to write the rc file *)
 let write (rc_file:t) =
   (* Short name *)
@@ -63,13 +72,7 @@ let create_rc_file ~name =
   (* Notify that we initialise config file *)
   sprintf "Initializing empty configuration file in %s." name |> Messages.warning;
   (* Final \n to display newline before showing the licence. *)
-  Messages.tips
-    "Feedback is welcome at feedback@oclaunch.eu.org.\n\
-     To get remind for new stable versions, subscribe to our low-traffic (up \
-     to 6 mail per year) mailing list: announce@oclaunch.eu.org. \
-     More here: https://lnch.ml/ml\n\
-     See you soon! To keep in touch: https://lnch.ml/kit\n";
-
+  Messages.tips welcome_msg;
   (* Display licence information *)
   Licencing.print ~cecill:false;
 
