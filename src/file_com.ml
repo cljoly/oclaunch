@@ -66,8 +66,9 @@ let create_rc_file ~name =
   Messages.tips
     "Feedback is welcome at feedback@oclaunch.eu.org.\n\
      To get remind for new stable versions, subscribe to our low-traffic (up \
-     to 6 mail per year) mailing list: announce@oclaunch.eu.org.\n\
-     See you soon!\n";
+     to 6 mail per year) mailing list: announce@oclaunch.eu.org. \
+     More here: https://lnch.ml/ml\n\
+     See you soon! To keep in touch: https://lnch.ml/kit\n";
 
   (* Display licence information *)
   Licencing.print ~cecill:false;
