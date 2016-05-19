@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: aa0b230bc61e32c4a92b1f461b88f498) --->
+<!--- DO NOT EDIT (digest: f1b0331dfcbba0e361627569042612c3) --->
 
 OcLaunch - Launch commands automagically
 ========================================
@@ -29,7 +29,7 @@ You will not see anything more.</li> </ul></p>
 See the file [INSTALL.md](INSTALL.md) for building and installation
 instructions.
 
-[Home page](http://www.oclaunch.eu.org)
+[Home page](https://oclaunch.eu.org)
 
 Copyright and license
 ---------------------
