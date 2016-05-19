@@ -316,15 +316,7 @@ let run ~version ~build_info () =
                 http://cecill.info/licences/Licence_CeCILL_V2.1-en.html \
                 (https://lnch.ml/cecill) for details. More here: \
                 https://oclaunch.eu.org/floss-under-cecill (https://lnch.ml/l)."
-      ~readme:(fun () ->
-             String.concat [
-               "Use 'help' subcommand to get help (it works both \
-                after the name of the software and with another subcommand). For \
-                further help, see https://oclaunch.eu.org." ;
-               "\n" ;
-               File_com.welcome_msg
-             ]
-           )
+      ~readme:(fun () -> File_com.welcome_msg)
       ~preserve_subcommand_order:()
       [ ("run", default) ; ("licence", licence) ; ("add", add) ; ("edit", edit)
       ; ("list", list) ; ("cleanup", clean) ; ("delete", delete)
