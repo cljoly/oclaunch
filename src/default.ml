@@ -55,13 +55,18 @@ let run ~rc cmd_number =
       (* Execute each item (one by one) in config file *)
       Exec_cmd.what_next ~tmp
       |> function
-      | None -> (* If no command was found, all has been launched *)
+      | Exec_cmd.Empty -> (* Nothing in RC file *)
+        Messages.ok "There is nothing in your RC file!";
+        Messages.tips "You can add entries with 'edit' or 'add' subcommand.";
+        Lock.remove ()
+      | Exec_cmd.Finish -> (* If no command was found, all has been launched *)
         Messages.ok "All has been launched!";
         Messages.tips "You can reset with 'reset-all' subcommand";
         Lock.remove ()
-      | Some cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
+      | Exec_cmd.A cmd_to_exec -> Exec_cmd.execute cmd_to_exec;
     end
   | Some num -> begin
+      (* Run given (num) item *)
       File_com.num_cmd2cmd ~rc num
       |> function
       | None -> Messages.warning "Your number is out of bound"

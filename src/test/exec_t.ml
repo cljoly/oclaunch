@@ -58,7 +58,7 @@ let common_data =
   [
     ( [ ( "cmd1", 4 ) ; ( "cmd2", 0 ) ], "Canonical case 1" );
     ( [ ( "cmd1", 0 ) ; ( "cmd2", 5 ) ], "Canonical case 2" );
-    ( [], "Empty list" );
+    ( [], "Empty RC file" );
     ( [ ( "cmd1", 0 ) ; ( "cmd2", 3 ) ; ( "cmd3", 4 )  ; ( "cmd4", 5 ) ], "Canonical case 3" );
     ( [ ( "cmd1", 0 ) ; ( "cmd2", 4 ) ; ( "cmd3", 4 )  ; ( "cmd5", 5 ) ],
       "Twice the same number, with others" );
@@ -81,16 +81,16 @@ let add_solutions data expected =
 (* Data customized for the tests *)
 let ll_data =
   add_solutions common_data
-    [
-      Some "cmd2";
-      Some "cmd1";
-      None;
-      Some "cmd1";
-      Some "cmd1";
-      None;
-      None;
-      Some "cmd1";
-      Some "cmd3"
+    Exec_cmd.[
+      A "cmd2";
+      A "cmd1";
+      Empty;
+      A "cmd1";
+      A "cmd1";
+      Finish;
+      Finish;
+      A "cmd1";
+      A "cmd3"
     ]
 ;;
 let ll_data2 =

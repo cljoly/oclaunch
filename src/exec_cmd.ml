@@ -36,6 +36,13 @@
 
 open Core.Std;;
 
+(* Type to give a more accurate representation of the program *)
+type state =
+  | Empty (* Empty rc file *)
+  | Finish (* everything was launched *)
+  | A of string (* There is this command to launch *)
+;;
+
 (* Function allowing to set the title of the current terminal windows
  * XXX Maybe better in some lib *)
 let set_title new_title =
@@ -51,11 +58,15 @@ let set_title new_title =
 let less_launched (log : (string * int) list) =
   let open Option in
   let max = Const.default_launch in (* Number of launch, maximum *)
-  (* Return smallest, n is the smaller key *)
-  let entries_by_number = List.Assoc.inverse log in
-  List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
-  |> fun smallest ->
-  bind smallest (fun (min, cmd) -> some_if (min < max) cmd)
+  (* Return smallest, n is the smaller key, if there are some entries *)
+  match log with
+  | [] -> Empty
+  | _ ->
+    let entries_by_number = List.Assoc.inverse log in
+    List.min_elt ~cmp:(fun (n,_) (n',_) -> Int.compare n n') entries_by_number
+    |> fun smallest ->
+    bind smallest (fun (min, cmd) -> some_if (min < max) cmd)
+    |> function None -> Finish | Some entry -> A entry
 ;;
 
 (* Function to get the number corresponding to the next command to launch (less
