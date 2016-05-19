@@ -56,7 +56,8 @@ This version introduce major changes in the tmp and rc file.
    `OC_NOCOLOR`. This is added to the previous variable `OC_TMP`. See #20.
  + Add unit tests and clean them up.
  + Add licence warning.
- + Improve help messages.
+ + Improve help messages, by rewriting some and display it in a more subtle way
+   according to the current internal state.
  + Remove core\_extended dependency, incorporating some code from the library
    directly in the program, and using Textutils and Re2 library instead.
  + Display debugging information before each message. Flush stdout on each
