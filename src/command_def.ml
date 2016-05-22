@@ -252,8 +252,9 @@ let edit =
     )
     (fun { rc } n () ->
        let rc = Lazy.force rc in
-       let position = Option.value
-                        ~default:(List.length (rc.Settings_t.progs) - 1) n
+       let position =
+         Option.value n
+           ~default:(List.length (rc.Settings_t.progs) - 1)
        in
        Edit_command.run ~rc position)
 ;;
