@@ -1,7 +1,7 @@
 {
   "progs": [
-    "ydump dev.json", "task", "task +next", "task +rdv", "echo \"Finish\"",
-    "bdump -w daemon,rc,commands /tmp/v033"
+    "ydump dev.json", "task", "du -sh ./_build/src/oclaunch.native",
+    "free -h", "echo \"Finish\"", "bdump -w daemon,rc,commands /tmp/v033"
   ],
   "settings": []
 }
