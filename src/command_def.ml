@@ -278,15 +278,19 @@ let licence =
 (* Run nth command, default use *)
 let default =
   basic
-    ~summary:"Run the [COMMAND_NUMBER]th command"
+    ~summary:"Run the [COMMAND_NUMBER]th command(s)"
     Spec.(
       empty
       +> shared_params
-      +> anon (maybe ("command_number" %: int))
+      +> anon (maybe (sequence ("command_number" %: int)))
     )
-    (fun { rc } n () ->
+    (fun { rc } n_list () ->
        let rc = Lazy.force rc in
-       Default.run ~rc n)
+       (* XXX Manually dealing with the None case to make sure we are running
+        * next command if nothing is given *)
+       match n_list with None -> Default.run ~rc None
+       | Some n_list ->
+           List.iter n_list ~f:(fun n -> Default.run ~rc (Some n)))
 
 let run ~version ~build_info () =
   (* Store begin time *)

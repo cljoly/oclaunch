@@ -62,6 +62,7 @@ This version introduce major changes in the tmp and rc file.
    directly in the program, and using Textutils and Re2 library instead.
  + Display debugging information before each message. Flush stdout on each
    message.
+ + Some subcommand, such as `run`, take list of ids instead of only one.
  + Adapt code a bit for OCaml 4.03.
  + TODO XXX Add basic signal handling (`--signals`), to relaunch when doing
    ctrl-C. See issue #14 for known problems.
