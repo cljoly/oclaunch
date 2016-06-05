@@ -16,3 +16,4 @@ dist
 *.vim
 .settings/
 *.back
+tags
