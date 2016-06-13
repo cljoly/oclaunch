@@ -54,7 +54,7 @@ let welcome_msg =
    To get remind for new stable versions, subscribe to our low-traffic mailing \
    list: announce@oclaunch.eu.org. \
    More here: https://lnch.ml/ml\n\
-   See you soon! To keep in touch: https://lnch.ml/kit\n"
+   See you soon! To keep in touch: https://lnch.ml/kt\n"
 ;;
 
 (* Function to write the rc file *)
