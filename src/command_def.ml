@@ -344,8 +344,7 @@ let run ~version ~build_info () =
     | exception message ->
       "Exception: " ^ (Exn.to_string message)
       |> Messages.warning;
-      Messages.tips
-        "This is probably a bug, please report it (http://lnch.ml/bug).";
+      Bug.report ();
       `Exit 20
   in
 
