@@ -38,6 +38,7 @@ open Core.Std;;
 
 (* This modules contains function to list the content of the rc file *)
 
+
 (* Characters to append to show a command was truncated *)
 let trunc_indicator = "...";;
 
@@ -69,35 +70,37 @@ let truncate ?elength str =
   else str
 ;;
 
-(* Function which list, rc would be automatically reread, this optional
- * argument is kept for backward compatibility
- * elength: truncate entries to length (0 does nothing)*)
+(* Generate list to feed the table, returning list of tuples
+ * (number of a command in rc file, command, number of launch). *)
+(* XXX assuming all will be in the right order (from id 0 to 10) *)
 (* FIXME Remove ?rc or use it *)
-(* TODO:
- * - Test it, esp. ordering
- * - Allow to set form of the table, multiple rc file, display next to be
- * launched… *)
-let run ?rc ?elength () =
+let generate_list ?rc ?elength log =
   let rc_numbered =
     File_com.init_rc ()
     |> fun rc -> rc.Settings_t.progs
                  |> List.mapi ~f:(fun i item -> ( item, i ))
   in
+  List.map log ~f:(function ( cmd, number ) ->
+    [
+      (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
+      (* Limit length, to get better display with long command. A default
+       * length is involved when no length is specified *)
+      truncate ?elength cmd;
+      (Int.to_string number)
+    ])
+;;
+
+(* Function which list, rc would be automatically reread, this optional
+ * argument is kept for backward compatibility
+ * elength: truncate entries to length (0 does nothing)*)
+(* TODO:
+ * - Test it, esp. ordering
+ * - Allow to set form of the table, multiple rc file, display next to be
+ * launched… *)
+let run ?rc ?elength () =
   let tmp : Tmp_file.t = Tmp_file.init () in
   Tmp_file.get_accurate_log ~tmp ()
-  (* Generate list to feed the table,
-   * XXX assuming all will be in the right order *)
-  |> List.map ~f:(function ( cmd, number ) ->
-         [ (* Number of a command in rc file, command, number of launch *)
-
-           (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
-
-           (* Limit length, to get better display with long command. A default
-            * length is involved when no length is specified *)
-           truncate ?elength cmd;
-
-           (Int.to_string number)
-         ])
+  |> generate_list ?rc ?elength
   |> Textutils.Ascii_table.simple_list_table
        ~display:Textutils.Ascii_table.Display.column_titles
        [ "Id" ; "Command" ; "Number of launch" ]
