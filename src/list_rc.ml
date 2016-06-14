@@ -72,7 +72,6 @@ let truncate ?elength str =
 
 (* Generate list to feed the table, returning list of tuples
  * (number of a command in rc file, command, number of launch). *)
-(* XXX assuming all will be in the right order (from id 0 to 10) *)
 (* FIXME Remove ?rc or use it *)
 let generate_list ?rc ?elength log =
   let rc_numbered =
@@ -88,6 +87,12 @@ let generate_list ?rc ?elength log =
       truncate ?elength cmd;
       (Int.to_string number)
     ])
+  (* Make sure all will be in the right order (from id 0 to 10, for instance) *)
+  |> List.sort ~cmp:(fun entry1 entry2 ->
+     match entry1, entry2 with
+     | [ id1; _; _ ], [ id2; _; _ ] ->
+         Int.(compare (int_of_string id1) (int_of_string id2))
+     )
 ;;
 
 (* Function which list, rc would be automatically reread, this optional
