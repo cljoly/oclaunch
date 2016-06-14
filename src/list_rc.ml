@@ -80,23 +80,23 @@ let generate_list ?rc ?elength log =
                  |> List.mapi ~f:(fun i item -> ( item, i ))
   in
   List.map log ~f:(function ( cmd, number ) ->
-    (* We are using list instead of tuple since it is what Text_utils want as
-     * input. *)
-    [
-      (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
-      (* Limit length, to get better display with long command. A default
-       * length is involved when no length is specified *)
-      truncate ?elength cmd;
-      (Int.to_string number)
-    ])
+         (* We are using list instead of tuple since it is what Text_utils want
+          * as input. *)
+         [
+           (List.Assoc.find_exn rc_numbered cmd |> Int.to_string);
+           (* Limit length, to get better display with long command. A default
+            * length is involved when no length is specified *)
+           truncate ?elength cmd;
+           (Int.to_string number)
+         ])
   (* Make sure all will be in the right order (from id 0 to 10, for instance) *)
   |> List.sort ~cmp:(fun entry1 entry2 ->
-     match entry1, entry2 with
-     | [ id1; _; _ ], [ id2; _; _ ] ->
-         Int.(compare (int_of_string id1) (int_of_string id2))
-     (* Considering the transformation performed, nothing else is possible. *)
-     | _ -> assert false
-     )
+         match entry1, entry2 with
+         | [ id1; _; _ ], [ id2; _; _ ] ->
+           Int.(compare (int_of_string id1) (int_of_string id2))
+         (* Considering transformation performed, nothing else is possible *)
+         | _ -> assert false
+       )
 ;;
 
 (* Function which list, rc would be automatically reread, this optional
