@@ -47,7 +47,8 @@ let welcome_msg =
    Use 'help' subcommand to get help (it works both after the name of the \
    software and with another subcommand). For instance run\n\
    `oclaunch help add`\n\
-   For further help, see https://oclaunch.eu.org.\
+   For further help, see https://oclaunch.eu.org. Report any bug at \
+   http://lnch.ml/bug\
    \n\
    \n\
    Feedback is welcome at feedback@oclaunch.eu.org.\n\

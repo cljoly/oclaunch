@@ -51,7 +51,8 @@ This version introduce major changes in the tmp and rc file.
       cd7fdc0c022aa36b39f02813c4ebe54a533f0041 and
       bd712c97c788922aabdda15f75e78cb05882c53f).
  + Code clean up (especially indentation, thanks to ocp-indent), messages
-   improvement.
+   improvement (for instance to make it clearer, give more accurate tips or
+   engage users, thanks to lnch.ml service).
  + Allow to set parameters with environment variable, such as `OC_RC, `OC_VERB`,
    `OC_NOCOLOR`. This is added to the previous variable `OC_TMP`. See #20.
  + Add unit tests and clean them up.

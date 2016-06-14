@@ -4,7 +4,7 @@ version: "0.3.0"
 maintainer: "Leo <leowzukw@oclaunch.eu.org>"
 authors: "Leo <leowzukw@oclaunch.eu.org>"
 homepage: "http://www.oclaunch.eu.org"
-bug-reports: "https://gitlab.com/WzukW/oclaunch/issues/new"
+bug-reports: "http://lnch.ml/bug"
 license: "CeCILL"
 dev-repo: "git@gitlab.com:WzukW/oclaunch.git"
 build: [
