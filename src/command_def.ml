@@ -339,6 +339,8 @@ let run ~version ~build_info () =
            | Error _ -> parse_sub ())
     with
     | () -> `Exit 0
+    (* XXX Command.basic function catch exceptions, so this doesn't actually
+     * work. We may to place it before basic function to fix the problem. *)
     | exception message ->
       "Exception: " ^ (Exn.to_string message)
       |> Messages.warning;
