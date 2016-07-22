@@ -36,10 +36,35 @@
 
 open Core.Std;;
 
-(* A module launching all tests *)
+(* A module containing tests for src/id_parsing.ml *)
 
-let () =
-  Alcotest.run "Test suite for the project"
-    (List.concat [ Ec_t.alco ; Exec_t.alco ; Edit_t.alco ; Unify_t.alco ;
-                   Listrc_t.alco ; Id_parsing_t.alco ])
+(* Function to_human ============================= *)
+let to_human test solution () =
+  let actual = Id_parsing.list_from_human test in
+  OUnit.assert_equal actual solution
 ;;
+
+(* Data for above test *)
+let ll_data = [
+  ( "1", [1], "Canonical case: unique" );
+  ( "1-3", [1;2;3], "Canonical case: between" );
+  ( "1-3,5-8,10-12", [1;2;3;5;6;7;8;10;11;12], "Canonical case: list of interval" );
+  ( "1,3,5", [1;3;5], "Canonical case: list of unique" );
+  ( "1-3,5,10-12,23", [1;2;3;10;11;12;23], "Canonical case: both" );
+  ( "0-30", [0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18;
+  19; 20; 21; 22; 23; 24; 25; 26; 27; 28; 29; 30], "Long interval" );
+  ( "1-3", [1;2;3], "With errors" );
+  ( "1-3", [1;2;3], "With double" );
+  ( "", [], "Empty list" );
+  ( "aaaavvvbg", [], "Empty list resulting of incorrect input" );
+]
+
+let llt_l =
+  List.map ll_data ~f:(fun (t, s, name) -> ( (to_human t s), name))
+  |> List.map ~f:(fun ( f,name ) -> (name, `Quick, f))
+;;
+(* =========================================== *)
+
+(* To be used in test.ml *)
+let alco = [( "Id_parsing.ml: to human", llt_l )];;
+
