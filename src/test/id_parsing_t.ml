@@ -48,6 +48,7 @@ let to_human test solution () =
 let ll_data = [
   ( "1", [1], "Canonical case: unique" );
   ( "1-3", [1;2;3], "Canonical case: between" );
+  ( "3-1", [3;2;1], "Canonical case: between, reversed" );
   ( "1-3,5-8,10-12", [1;2;3;5;6;7;8;10;11;12], "Canonical case: list of interval" );
   ( "1,3,5", [1;3;5], "Canonical case: list of unique" );
   ( "1-3,5,10-12,23", [1;2;3;5;10;11;12;23], "Canonical case: both" );

@@ -74,8 +74,11 @@ let atomise human_ids =
 let deinter = function
   | Unique a -> [Unique a]
   | Between (a,b) ->
-    (* Note that (a-b+1) is the length of interval [a;b] *)
-    List.init (abs(a-b)+1) ~f:(fun i -> Unique (a + i))
+      (* Two use cases to preserve order *)
+      if a < b
+      (* Note that (a-b+1) is the length of interval [a;b] *)
+      then List.init (b-a+1) ~f:(fun i -> Unique (a + i))
+      else List.init (a-b+1) ~f:(fun i -> Unique (a - i))
 ;;
 
 (* Transform string (separated) as follow:
@@ -83,6 +86,9 @@ let deinter = function
  * 1-5 → [1; 2; 3; 4; 5]
  * Multiple occurances should stay, i.e.
  * 1,3,1-4 → [1,3,1,2,3,4] 
+ * Order matters:
+ * 1-3 → [1,2,3]
+ * 3-1 → [3,2,1] *)
 let list_from_human human =
   atomise human
   |> List.map ~f:deinter
