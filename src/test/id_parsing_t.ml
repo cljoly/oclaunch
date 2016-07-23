@@ -50,7 +50,7 @@ let ll_data = [
   ( "1-3", [1;2;3], "Canonical case: between" );
   ( "1-3,5-8,10-12", [1;2;3;5;6;7;8;10;11;12], "Canonical case: list of interval" );
   ( "1,3,5", [1;3;5], "Canonical case: list of unique" );
-  ( "1-3,5,10-12,23", [1;2;3;10;11;12;23], "Canonical case: both" );
+  ( "1-3,5,10-12,23", [1;2;3;5;10;11;12;23], "Canonical case: both" );
   ( "0-30", [0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18;
   19; 20; 21; 22; 23; 24; 25; 26; 27; 28; 29; 30], "Long interval" );
   ( "1-3", [1;2;3], "With errors" );

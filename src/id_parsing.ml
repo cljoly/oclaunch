@@ -75,7 +75,7 @@ let deinter = function
   | Unique a -> [Unique a]
   | Between (a,b) ->
     (* Note that (a-b+1) is the length of interval [a;b] *)
-    List.init (a-b+1) ~f:(fun i -> Unique (a + i))
+    List.init (abs(a-b)+1) ~f:(fun i -> Unique (a + i))
 ;;
 
 (* Transform string (separated) as follow:
