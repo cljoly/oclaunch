@@ -1,5 +1,5 @@
 (******************************************************************************)
-(* Copyright © Joly Clément, 2014-2015                                        *)
+(* Copyright © Joly Clément, 2014-2016                                        *)
 (*                                                                            *)
 (*  leowzukw@oclaunch.eu.org                                                  *)
 (*                                                                            *)
@@ -79,15 +79,10 @@ let deinter = function
 ;;
 
 (* Transform string (separated) as follow:
- * 1,5 -> [ 1; 5 ]
- * 1-5 -> [1; 2; 3; 4; 5]
+ * 1,5 → [ 1; 5 ]
+ * 1-5 → [1; 2; 3; 4; 5]
  * Multiple occurances should stay, i.e.
- * 1,3,1-4 → [1,3,1,2,3,4] *)
-(* TODO Test it
- * 1a -> [1]
- * 1,2 -> [ 1; 2 ]
- * 1,2,1a -> [ 1; 2 ]
- * 3-4,5,1,6-6 -> [1; 3; 4; 5; 6] *)
+ * 1,3,1-4 → [1,3,1,2,3,4] 
 let list_from_human human =
   atomise human
   |> List.map ~f:deinter
