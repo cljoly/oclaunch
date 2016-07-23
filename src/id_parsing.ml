@@ -96,5 +96,5 @@ let list_from_human human =
   (* Return final list of int *)
   |> List.map ~f:(function
     Unique a -> a | _ -> assert false)
+  |> Tools.spy1_list ~f:Int.to_string
 ;;
-

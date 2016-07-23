@@ -41,6 +41,9 @@ open Core.Std;;
 (* Function to_human ============================= *)
 let to_human test solution () =
   let actual = Id_parsing.list_from_human test in
+  (* Spying expression *)
+  List.sexp_of_t Int.sexp_of_t actual |> Sexp.to_string
+  |> printf "actual: %s\n";
   OUnit.assert_equal actual solution
 ;;
 
