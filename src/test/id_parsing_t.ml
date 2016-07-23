@@ -59,6 +59,7 @@ let ll_data = [
   19; 20; 21; 22; 23; 24; 25; 26; 27; 28; 29; 30], "Long interval" );
   ( "1-3", [1;2;3], "With errors" );
   ( "1-3", [1;2;3], "With double" );
+  ( "24-24", [24], "Interval a-a" );
   ( "", [], "Empty list" );
   ( "aaaavvvbg", [], "Empty list resulting of incorrect input" );
 ]
