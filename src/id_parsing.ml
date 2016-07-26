@@ -45,20 +45,21 @@ type atom =
   | Unique of int (* Like 2 *)
 ;;
 
-(* Return atom corresponding to a given string *)
+(* Return atom corresponding to a given string, correcting simple error *)
 let to_atom str =
   let open Str in
   (* Regexp to test atoms *)
-  let between = regexp "\\([0-9]+\\)-\\([0-9]+\\)" in
-  let unique = regexp "\\([0-9]+\\)" in
+  let between = regexp "[a-zA-Z]*\\([0-9]+\\)-\\([0-9]+\\)[a-zA-Z]*" in
+  let unique = regexp "[a-zA-Z]*\\([0-9]+\\)[a-zA-Z]*" in
 
   if string_match between str 0; then
-    (* String is like "1-5" *)
+    (* String is like "1-5", we test this first to allow autocorrection of
+     * unique things *)
     ( (replace_first between "\\1" str), (replace_first between "\\2" str) )
     |> ( fun (a,b) -> Between ((Int.of_string a), (Int.of_string b)) )
     |> Option.some
   else if string_match unique str 0; then
-    (* String is like "1-5" *)
+    (* String is like "1", or "1e", in which case its corrected to "1" *)
     Unique (Int.of_string (replace_first unique "\\1" str))
     |> Option.some
   else None

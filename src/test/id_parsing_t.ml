@@ -61,7 +61,11 @@ let ll_data = [
   ( "1-3", [1;2;3], "With double" );
   ( "24-24", [24], "Interval a-a" );
   ( "", [], "Empty list" );
+  ( "1e", [1], "Basic correction of malformed input" );
   ( "aaaavvvbg", [], "Empty list resulting of incorrect input" );
+  ( "i5a", [5], "A number inside letters" );
+  ( "eff", [], "Only letters" );
+  ( "a3-1u", [3;2;1], "Between inside letters" );
 ]
 
 let llt_l =
