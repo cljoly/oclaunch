@@ -196,8 +196,8 @@ let clean =
 let add =
   basic
     ~summary:"Add the command given on stdin to the configuration file at a \
-              given position ([NUMBER]). If nothing is given, append it at the \
-              end."
+              given position ([NUMBER]). If nothing is given, or if it is out \
+              of bound, append commands at the end."
     Spec.(
       empty
       +> shared_params
