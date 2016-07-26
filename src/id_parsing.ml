@@ -36,7 +36,7 @@
 
 open Core.Std;;
 
-(* Module containing code to parse command ids *)
+(* Module containing code to parse id sequence, i.e. things like 1,2-6,23 *)
 
 (* An atom contains at least one number and at most one "-"
    This way, atoms are things like "1,2" or "1-3" but not "1,3,4-5" *)
@@ -45,8 +45,8 @@ type atom =
   | Unique of int (* Like 2 *)
 ;;
 
-(* Test whether a given string may be an atom, and return its type *)
-let is_atom str =
+(* Return atom corresponding to a given string *)
+let to_atom str =
   let open Str in
   (* Regexp to test atoms *)
   let between = regexp "\\([0-9]+\\)-\\([0-9]+\\)" in
@@ -64,11 +64,11 @@ let is_atom str =
   else None
 ;;
 
-(* Create small substring (atoms), like this "1,2,6-10" -> [ "1,2" ; "6-10"],
- * raising error on malformed input like "1e" *)
+(* Create small substring (atoms) from id sequence, like this
+ * "1,2,6-10" -> [ "1,2" ; "6-10"] *)
 let atomise human_ids =
   String.split ~on:',' human_ids
-  |> List.filter_map ~f:is_atom
+  |> List.filter_map ~f:to_atom
 ;;
 (* Turn interval (Between (,)) to list of Unique *)
 let deinter = function
