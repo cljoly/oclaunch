@@ -86,7 +86,7 @@ let deinter = function
  * 1,5 → [ 1; 5 ]
  * 1-5 → [1; 2; 3; 4; 5]
  * Multiple occurances should stay, i.e.
- * 1,3,1-4 → [1,3,1,2,3,4] 
+ * 1,3,1-4 → [1,3,1,2,3,4]
  * Order matters:
  * 1-3 → [1,2,3]
  * 3-1 → [3,2,1] *)

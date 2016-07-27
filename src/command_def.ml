@@ -201,7 +201,7 @@ let add =
     Spec.(
       empty
       +> shared_params
-      +> anon  (maybe ("number" %: int))
+      +> anon (maybe ("number" %: int))
     )
     (fun { rc } num_cmd () ->
        let rc = Lazy.force rc in
