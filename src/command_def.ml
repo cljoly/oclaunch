@@ -123,16 +123,22 @@ let shared_params =
               implemented the best way."
 ;;
 
+(* Comman documentation for id sequences *)
+let id_parsing_doc =
+  ". Id sequence means a set of ids like this: 1,4-9,17. The command is run \
+   for each item of the generated list (1,4,5,6,7,8,9,17 in this case)"
 
 (* basic-commands *)
 
 (* To reset tmp file *)
 let reset =
   basic
-    ~summary:"Reinitialises launches for the command number [command] to [n]. \
-              With both the [command] and the [n] argumennt, the command number \
-              [command] is resetted to [n]. \
-              With only the [n] argument, every entry in current tmp file is resetted to [n]."
+    ~summary:("Reinitialises launches for the command number [command] to [n]. \
+               With both the [command] and the [n] argumennt, the command number \
+               [command] is resetted to [n]. \
+               With only the [n] argument, every entry in current tmp file is \
+               resetted to [n]. [command] may be a sequence of ids"
+              ^ id_parsing_doc)
     Spec.(
       empty
       +> shared_params
@@ -200,13 +206,14 @@ let clean =
 (* To add a command to rc file, from stdin or directly *)
 let add =
   basic
-    ~summary:"Add the command given on stdin to the configuration file at a \
-              given position ([NUMBER]). If nothing is given, or if it is out \
-              of bound, append commands at the end."
+    ~summary:("Add the command given on stdin to the configuration file at a \
+               given position(s) ([id_sequence]). If nothing is given, or if \
+               it is out of bound, append commands at the end"
+              ^ id_parsing_doc)
     Spec.(
       empty
       +> shared_params
-      +> anon (maybe ("number" %: id_seq))
+      +> anon (maybe ("id_sequence" %: id_seq))
     )
     (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
@@ -217,8 +224,10 @@ let add =
 (* To remove a command from rc file *)
 let delete =
   basic
-    ~summary:"Remove the [COMMAND_NUMBER]th command from configuration file. \
-              If [COMMAND_NUMBER] is absent, remove last one."
+    ~summary:("Remove the [COMMAND_NUMBER]th command from configuration file. \
+               If [COMMAND_NUMBER] is absent, remove last one. \n\
+               [COMMAND_NUMBER] may be a sequence of ids"
+              ^ id_parsing_doc)
     Spec.(
       empty
       +> shared_params
@@ -248,9 +257,12 @@ let state =
 (* To edit the nth command *)
 let edit =
   basic
-    ~summary:"Edit the [COMMAND_NUMBER]th command of the rc file in your \
-              $EDITOR. May be used to add new entries, without argument, one new \
-              command per line."
+    ~summary:("Edit the [COMMAND_NUMBER]th command of the rc file in your \
+               $EDITOR. May be used to add new entries, without argument, one new \
+               command per line. \n\
+               [COMMAND_NUMBER] may be a sequence of ids"
+              ^ id_parsing_doc)
+
     Spec.(
       empty
       +> shared_params
@@ -287,7 +299,7 @@ let licence =
 (* Run nth command, default use *)
 let default =
   basic
-    ~summary:"Run the [COMMAND_NUMBER]th command(s)"
+    ~summary:("Run the id sequence" ^ id_parsing_doc)
     Spec.(
       empty
       +> shared_params
