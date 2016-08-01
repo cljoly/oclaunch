@@ -45,6 +45,9 @@ type return_arg = {
   rc : Settings_t.rc_file Lazy.t;
 }
 
+(* Shorthand *)
+let id_seq = Id_parsing.id_sequence;;
+
 (* A set of default arguments, usable with most of the commands *)
 let shared_params =
   let open Param in
@@ -133,7 +136,7 @@ let reset =
       empty
       +> shared_params
       +> anon ("target_number" %: int)
-      +> anon (maybe ("command_number" %: int))
+      +> anon (maybe ("command_number" %: id_seq))
     )
     (fun { rc } num cmd () ->
        (* Call the right function, according to optionnal argument.
@@ -144,8 +147,9 @@ let reset =
         * num: number to reset *)
        let rc = Lazy.force rc in
        match ( num, cmd ) with
-       | ( num, Some cmd ) -> Tmp_file.reset_cmd ~rc num cmd
-       | ( num, None ) -> Tmp_file.reset2num ~rc num
+       | ( num, None ) | ( num, Some [] ) -> Tmp_file.reset2num ~rc num
+       | ( num, Some cmd_list ) ->
+           List.iter ~f:(fun cmd -> Tmp_file.reset_cmd ~rc num cmd) cmd_list
     )
 ;;
 let reset_all =
@@ -201,11 +205,11 @@ let add =
     Spec.(
       empty
       +> shared_params
-      +> anon (maybe ("number" %: int))
+      +> anon (maybe ("number" %: id_seq))
     )
-    (fun { rc } num_cmd () ->
+    (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
-       Add_command.run ~rc num_cmd
+       Id_parsing.helper ~f:(fun num_cmd -> Add_command.run ~rc num_cmd) cmd_seq
     )
 ;;
 
@@ -217,12 +221,13 @@ let delete =
     Spec.(
       empty
       +> shared_params
-      +> anon (maybe ("command_number" %: int))
+      +> anon (maybe ("command_number" %: id_seq))
     )
-    (fun { rc } num_cmd () ->
+    (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
-       (*Tmp_file.reset ~rc reset_cmd 0)*)
-       Remove_command.run ~rc num_cmd)
+       Id_parsing.helper
+         ~f:(fun num_cmd ->
+           Remove_command.run ~rc num_cmd) cmd_seq)
 ;;
 
 (* To display current state *)
@@ -248,15 +253,16 @@ let edit =
     Spec.(
       empty
       +> shared_params
-      +> anon (maybe ("command_number" %: int))
+      +> anon (maybe ("command_number" %: id_seq))
     )
-    (fun { rc } n () ->
+    (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
+       Id_parsing.helper cmd_seq ~f:(fun n ->
        let position =
          Option.value n
            ~default:(List.length (rc.Settings_t.progs) - 1)
        in
-       Edit_command.run ~rc position)
+       Edit_command.run ~rc position))
 ;;
 
 (* To display informations about the licence *)
@@ -283,15 +289,12 @@ let default =
     Spec.(
       empty
       +> shared_params
-      +> anon (maybe (sequence ("command_number" %: int)))
+      +> anon (maybe ("command_number" %: id_seq))
     )
-    (fun { rc } n_list () ->
+    (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
-       (* XXX Manually dealing with the None case to make sure we are running
-        * next command if nothing is given *)
-       match n_list with None -> Default.run ~rc None
-       | Some n_list ->
-           List.iter n_list ~f:(fun n -> Default.run ~rc (Some n)))
+       Id_parsing.helper cmd_seq ~f:(fun n -> Default.run ~rc n)
+    )
 
 let run ~version ~build_info () =
   (* Store begin time *)

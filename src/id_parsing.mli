@@ -37,3 +37,5 @@
 open Core.Std;;
 
 val list_from_human : string -> int list
+val id_sequence : int list Command.Spec.Arg_type.t
+val helper : f:(int option -> unit) -> int list option -> unit

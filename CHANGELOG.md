@@ -39,6 +39,8 @@ This version introduce major changes in the tmp and rc file.
  + Improve **edit subcommand** (explain how to use to add commands, improve
    messages, offer to reedit when nothing was done).
  + Improve **delete subcommand**, asking for confirmation before deleting.
+ + Allow *most subcommand* (in fact every subcommand for which it makes sense) to
+   parse lists of entries ids like **1,4-8,10**
 
 #### Minor
 

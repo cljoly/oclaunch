@@ -99,3 +99,24 @@ let list_from_human human =
     Unique a -> a | _ -> assert false)
   |> Tools.spy1_list ~f:Int.to_string
 ;;
+
+(* Type for command line parsing, an "id sequence" is something like 1,3-6,10 *)
+let id_sequence =
+  Command.Spec.Arg_type.create list_from_human
+;;
+
+(* With id sequences, we get None or Some [] from command line instructions and
+ * we get Some list in other cases. With this function, we iterate (over a list
+ * of ids) call of function having the following behavior:
+   * - Default value when nothing is given (None)
+   * - Execute things one by one *)
+let helper ~f = function
+  | None | Some [] ->
+      Messages.debug "Nothing given, default behavior";
+      (f None)
+  | Some li ->
+      Messages.debug "Working with the following arguments:";
+      Tools.spy1_list ~f:Int.to_string li |> ignore;
+      List.iter ~f:(fun element -> f (Some element)) li
+;;
+
