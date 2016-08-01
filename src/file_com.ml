@@ -44,19 +44,19 @@ type t = Settings_v.rc_file;;
 (* Message to display on first use, i.e. on initialisation of rc file *)
 let welcome_msg =
   sprintf
-  "Nice to meet you! Here is some tips to get started with OcLaunch.\n\
-   Use 'help' subcommand to get help (it works both after the name of the \
-   software and with another subcommand). For instance run\n\
-   `oclaunch help add`\n\
-   For further help, see https://oclaunch.eu.org. Report any bug at %s\
-   \n\
-   \n\
-   Feedback is welcome at feedback@oclaunch.eu.org.\n\
-   To get remind for new stable versions, subscribe to our low-traffic mailing \
-   list: announce@oclaunch.eu.org. \
-   More here: https://lnch.ml/ml\n\
-   See you soon! To keep in touch: https://lnch.ml/kt\n"
-   Bug.url
+    "Nice to meet you! Here is some tips to get started with OcLaunch.\n\
+     Use 'help' subcommand to get help (it works both after the name of the \
+     software and with another subcommand). For instance run\n\
+     `oclaunch help add`\n\
+     For further help, see https://oclaunch.eu.org. Report any bug at %s\
+     \n\
+     \n\
+     Feedback is welcome at feedback@oclaunch.eu.org.\n\
+     To get remind for new stable versions, subscribe to our low-traffic mailing \
+     list: announce@oclaunch.eu.org. \
+     More here: https://lnch.ml/ml\n\
+     See you soon! To keep in touch: https://lnch.ml/kt\n"
+    Bug.url
 ;;
 
 (* Function to write the rc file *)

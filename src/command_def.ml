@@ -150,7 +150,7 @@ let reset =
        match ( num, cmd ) with
        | ( num, None ) | ( num, Some [] ) -> Tmp_file.reset2num ~rc num
        | ( num, Some cmd_list ) ->
-           List.iter ~f:(fun cmd -> Tmp_file.reset_cmd ~rc num cmd) cmd_list
+         List.iter ~f:(fun cmd -> Tmp_file.reset_cmd ~rc num cmd) cmd_list
     )
 ;;
 let reset_all =
@@ -228,7 +228,7 @@ let delete =
        let rc = Lazy.force rc in
        iter_seq
          ~f:(fun num_cmd ->
-           Remove_command.run ~rc num_cmd) cmd_seq)
+              Remove_command.run ~rc num_cmd) cmd_seq)
 ;;
 
 (* To display current state *)
@@ -259,11 +259,12 @@ let edit =
     (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
        iter_seq cmd_seq ~f:(fun n ->
-       let position =
-         Option.value n
-           ~default:(List.length (rc.Settings_t.progs) - 1)
-       in
-       Edit_command.run ~rc position))
+              let position =
+                Option.value n
+                  ~default:(List.length (rc.Settings_t.progs) - 1)
+              in
+              Edit_command.run ~rc position)
+    )
 ;;
 
 (* To display informations about the licence *)

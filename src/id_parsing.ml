@@ -75,11 +75,11 @@ let atomise human_ids =
 let deinter = function
   | Unique a -> [Unique a]
   | Between (a,b) ->
-      (* Two use cases to preserve order *)
-      if a < b
-      (* Note that (a-b+1) is the length of interval [a;b] *)
-      then List.init (b-a+1) ~f:(fun i -> Unique (a + i))
-      else List.init (a-b+1) ~f:(fun i -> Unique (a - i))
+    (* Two use cases to preserve order *)
+    if a < b
+    (* Note that (a-b+1) is the length of interval [a;b] *)
+    then List.init (b-a+1) ~f:(fun i -> Unique (a + i))
+    else List.init (a-b+1) ~f:(fun i -> Unique (a - i))
 ;;
 
 (* Transform string (separated) as follow:
@@ -96,7 +96,7 @@ let list_from_human human =
   |> List.concat
   (* Return final list of int *)
   |> List.map ~f:(function
-    Unique a -> a | _ -> assert false)
+           Unique a -> a | _ -> assert false)
   |> Tools.spy1_list ~f:Int.to_string
 ;;
 
@@ -108,15 +108,15 @@ let id_sequence =
 (* With id sequences, we get None or Some [] from command line instructions and
  * we get Some list in other cases. With this function, we iterate (over a list
  * of ids) call of function having the following behavior:
-   * - Default value when nothing is given (None)
-   * - Execute things one by one *)
+ * - Default value when nothing is given (None)
+ * - Execute things one by one *)
 let helper ~f = function
   | None | Some [] ->
-      Messages.debug "Nothing given, default behavior";
-      (f None)
+    Messages.debug "Nothing given, default behavior";
+    (f None)
   | Some li ->
-      Messages.debug "Working with the following arguments:";
-      Tools.spy1_list ~f:Int.to_string li |> ignore;
-      List.iter ~f:(fun element -> f (Some element)) li
+    Messages.debug "Working with the following arguments:";
+    Tools.spy1_list ~f:Int.to_string li |> ignore;
+    List.iter ~f:(fun element -> f (Some element)) li
 ;;
 
