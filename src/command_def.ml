@@ -100,7 +100,7 @@ let shared_params =
   <*> flag "-v" (optional_with_default !Const.verbosity int)
         ~aliases:["--verbose" ; "-verbose"]
         ~doc:"[n] Set verbosity level. \
-              The higher n is, the most verbose the program is."
+              The higher n is, the more verbose the program is."
   (* Flag to assume yes *)
   <*> flag "-y" no_arg
         ~aliases:["--yes" ; "-yes"]
@@ -161,7 +161,7 @@ let reset =
 ;;
 let reset_all =
   basic
-    ~summary:" Reinitialises launches for everything."
+    ~summary:" Reinitialises launches for everything"
     Spec.(
       empty
       +> shared_params
@@ -175,7 +175,7 @@ let reset_all =
 let list =
   basic
     ~summary:"Print a list of all commands with their number. Useful to launch with number. \
-              Displays a star next to next command to launch."
+              Displays a star next to next command to launch"
     Spec.(
       empty
       +> shared_params
@@ -192,7 +192,7 @@ let list =
 let clean =
   basic
     ~summary:"Remove doubled entries, trailing spaces in them... \
-              Useful after manual editing or with rc file from old version."
+              Useful after manual editing or with rc file from old version"
     Spec.(
       empty
       +> shared_params
@@ -243,7 +243,7 @@ let delete =
 (* To display current state *)
 let state =
   basic
-    ~summary:"Display current state of the program."
+    ~summary:"Display current state of the program"
     Spec.(
       empty
       +> shared_params
