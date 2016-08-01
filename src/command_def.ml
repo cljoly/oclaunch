@@ -47,6 +47,7 @@ type return_arg = {
 
 (* Shorthand *)
 let id_seq = Id_parsing.id_sequence;;
+let iter_seq = Id_parsing.helper;;
 
 (* A set of default arguments, usable with most of the commands *)
 let shared_params =
@@ -209,7 +210,7 @@ let add =
     )
     (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
-       Id_parsing.helper ~f:(fun num_cmd -> Add_command.run ~rc num_cmd) cmd_seq
+       iter_seq ~f:(fun num_cmd -> Add_command.run ~rc num_cmd) cmd_seq
     )
 ;;
 
@@ -225,7 +226,7 @@ let delete =
     )
     (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
-       Id_parsing.helper
+       iter_seq
          ~f:(fun num_cmd ->
            Remove_command.run ~rc num_cmd) cmd_seq)
 ;;
@@ -257,7 +258,7 @@ let edit =
     )
     (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
-       Id_parsing.helper cmd_seq ~f:(fun n ->
+       iter_seq cmd_seq ~f:(fun n ->
        let position =
          Option.value n
            ~default:(List.length (rc.Settings_t.progs) - 1)
@@ -293,7 +294,7 @@ let default =
     )
     (fun { rc } cmd_seq () ->
        let rc = Lazy.force rc in
-       Id_parsing.helper cmd_seq ~f:(fun n -> Default.run ~rc n)
+       iter_seq cmd_seq ~f:(fun n -> Default.run ~rc n)
     )
 
 let run ~version ~build_info () =
