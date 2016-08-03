@@ -54,8 +54,8 @@ let welcome_msg =
      Feedback is welcome at feedback@oclaunch.eu.org.\n\
      To get remind for new stable versions, subscribe to our low-traffic mailing \
      list: announce@oclaunch.eu.org. \
-     More here: https://lnch.ml/ml\n\
-     See you soon! To keep in touch: https://lnch.ml/kt\n"
+     More here: https://s.oclaunch.eu.org/ml\n\
+     See you soon! To keep in touch: https://s.oclaunch.eu.org/kt\n"
     Bug.url
 ;;
 

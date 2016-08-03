@@ -39,7 +39,7 @@
 open Core.Std;;
 
 (* Url of instructions to report bugs *)
-let url = "http://lnch.ml/bug";;
+let url = "http://s.oclaunch.eu.org/bug";;
 
 (* Display instructions to report bug *)
 let report () =
